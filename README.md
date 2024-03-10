@@ -3,7 +3,11 @@
 >
 > I use this repository for active development, while trying to share my changes with the upstream project.
 
-# JaSoMe: Java Source Metrics [![Build Status](https://travis-ci.org/rodhilton/jasome.svg?branch=master)](https://travis-ci.org/rodhilton/jasome)  [![GitHub issues](https://img.shields.io/github/issues/rodhilton/jasome.svg)](https://github.com/rodhilton/jasome/issues) [![Latest release](https://img.shields.io/github/release/rodhilton/jasome.svg?colorB=dfb430)](https://github.com/rodhilton/jasome/releases/latest) [![Github All Releases](https://img.shields.io/github/downloads/rodhilton/jasome/total.svg?colorB=0083c3)](https://github.com/rodhilton/jasome/releases)
+# JaSoMe: Java Source Metrics
+[![Build Status](https://github.com/kdunee/jasome/actions/workflows/gradle.yml/badge.svg)](https://github.com/kdunee/jasome/actions/workflows/gradle.yml)
+[![GitHub issues](https://img.shields.io/github/issues/kdunee/jasome.svg)](https://github.com/rodhilton/kdunee/issues)
+[![Latest release](https://img.shields.io/github/release/kdunee/jasome.svg?colorB=dfb430)](https://github.com/kdunee/jasome/releases/latest)
+[![Github All Releases](https://img.shields.io/github/downloads/kdunee/jasome/total.svg?colorB=0083c3)](https://github.com/kdunee/jasome/releases)
 
 Jasome (JAH-suhm, rhymes with awesome) is a source code analyzer that mines 
 internal quality metrics from projects based on source code alone.  This 
