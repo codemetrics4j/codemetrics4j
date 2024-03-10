@@ -1,0 +1,29 @@
+[versions]
+guava = "33.0.0-jre"
+commons-lang3 = "3.5"
+jscience = "4.3.1"
+pcollections = "3.0.2"
+commons-io = "2.9.0"
+commons-cli = "1.3.1"
+javaparser = "3.25.8"
+slf4j = "1.7.25"
+groovy = "2.4.8"
+junit = "4.13.2"
+spock = "1.0-groovy-2.4"
+mockito = "1.10.19"
+javafaker = "0.12"
+
+[libraries]
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }
+jscience = { module = "org.jscience:jscience", version.ref = "jscience" }
+pcollections = { module = "org.pcollections:pcollections", version.ref = "pcollections" }
+commons-io = { module = "commons-io:commons-io", version.ref = "commons-io" }
+commons-cli = { module = "commons-cli:commons-cli", version.ref = "commons-cli" }
+javaparser = { module = "com.github.javaparser:javaparser-symbol-solver-core", version.ref = "javaparser" }
+slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+groovy = { module = "org.codehaus.groovy:groovy-all", version.ref = "groovy" }
+junit = { module = "junit:junit", version.ref = "junit" }
+spock = { module = "org.spockframework:spock-core", version.ref = "spock" }
+mockito = { module = "org.mockito:mockito-all", version.ref = "mockito" }
+javafaker = { module = "com.github.javafaker:javafaker", version.ref = "javafaker" }
