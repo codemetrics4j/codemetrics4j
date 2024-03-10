@@ -1,17 +1,13 @@
 package org.jasome.metrics.calculators;
 
 import com.github.javaparser.ast.Modifier;
-import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithAccessModifiers;
 import com.google.common.collect.ImmutableSet;
+import java.util.Set;
 import org.jasome.input.Type;
 import org.jasome.metrics.Calculator;
 import org.jasome.metrics.Metric;
 import org.jasome.util.CalculationUtils;
-
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Counts the number of fields and methods in a class.
@@ -33,14 +29,21 @@ public class NumberOfFieldsCalculator implements Calculator<Type> {
     public Set<Metric> calculate(Type type) {
         ClassOrInterfaceDeclaration declaration = type.getSource();
 
-
         long numAttributes = declaration.getFields().size();
-        long numStaticAttributes = declaration.getFields().stream().filter(f -> CalculationUtils.getModifierKeywords(f).contains(Modifier.Keyword.STATIC)).count();
-        long numPublicAttributes = declaration.getFields().stream().filter(f -> CalculationUtils.getModifierKeywords(f).contains(Modifier.Keyword.PUBLIC)).count();
+        long numStaticAttributes = declaration.getFields().stream()
+                .filter(f -> CalculationUtils.getModifierKeywords(f).contains(Modifier.Keyword.STATIC))
+                .count();
+        long numPublicAttributes = declaration.getFields().stream()
+                .filter(f -> CalculationUtils.getModifierKeywords(f).contains(Modifier.Keyword.PUBLIC))
+                .count();
 
         long numMethods = declaration.getMethods().size();
-        long numStaticMethods = declaration.getMethods().stream().filter(f -> CalculationUtils.getModifierKeywords(f).contains(Modifier.Keyword.STATIC)).count();
-        long numPublicMethods = declaration.getMethods().stream().filter(f -> CalculationUtils.getModifierKeywords(f).contains(Modifier.Keyword.PUBLIC)).count();
+        long numStaticMethods = declaration.getMethods().stream()
+                .filter(f -> CalculationUtils.getModifierKeywords(f).contains(Modifier.Keyword.STATIC))
+                .count();
+        long numPublicMethods = declaration.getMethods().stream()
+                .filter(f -> CalculationUtils.getModifierKeywords(f).contains(Modifier.Keyword.PUBLIC))
+                .count();
 
         return ImmutableSet.<Metric>builder()
                 .add(Metric.of("NF", "Number of Attributes", numAttributes))

@@ -25,12 +25,11 @@ public class Distinct<T> {
 
     @Override
     public boolean equals(Object o) {
-        if(!(o instanceof Distinct)) return false;
+        if (!(o instanceof Distinct)) return false;
         else {
-            Distinct other = (Distinct)o;
+            Distinct other = (Distinct) o;
             return other.wrapped == this.wrapped;
         }
-        
     }
 
     @Override

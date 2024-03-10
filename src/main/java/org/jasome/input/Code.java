@@ -3,9 +3,8 @@ package org.jasome.input;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import org.jasome.metrics.Metric;
-
 import java.util.*;
+import org.jasome.metrics.Metric;
 
 public abstract class Code {
     private String name;
@@ -42,8 +41,7 @@ public abstract class Code {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Code code = (Code) o;
-        return Objects.equal(getName(), code.getName()) &&
-                Objects.equal(getParent(), code.getParent());
+        return Objects.equal(getName(), code.getName()) && Objects.equal(getParent(), code.getParent());
     }
 
     @Override
@@ -51,7 +49,7 @@ public abstract class Code {
         return Objects.hashCode(getName(), getParent());
     }
 
-    //* * * Package-level, only the scanner can add metrics and attributes, not calculators
+    // * * * Package-level, only the scanner can add metrics and attributes, not calculators
 
     synchronized void addMetric(Metric metric) {
         metrics.put(metric.getName(), metric);
@@ -71,7 +69,8 @@ public abstract class Code {
         }
     }
 
-    //* * * Protected, only subclasses should be able to directly add/access parent and children, other callers should use addMethod, addPackage, etc
+    // * * * Protected, only subclasses should be able to directly add/access parent and children, other callers should
+    // use addMethod, addPackage, etc
 
     protected Set<Code> getChildren() {
         return children;
@@ -85,6 +84,4 @@ public abstract class Code {
         child.parent = this;
         this.children.add(child);
     }
-
 }
-

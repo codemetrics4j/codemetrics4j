@@ -1,7 +1,7 @@
 package org.jasome.executive;
 
-import org.jasome.metrics.calculators.*;
 import org.jasome.input.Processor;
+import org.jasome.metrics.calculators.*;
 
 class ProcessorFactory {
     static Processor getProcessor() {

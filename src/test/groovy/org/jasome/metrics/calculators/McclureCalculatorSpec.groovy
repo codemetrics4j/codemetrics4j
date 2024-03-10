@@ -1,19 +1,19 @@
 package org.jasome.metrics.calculators
 
-import org.jasome.input.Method
-import org.jasome.input.Type
-import spock.lang.Specification
-
 import static org.jasome.util.Matchers.containsMetric
 import static org.jasome.util.TestUtil.projectFromSnippet
 import static spock.util.matcher.HamcrestSupport.expect
 
+import org.jasome.input.Method
+import org.jasome.input.Type
+import spock.lang.Specification
+
 class McclureCalculatorSpec extends Specification {
 
-    def "properly calculates mcclure complexity"() {
+	def "properly calculates mcclure complexity"() {
 
-        given:
-        def project = projectFromSnippet '''
+		given:
+		def project = projectFromSnippet '''
         package org.whatever.stuff;
 
         class SomeClass {
@@ -47,27 +47,26 @@ class McclureCalculatorSpec extends Specification {
         }      
         '''
 
-        org.jasome.input.Package aPackage = (project.getPackages() as List<Package>)[0]
+		org.jasome.input.Package aPackage = (project.getPackages() as List<Package>)[0]
 
-        Type classA = project.locateType("SomeClass");
+		Type classA = project.locateType("SomeClass");
 
-        Method doWork = classA.lookupMethodBySignature("doWork(int)").get()
-        Method factorial = classA.lookupMethodBySignature("factorial(int)").get()
+		Method doWork = classA.lookupMethodBySignature("doWork(int)").get()
+		Method factorial = classA.lookupMethodBySignature("factorial(int)").get()
 
-        when:
-        def resultDoWork = new McclureCalculator().calculate(doWork);
-        def resultFactorial = new McclureCalculator().calculate(factorial);
+		when:
+		def resultDoWork = new McclureCalculator().calculate(doWork);
+		def resultFactorial = new McclureCalculator().calculate(factorial);
 
-        then:
+		then:
 
-        expect resultDoWork, containsMetric("NCOMP", 4)
-        expect resultFactorial, containsMetric("NCOMP", 1)
+		expect resultDoWork, containsMetric("NCOMP", 4)
+		expect resultFactorial, containsMetric("NCOMP", 1)
 
-        expect resultDoWork, containsMetric("NVAR", 5)
-        expect resultFactorial, containsMetric("NVAR", 2)
+		expect resultDoWork, containsMetric("NVAR", 5)
+		expect resultFactorial, containsMetric("NVAR", 2)
 
-        expect resultDoWork, containsMetric("MCLC", 9)
-        expect resultFactorial, containsMetric("MCLC", 3)
-
-    }
+		expect resultDoWork, containsMetric("MCLC", 9)
+		expect resultFactorial, containsMetric("MCLC", 3)
+	}
 }

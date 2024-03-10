@@ -1,19 +1,19 @@
 package org.jasome.metrics.calculators
 
-import org.jasome.input.Type
-import org.jasome.metrics.value.NumericValue
-import spock.lang.Specification
-
 import static org.jasome.util.Matchers.containsMetric
 import static org.jasome.util.TestUtil.projectFromSnippet
 import static spock.util.matcher.HamcrestSupport.expect
 
+import org.jasome.input.Type
+import org.jasome.metrics.value.NumericValue
+import spock.lang.Specification
+
 class CouplingFactorCalculatorTest extends Specification {
 
-    def "properly calculates coupling factor"() {
+	def "properly calculates coupling factor"() {
 
-        given:
-        def project = projectFromSnippet '''
+		given:
+		def project = projectFromSnippet '''
         package org.whatever.stuff;
 
         class ClassA {
@@ -50,28 +50,28 @@ class CouplingFactorCalculatorTest extends Specification {
         '''
 
 
-        Type classA = project.locateType("ClassA")
-        Type classB = project.locateType("ClassB")
-        Type classC = project.locateType("ClassC")
-        Type mainClass = project.locateType("MainClass")
+		Type classA = project.locateType("ClassA")
+		Type classB = project.locateType("ClassB")
+		Type classC = project.locateType("ClassC")
+		Type mainClass = project.locateType("MainClass")
 
-        when:
-        def classAResult = new CouplingFactorCalculator().calculate(classA);
-        def classBResult = new CouplingFactorCalculator().calculate(classB);
-        def classCResult = new CouplingFactorCalculator().calculate(classC);
-        def mainClassResult = new CouplingFactorCalculator().calculate(mainClass);
+		when:
+		def classAResult = new CouplingFactorCalculator().calculate(classA);
+		def classBResult = new CouplingFactorCalculator().calculate(classB);
+		def classCResult = new CouplingFactorCalculator().calculate(classC);
+		def mainClassResult = new CouplingFactorCalculator().calculate(mainClass);
 
-        then:
-        expect classAResult, containsMetric("CF", NumericValue.ofRational(2,6))  //Uses ClassB, is used by MainClass
-        expect classBResult, containsMetric("CF", NumericValue.ofRational(3,6))  //Uses ClassC, used by MainClass and A
-        expect classCResult, containsMetric("CF", NumericValue.ofRational(2,6))  //Uses nothing, used by MainClass and b
-        expect mainClassResult, containsMetric("CF", NumericValue.ofRational(3,6)) //Uses all, used by nothing
-    }
+		then:
+		expect classAResult, containsMetric("CF", NumericValue.ofRational(2,6))  //Uses ClassB, is used by MainClass
+		expect classBResult, containsMetric("CF", NumericValue.ofRational(3,6))  //Uses ClassC, used by MainClass and A
+		expect classCResult, containsMetric("CF", NumericValue.ofRational(2,6))  //Uses nothing, used by MainClass and b
+		expect mainClassResult, containsMetric("CF", NumericValue.ofRational(3,6)) //Uses all, used by nothing
+	}
 
-    def "properly accounts for parameters"() {
+	def "properly accounts for parameters"() {
 
-        given:
-        def project = projectFromSnippet '''
+		given:
+		def project = projectFromSnippet '''
         package org.whatever.stuff;
 
         class ClassA {
@@ -103,25 +103,25 @@ class CouplingFactorCalculatorTest extends Specification {
         '''
 
 
-        Type classA = project.locateType("ClassA")
-        Type classB = project.locateType("ClassB")
-        Type mainClass = project.locateType("MainClass")
+		Type classA = project.locateType("ClassA")
+		Type classB = project.locateType("ClassB")
+		Type mainClass = project.locateType("MainClass")
 
-        when:
-        def classAResult = new CouplingFactorCalculator().calculate(classA);
-        def classBResult = new CouplingFactorCalculator().calculate(classB);
-        def mainClassResult = new CouplingFactorCalculator().calculate(mainClass);
+		when:
+		def classAResult = new CouplingFactorCalculator().calculate(classA);
+		def classBResult = new CouplingFactorCalculator().calculate(classB);
+		def mainClassResult = new CouplingFactorCalculator().calculate(mainClass);
 
-        then:
-        expect classAResult, containsMetric("CF", NumericValue.ofRational(2,4))
-        expect classBResult, containsMetric("CF", NumericValue.ofRational(2,4))
-        expect mainClassResult, containsMetric("CF", NumericValue.ofRational(2,4))
-    }
+		then:
+		expect classAResult, containsMetric("CF", NumericValue.ofRational(2,4))
+		expect classBResult, containsMetric("CF", NumericValue.ofRational(2,4))
+		expect mainClassResult, containsMetric("CF", NumericValue.ofRational(2,4))
+	}
 
-    def "correctly calculates coupling coefficient with inheritance"() {
+	def "correctly calculates coupling coefficient with inheritance"() {
 
-        given:
-        def project = projectFromSnippet '''
+		given:
+		def project = projectFromSnippet '''
         package org.whatever.stuff;
 
         class A {
@@ -148,28 +148,28 @@ class CouplingFactorCalculatorTest extends Specification {
 
         }
         '''
-        
-        Type classA = project.locateType("A")
-        Type interfaceI = project.locateType("I")
-        Type interfaceJ = project.locateType("J")
-        Type interfaceK = project.locateType("K")
-        Type classX = project.locateType("ClassX")
-        Type classY = project.locateType("ClassY")
 
-        when:
-        def resultA = new CouplingFactorCalculator().calculate(classA);
-        def resultI = new CouplingFactorCalculator().calculate(interfaceI);
-        def resultJ = new CouplingFactorCalculator().calculate(interfaceJ);
-        def resultK = new CouplingFactorCalculator().calculate(interfaceK);
-        def resultX = new CouplingFactorCalculator().calculate(classX);
-        def resultY = new CouplingFactorCalculator().calculate(classY);
+		Type classA = project.locateType("A")
+		Type interfaceI = project.locateType("I")
+		Type interfaceJ = project.locateType("J")
+		Type interfaceK = project.locateType("K")
+		Type classX = project.locateType("ClassX")
+		Type classY = project.locateType("ClassY")
 
-        then:
-        expect resultA, containsMetric("CF", NumericValue.ofRational(2,10)) //Uses none, used by X and Y
-        expect resultI, containsMetric("CF", NumericValue.ofRational(1,10)) //Uses none, used by J
-        expect resultJ, containsMetric("CF", NumericValue.ofRational(2,10)) //Uses I, used by K
-        expect resultK, containsMetric("CF", NumericValue.ofRational(2,10)) //Uses J, used by X
-        expect resultX, containsMetric("CF", NumericValue.ofRational(2,10)) //Uses A and K, used by none
-        expect resultY, containsMetric("CF", NumericValue.ofRational(1,10)) //Uses A, used by none
-    }
+		when:
+		def resultA = new CouplingFactorCalculator().calculate(classA);
+		def resultI = new CouplingFactorCalculator().calculate(interfaceI);
+		def resultJ = new CouplingFactorCalculator().calculate(interfaceJ);
+		def resultK = new CouplingFactorCalculator().calculate(interfaceK);
+		def resultX = new CouplingFactorCalculator().calculate(classX);
+		def resultY = new CouplingFactorCalculator().calculate(classY);
+
+		then:
+		expect resultA, containsMetric("CF", NumericValue.ofRational(2,10)) //Uses none, used by X and Y
+		expect resultI, containsMetric("CF", NumericValue.ofRational(1,10)) //Uses none, used by J
+		expect resultJ, containsMetric("CF", NumericValue.ofRational(2,10)) //Uses I, used by K
+		expect resultK, containsMetric("CF", NumericValue.ofRational(2,10)) //Uses J, used by X
+		expect resultX, containsMetric("CF", NumericValue.ofRational(2,10)) //Uses A and K, used by none
+		expect resultY, containsMetric("CF", NumericValue.ofRational(1,10)) //Uses A, used by none
+	}
 }

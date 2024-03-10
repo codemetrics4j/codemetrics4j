@@ -4,6 +4,10 @@ import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.google.common.collect.ImmutableSet;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jasome.input.Method;
 import org.jasome.input.Type;
@@ -11,11 +15,6 @@ import org.jasome.metrics.Calculator;
 import org.jasome.metrics.Metric;
 import org.jasome.metrics.value.NumericValue;
 import org.jasome.util.CalculationUtils;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class LackOfCohesionMethodsCalculator implements Calculator<Type> {
     @Override
@@ -25,7 +24,8 @@ public class LackOfCohesionMethodsCalculator implements Calculator<Type> {
 
         fieldDeclarations.stream().map(FieldDeclaration::getVariables).forEach(variables::addAll);
 
-        List<MethodDeclaration> methods = type.getMethods().stream().map(Method::getSource).collect(Collectors.toList());
+        List<MethodDeclaration> methods =
+                type.getMethods().stream().map(Method::getSource).collect(Collectors.toList());
 
         NumericValue total = NumericValue.ZERO;
 
@@ -39,7 +39,6 @@ public class LackOfCohesionMethodsCalculator implements Calculator<Type> {
 
             total = total.plus(NumericValue.of(numberOfMethodsAccessingVariable));
         }
-
 
         try {
             NumericValue numberOfMethods = NumericValue.of(methods.size());
@@ -57,8 +56,5 @@ public class LackOfCohesionMethodsCalculator implements Calculator<Type> {
         } catch (ArithmeticException e) {
             return ImmutableSet.of();
         }
-
-
     }
-
 }

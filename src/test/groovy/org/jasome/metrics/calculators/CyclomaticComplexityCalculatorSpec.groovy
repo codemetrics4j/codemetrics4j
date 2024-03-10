@@ -1,17 +1,17 @@
 package org.jasome.metrics.calculators
 
-import spock.lang.Specification
-
 import static org.jasome.util.Matchers.containsMetric
 import static org.jasome.util.TestUtil.methodFromSnippet
 import static spock.util.matcher.HamcrestSupport.expect
 
+import spock.lang.Specification
+
 class CyclomaticComplexityCalculatorSpec extends Specification {
 
-    def "calculate simple metric"() {
+	def "calculate simple metric"() {
 
-        given:
-        def type = methodFromSnippet '''
+		given:
+		def type = methodFromSnippet '''
             public void method(int x) {
                 if(x < 10) {
                     if(x > 3) {
@@ -33,17 +33,17 @@ class CyclomaticComplexityCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new CyclomaticComplexityCalculator().calculate(type)
+		when:
+		def result = new CyclomaticComplexityCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("VG", 6)
-    }
+		then:
+		expect result, containsMetric("VG", 6)
+	}
 
-    def "calculate includes for statments"() {
+	def "calculate includes for statments"() {
 
-        given:
-        def type = methodFromSnippet '''
+		given:
+		def type = methodFromSnippet '''
             public void method(int x) {
                 if(x < 10) {
                     for(int i=0;i<x;i++) {
@@ -53,17 +53,17 @@ class CyclomaticComplexityCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new CyclomaticComplexityCalculator().calculate(type)
+		when:
+		def result = new CyclomaticComplexityCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("VG", 3)
-    }
+		then:
+		expect result, containsMetric("VG", 3)
+	}
 
-    def "calculate uses case statements but doesn't count switch or default"() {
+	def "calculate uses case statements but doesn't count switch or default"() {
 
-        given:
-        def type = methodFromSnippet '''
+		given:
+		def type = methodFromSnippet '''
             public static Hours hours(int hours) {
                 switch (hours) {
                     case 0:
@@ -94,18 +94,18 @@ class CyclomaticComplexityCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new CyclomaticComplexityCalculator().calculate(type)
+		when:
+		def result = new CyclomaticComplexityCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("VG", 12)
-    }
+		then:
+		expect result, containsMetric("VG", 12)
+	}
 
 
-    def "calculate takes && and || into account"() {
+	def "calculate takes && and || into account"() {
 
-        given:
-        def type = methodFromSnippet '''
+		given:
+		def type = methodFromSnippet '''
             public void method(int x) {
                 if(x > 3 && x < 10) {
                     System.out.println("between 3 and 10");
@@ -117,33 +117,33 @@ class CyclomaticComplexityCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new CyclomaticComplexityCalculator().calculate(type)
+		when:
+		def result = new CyclomaticComplexityCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("VG", 6)
-    }
+		then:
+		expect result, containsMetric("VG", 6)
+	}
 
-    def "calculate looks at ternary"() {
+	def "calculate looks at ternary"() {
 
-        given:
-        def type = methodFromSnippet '''
+		given:
+		def type = methodFromSnippet '''
             public void method(int x) {
                 int y = (x < 10 && x > 3 || x == 0) ? 10 : 50;
             }
         '''
 
-        when:
-        def result = new CyclomaticComplexityCalculator().calculate(type)
+		when:
+		def result = new CyclomaticComplexityCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("VG", 4)
-    }
+		then:
+		expect result, containsMetric("VG", 4)
+	}
 
-    def "calculate for loops"() {
+	def "calculate for loops"() {
 
-        given:
-        def type = methodFromSnippet '''
+		given:
+		def type = methodFromSnippet '''
             public void method(int x) {
                 int y = x;
                 while(y > 0) {
@@ -158,10 +158,10 @@ class CyclomaticComplexityCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new CyclomaticComplexityCalculator().calculate(type)
+		when:
+		def result = new CyclomaticComplexityCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("VG", 3)
-    }
+		then:
+		expect result, containsMetric("VG", 3)
+	}
 }

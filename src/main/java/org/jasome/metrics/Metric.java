@@ -17,7 +17,7 @@ public class Metric {
     public static Metric of(String name, String description, NumericValue value) {
         return new Metric(name, description, value);
     }
-    
+
     public static Metric of(String name, String description, long value) {
         return new Metric(name, description, NumericValue.of(value));
     }
@@ -37,7 +37,7 @@ public class Metric {
     public NumericValue getValue() {
         return value;
     }
-    
+
     @Override
     public String toString() {
         return name + ": " + value;
@@ -48,9 +48,9 @@ public class Metric {
         if (this == o) return true;
         if (!(o instanceof Metric)) return false;
         Metric that = (Metric) o;
-        return Objects.equal(name, that.name) &&
-                Objects.equal(description, that.description) &&
-                Objects.equal(value, that.value);
+        return Objects.equal(name, that.name)
+                && Objects.equal(description, that.description)
+                && Objects.equal(value, that.value);
     }
 
     @Override

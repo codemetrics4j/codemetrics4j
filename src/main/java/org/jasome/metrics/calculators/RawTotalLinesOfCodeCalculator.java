@@ -3,12 +3,11 @@ package org.jasome.metrics.calculators;
 import com.github.javaparser.Position;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.google.common.collect.ImmutableSet;
+import java.util.Optional;
+import java.util.Set;
 import org.jasome.input.Type;
 import org.jasome.metrics.Calculator;
 import org.jasome.metrics.Metric;
-
-import java.util.Optional;
-import java.util.Set;
 
 /**
  * Counts the raw number of lines of code within a class (excludes package
@@ -31,7 +30,7 @@ public class RawTotalLinesOfCodeCalculator implements Calculator<Type> {
 
         if (!begin.isPresent()) return ImmutableSet.of();
         if (!end.isPresent()) return ImmutableSet.of();
-        
+
         return ImmutableSet.of(Metric.of("RTLOC", "Raw Total Lines of Code", end.get().line - begin.get().line + 1));
     }
 }

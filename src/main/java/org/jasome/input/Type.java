@@ -2,7 +2,6 @@ package org.jasome.input;
 
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -28,8 +27,8 @@ public class Type extends Code {
         if (classDefinition.getParentNode().isPresent()) {
             Node parentNode = classDefinition.getParentNode().get();
             if (parentNode instanceof ClassOrInterfaceDeclaration) {
-                className = ((ClassOrInterfaceDeclaration) parentNode).getNameAsString() + "." +
-                        classDefinition.getNameAsString();
+                className = ((ClassOrInterfaceDeclaration) parentNode).getNameAsString() + "."
+                        + classDefinition.getNameAsString();
             }
         }
         return className;
@@ -37,7 +36,7 @@ public class Type extends Code {
 
     @SuppressWarnings("unchecked")
     public Set<Method> getMethods() {
-        return (Set<Method>)(Set<?>)getChildren();
+        return (Set<Method>) (Set<?>) getChildren();
     }
 
     public void addMethod(Method method) {
@@ -46,16 +45,16 @@ public class Type extends Code {
     }
 
     public Package getParentPackage() {
-        return (Package)getParent();
+        return (Package) getParent();
     }
 
     @Override
     public String toString() {
-        return "Type("+this.getName()+")";
+        return "Type(" + this.getName() + ")";
     }
 
     public Optional<Method> lookupMethodBySignature(String methodSignature) {
-        if(methodLookup.containsKey(methodSignature)) {
+        if (methodLookup.containsKey(methodSignature)) {
             return Optional.of(methodLookup.get(methodSignature));
         } else {
             return Optional.empty();

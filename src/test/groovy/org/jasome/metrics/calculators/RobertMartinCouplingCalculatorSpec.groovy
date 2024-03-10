@@ -1,19 +1,19 @@
 package org.jasome.metrics.calculators
 
-import org.jasome.metrics.value.NumericValue
-import spock.lang.Specification
-
 import static org.jasome.util.Matchers.containsMetric
 import static org.jasome.util.Matchers.doesNotContainMetric
 import static org.jasome.util.TestUtil.projectFromSnippet
 import static spock.util.matcher.HamcrestSupport.expect
 
+import org.jasome.metrics.value.NumericValue
+import spock.lang.Specification
+
 class RobertMartinCouplingCalculatorSpec extends Specification {
 
-    def "calculate simple coupling metrics"() {
+	def "calculate simple coupling metrics"() {
 
-        given:
-        def project = projectFromSnippet '''
+		given:
+		def project = projectFromSnippet '''
         package org.whatever.stuff;
         
         import org.whatever.stuff2.*;
@@ -93,32 +93,32 @@ class RobertMartinCouplingCalculatorSpec extends Specification {
         }
         '''
 
-        org.jasome.input.Package firstPackage = (project.getPackages() as List<Package>).find{ p -> p.name=="org.whatever.stuff"}
-        org.jasome.input.Package secondPackage = (project.getPackages() as List<Package>).find{ p -> p.name=="org.whatever.stuff2"}
+		org.jasome.input.Package firstPackage = (project.getPackages() as List<Package>).find{ p -> p.name=="org.whatever.stuff"}
+		org.jasome.input.Package secondPackage = (project.getPackages() as List<Package>).find{ p -> p.name=="org.whatever.stuff2"}
 
 
-        when:
-        def firstResult = new RobertMartinCouplingCalculator().calculate(firstPackage);
-        def secondResult = new RobertMartinCouplingCalculator().calculate(secondPackage);
+		when:
+		def firstResult = new RobertMartinCouplingCalculator().calculate(firstPackage);
+		def secondResult = new RobertMartinCouplingCalculator().calculate(secondPackage);
 
-        then:
-        expect firstResult, containsMetric("Ce", 2)
-        expect firstResult, containsMetric("Ca", 2)
+		then:
+		expect firstResult, containsMetric("Ce", 2)
+		expect firstResult, containsMetric("Ca", 2)
 
-        expect secondResult, containsMetric("Ce", 2)
-        expect secondResult, containsMetric("Ca", 2)
+		expect secondResult, containsMetric("Ce", 2)
+		expect secondResult, containsMetric("Ca", 2)
 
-        expect firstResult, containsMetric("I", 0.5)
-        expect firstResult, containsMetric("A", 0.25)
-        expect firstResult, containsMetric("DMS", 0.25)
-        expect firstResult, containsMetric("NOI", NumericValue.ONE)
-    }
+		expect firstResult, containsMetric("I", 0.5)
+		expect firstResult, containsMetric("A", 0.25)
+		expect firstResult, containsMetric("DMS", 0.25)
+		expect firstResult, containsMetric("NOI", NumericValue.ONE)
+	}
 
 
-    def "calculate assumes contradictory names are used within the package"() {
+	def "calculate assumes contradictory names are used within the package"() {
 
-        given:
-        def project = projectFromSnippet '''
+		given:
+		def project = projectFromSnippet '''
         package org.whatever.stuff;
         
         import org.whatever.stuff2.*;
@@ -151,31 +151,31 @@ class RobertMartinCouplingCalculatorSpec extends Specification {
         }
         '''
 
-        org.jasome.input.Package firstPackage = (project.getPackages() as List<Package>).find{ p -> p.name=="org.whatever.stuff"}
-        org.jasome.input.Package secondPackage = (project.getPackages() as List<Package>).find{ p -> p.name=="org.whatever.stuff2"}
+		org.jasome.input.Package firstPackage = (project.getPackages() as List<Package>).find{ p -> p.name=="org.whatever.stuff"}
+		org.jasome.input.Package secondPackage = (project.getPackages() as List<Package>).find{ p -> p.name=="org.whatever.stuff2"}
 
 
-        when:
-        def firstResult = new RobertMartinCouplingCalculator().calculate(firstPackage);
-        def secondResult = new RobertMartinCouplingCalculator().calculate(secondPackage);
+		when:
+		def firstResult = new RobertMartinCouplingCalculator().calculate(firstPackage);
+		def secondResult = new RobertMartinCouplingCalculator().calculate(secondPackage);
 
-        then:
-        expect firstResult, containsMetric("Ce", NumericValue.ZERO)
-        expect firstResult, containsMetric("Ca", NumericValue.ZERO)
+		then:
+		expect firstResult, containsMetric("Ce", NumericValue.ZERO)
+		expect firstResult, containsMetric("Ca", NumericValue.ZERO)
 
-        expect secondResult, containsMetric("Ce", NumericValue.ZERO)
-        expect secondResult, containsMetric("Ca", NumericValue.ZERO)
+		expect secondResult, containsMetric("Ce", NumericValue.ZERO)
+		expect secondResult, containsMetric("Ca", NumericValue.ZERO)
 
-        expect firstResult, doesNotContainMetric("I")
-        expect secondResult, containsMetric("Ca", NumericValue.ZERO)
-        expect firstResult, doesNotContainMetric("DMS")
-        expect firstResult, containsMetric("NOI", NumericValue.ZERO)
-    }
+		expect firstResult, doesNotContainMetric("I")
+		expect secondResult, containsMetric("Ca", NumericValue.ZERO)
+		expect firstResult, doesNotContainMetric("DMS")
+		expect firstResult, containsMetric("NOI", NumericValue.ZERO)
+	}
 
-    def "doesn't count non-public classes"() {
+	def "doesn't count non-public classes"() {
 
-        given:
-        def project = projectFromSnippet '''
+		given:
+		def project = projectFromSnippet '''
         package org.whatever.stuff;
         
         import org.whatever.stuff2.*;
@@ -203,31 +203,31 @@ class RobertMartinCouplingCalculatorSpec extends Specification {
         }
         '''
 
-        org.jasome.input.Package firstPackage = (project.getPackages() as List<Package>).find{ p -> p.name=="org.whatever.stuff"}
-        org.jasome.input.Package secondPackage = (project.getPackages() as List<Package>).find{ p -> p.name=="org.whatever.stuff2"}
+		org.jasome.input.Package firstPackage = (project.getPackages() as List<Package>).find{ p -> p.name=="org.whatever.stuff"}
+		org.jasome.input.Package secondPackage = (project.getPackages() as List<Package>).find{ p -> p.name=="org.whatever.stuff2"}
 
 
-        when:
-        def firstResult = new RobertMartinCouplingCalculator().calculate(firstPackage);
-        def secondResult = new RobertMartinCouplingCalculator().calculate(secondPackage);
+		when:
+		def firstResult = new RobertMartinCouplingCalculator().calculate(firstPackage);
+		def secondResult = new RobertMartinCouplingCalculator().calculate(secondPackage);
 
-        then:
-        expect firstResult, containsMetric("Ce", NumericValue.ZERO)
-        expect firstResult, containsMetric("Ca", NumericValue.ZERO)
+		then:
+		expect firstResult, containsMetric("Ce", NumericValue.ZERO)
+		expect firstResult, containsMetric("Ca", NumericValue.ZERO)
 
-        expect secondResult, containsMetric("Ce", NumericValue.ZERO)
-        expect secondResult, containsMetric("Ca", NumericValue.ZERO)
+		expect secondResult, containsMetric("Ce", NumericValue.ZERO)
+		expect secondResult, containsMetric("Ca", NumericValue.ZERO)
 
-        expect firstResult, doesNotContainMetric("I")
-        expect secondResult, containsMetric("Ca", NumericValue.ZERO)
-        expect firstResult, doesNotContainMetric("DMS")
-        expect firstResult, containsMetric("NOI", NumericValue.ZERO)
-    }
+		expect firstResult, doesNotContainMetric("I")
+		expect secondResult, containsMetric("Ca", NumericValue.ZERO)
+		expect firstResult, doesNotContainMetric("DMS")
+		expect firstResult, containsMetric("NOI", NumericValue.ZERO)
+	}
 
-    def "able to see public static classes"() {
+	def "able to see public static classes"() {
 
-        given:
-        def project = projectFromSnippet '''
+		given:
+		def project = projectFromSnippet '''
         package org.whatever.stuff;
         
         import org.whatever.stuff2.*;
@@ -255,19 +255,19 @@ class RobertMartinCouplingCalculatorSpec extends Specification {
         }
         '''
 
-        org.jasome.input.Package firstPackage = (project.getPackages() as List<Package>).find{ p -> p.name=="org.whatever.stuff"}
-        org.jasome.input.Package secondPackage = (project.getPackages() as List<Package>).find{ p -> p.name=="org.whatever.stuff2"}
+		org.jasome.input.Package firstPackage = (project.getPackages() as List<Package>).find{ p -> p.name=="org.whatever.stuff"}
+		org.jasome.input.Package secondPackage = (project.getPackages() as List<Package>).find{ p -> p.name=="org.whatever.stuff2"}
 
 
-        when:
-        def firstResult = new RobertMartinCouplingCalculator().calculate(firstPackage);
-        def secondResult = new RobertMartinCouplingCalculator().calculate(secondPackage);
+		when:
+		def firstResult = new RobertMartinCouplingCalculator().calculate(firstPackage);
+		def secondResult = new RobertMartinCouplingCalculator().calculate(secondPackage);
 
-        then:
-        expect firstResult, containsMetric("Ce", NumericValue.ZERO)
-        expect firstResult, containsMetric("Ca", NumericValue.ONE)
+		then:
+		expect firstResult, containsMetric("Ce", NumericValue.ZERO)
+		expect firstResult, containsMetric("Ca", NumericValue.ONE)
 
-        expect secondResult, containsMetric("Ce", NumericValue.ONE)
-        expect secondResult, containsMetric("Ca", NumericValue.ZERO)
-    }
+		expect secondResult, containsMetric("Ce", NumericValue.ONE)
+		expect secondResult, containsMetric("Ca", NumericValue.ZERO)
+	}
 }

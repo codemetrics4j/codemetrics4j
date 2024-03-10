@@ -1,38 +1,38 @@
 package org.jasome.metrics.calculators
 
-import spock.lang.Specification
-
 import static org.jasome.util.Matchers.containsMetric
 import static org.jasome.util.TestUtil.methodFromSnippet
 import static org.jasome.util.TestUtil.packageFromSnippet
 import static org.jasome.util.TestUtil.typeFromSnippet
 import static org.jasome.util.TestUtil.typeFromStream
-import static spock.util.matcher.HamcrestSupport.expect;
+import static spock.util.matcher.HamcrestSupport.expect
+
+import spock.lang.Specification
 
 
 class TotalLinesOfCodeCalculatorSpec extends Specification {
-    def "calculate simple metric"() {
+	def "calculate simple metric"() {
 
-        given:
-        def type = typeFromSnippet('''
+		given:
+		def type = typeFromSnippet('''
             class Example {
                 public int stuff;
             }
 
         ''')
 
-        when:
-        def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
+		when:
+		def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
 
-        then:
-        type.parentPackage.name == "default"
-        expect result, containsMetric("TLOC", 3)
-    }
+		then:
+		type.parentPackage.name == "default"
+		expect result, containsMetric("TLOC", 3)
+	}
 
-    def "calculate counts lines"() {
+	def "calculate counts lines"() {
 
-        given:
-        def type = typeFromSnippet('''package org.whatever.stuff;
+		given:
+		def type = typeFromSnippet('''package org.whatever.stuff;
 
             import lineone;
             import line2.stuff.junk;
@@ -62,45 +62,45 @@ class TotalLinesOfCodeCalculatorSpec extends Specification {
         ''')
 
 
-        when:
-        def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
+		when:
+		def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
 
-        then:
-        type.parentPackage.name == "org.whatever.stuff"
-        expect result, containsMetric("TLOC", 9)
-    }
+		then:
+		type.parentPackage.name == "org.whatever.stuff"
+		expect result, containsMetric("TLOC", 9)
+	}
 
-    def "calculate class length when only two lines (open and close)"() {
+	def "calculate class length when only two lines (open and close)"() {
 
-        given:
-        def type = typeFromSnippet('''
+		given:
+		def type = typeFromSnippet('''
             interface Exampleable {}
         ''')
 
-        when:
-        def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
+		when:
+		def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("TLOC", 2)
-    }
+		then:
+		expect result, containsMetric("TLOC", 2)
+	}
 
-    def "calculate counts for complex file"() {
+	def "calculate counts for complex file"() {
 
-        given:
-        def stream = this.getClass().getResourceAsStream("/Hours.java")
-        def type = typeFromStream(stream)
+		given:
+		def stream = this.getClass().getResourceAsStream("/Hours.java")
+		def type = typeFromStream(stream)
 
-        when:
-        def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
+		when:
+		def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("TLOC", 159)
-    }
+		then:
+		expect result, containsMetric("TLOC", 159)
+	}
 
-    def "calculate counts lines in a synchronized block, but not for a synchronized variable or method"() {
+	def "calculate counts lines in a synchronized block, but not for a synchronized variable or method"() {
 
-        given:
-        def type = typeFromSnippet('''package org.whatever.stuff;
+		given:
+		def type = typeFromSnippet('''package org.whatever.stuff;
 
             import lineone;
             import line2.stuff.junk;
@@ -120,17 +120,17 @@ class TotalLinesOfCodeCalculatorSpec extends Specification {
             }                                    //11
         ''')
 
-        when:
-        def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
+		when:
+		def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("TLOC", 11)
-    }
+		then:
+		expect result, containsMetric("TLOC", 11)
+	}
 
-    def "calculate counts lines and can handle an empty declaration"() {
+	def "calculate counts lines and can handle an empty declaration"() {
 
-        given:
-        def aPackage = packageFromSnippet('''package org.whatever.stuff;
+		given:
+		def aPackage = packageFromSnippet('''package org.whatever.stuff;
 
             import lineone;
             import line2.stuff.junk;
@@ -140,19 +140,19 @@ class TotalLinesOfCodeCalculatorSpec extends Specification {
             }                                        //4
         ''')
 
-        when:
-        def type = aPackage.getTypes().find {t->t.getName() == "Example"}
+		when:
+		def type = aPackage.getTypes().find {t->t.getName() == "Example"}
 
-        def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
+		def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("TLOC", 4)
-    }
+		then:
+		expect result, containsMetric("TLOC", 4)
+	}
 
-    def "calculate counts lines handles interfaces properly"() {
+	def "calculate counts lines handles interfaces properly"() {
 
-        given:
-        def type = typeFromSnippet('''package org.apache.hc.client5.http.cookie;
+		given:
+		def type = typeFromSnippet('''package org.apache.hc.client5.http.cookie;
             /**
              * Extension of {@link org.apache.hc.client5.http.cookie.CookieAttributeHandler} intended
              * to handle one specific common attribute whose name is returned with
@@ -167,17 +167,17 @@ class TotalLinesOfCodeCalculatorSpec extends Specification {
             }
         ''')
 
-        when:
-        def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
+		when:
+		def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("TLOC", 3)
-    }
+		then:
+		expect result, containsMetric("TLOC", 3)
+	}
 
-    def "calculate counts try/catch/finally blocks properly"() {
+	def "calculate counts try/catch/finally blocks properly"() {
 
-        given:
-        def type = typeFromSnippet '''package com.mkyong;
+		given:
+		def type = typeFromSnippet '''package com.mkyong;
 
         import java.io.BufferedReader;
         import java.io.FileReader;
@@ -232,17 +232,17 @@ class TotalLinesOfCodeCalculatorSpec extends Specification {
         }
         '''
 
-        when:
-        def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
+		when:
+		def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("TLOC", 29)
-    }
+		then:
+		expect result, containsMetric("TLOC", 29)
+	}
 
-    def "calculate counts complex if blocks properly"() {
+	def "calculate counts complex if blocks properly"() {
 
-        given:
-        def type = typeFromSnippet '''package com.stuff;
+		given:
+		def type = typeFromSnippet '''package com.stuff;
 
         public class IfExample {
 
@@ -266,8 +266,8 @@ class TotalLinesOfCodeCalculatorSpec extends Specification {
         }
         '''
 
-        //The above is actually syntactic sugar for the below, so we count the lines as below
-        def equivalentType = typeFromSnippet '''package com.stuff;
+		//The above is actually syntactic sugar for the below, so we count the lines as below
+		def equivalentType = typeFromSnippet '''package com.stuff;
         public class IfExample {
 
             public static void main(String[] args) {
@@ -294,22 +294,22 @@ class TotalLinesOfCodeCalculatorSpec extends Specification {
         }
         '''
 
-        when:
-        def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
-        def equivalentResult = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(equivalentType)
+		when:
+		def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
+		def equivalentResult = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(equivalentType)
 
-        then:
-        expect result, containsMetric("TLOC", 22)
-        expect equivalentResult, containsMetric("TLOC", 22)
+		then:
+		expect result, containsMetric("TLOC", 22)
+		expect equivalentResult, containsMetric("TLOC", 22)
 
-    }
+	}
 
 
 
-    def "calculate counts for methods"() {
+	def "calculate counts for methods"() {
 
-        given:
-        def method = methodFromSnippet '''
+		given:
+		def method = methodFromSnippet '''
             public void doStuff(String x, int y) {
                 if(y > 10) {
                     System.out.println(x+" > 10!");
@@ -319,10 +319,10 @@ class TotalLinesOfCodeCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new TotalLinesOfCodeCalculator.MethodCalculator().calculate(method)
+		when:
+		def result = new TotalLinesOfCodeCalculator.MethodCalculator().calculate(method)
 
-        then:
-        expect result, containsMetric("TLOC", 7)
-    }
+		then:
+		expect result, containsMetric("TLOC", 7)
+	}
 }

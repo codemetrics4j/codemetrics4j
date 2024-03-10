@@ -15,7 +15,7 @@ public class Package extends Code {
 
     @SuppressWarnings("unchecked")
     public Set<Type> getTypes() {
-        return (Set<Type>)(Set<?>)getChildren();
+        return (Set<Type>) (Set<?>) getChildren();
     }
 
     public void addType(Type type) {
@@ -24,16 +24,16 @@ public class Package extends Code {
     }
 
     public Project getParentProject() {
-        return (Project)getParent();
+        return (Project) getParent();
     }
 
     @Override
     public String toString() {
-        return "Package("+this.getName()+")";
+        return "Package(" + this.getName() + ")";
     }
 
     public Optional<Type> lookupTypeByName(String typeName) {
-        if(typeLookup.containsKey(typeName)) {
+        if (typeLookup.containsKey(typeName)) {
             return Optional.of(typeLookup.get(typeName));
         } else {
             return Optional.empty();

@@ -1,19 +1,19 @@
 package org.jasome.metrics.calculators
 
-import org.jasome.input.Type
-import org.jasome.metrics.value.NumericValue
-import spock.lang.Specification
-
 import static org.jasome.util.Matchers.containsMetric
 import static org.jasome.util.TestUtil.projectFromSnippet
 import static spock.util.matcher.HamcrestSupport.expect
 
+import org.jasome.input.Type
+import org.jasome.metrics.value.NumericValue
+import spock.lang.Specification
+
 class SpecializationIndexCalculatorSpec extends Specification {
 
-    def "calculate simple metric"() {
+	def "calculate simple metric"() {
 
-        given:
-        def project = projectFromSnippet '''
+		given:
+		def project = projectFromSnippet '''
         package org.whatever.stuff;
 
         class A {
@@ -37,25 +37,25 @@ class SpecializationIndexCalculatorSpec extends Specification {
         }
         '''
 
-        Type typeA = project.locateType("A")
-        Type typeC = project.locateType("C")
-        Type typeD = project.locateType("D")
+		Type typeA = project.locateType("A")
+		Type typeC = project.locateType("C")
+		Type typeD = project.locateType("D")
 
-        when:
-        def resultA = new SpecializationIndexCalculator().calculate(typeA);
-        def resultC = new SpecializationIndexCalculator().calculate(typeC);
-        def resultD = new SpecializationIndexCalculator().calculate(typeD);
+		when:
+		def resultA = new SpecializationIndexCalculator().calculate(typeA);
+		def resultC = new SpecializationIndexCalculator().calculate(typeC);
+		def resultD = new SpecializationIndexCalculator().calculate(typeD);
 
-        then:
-        expect resultA, containsMetric("DIT", 1)
-        expect resultC, containsMetric("DIT", 3)
-        expect resultD, containsMetric("DIT", 2)
-    }
+		then:
+		expect resultA, containsMetric("DIT", 1)
+		expect resultC, containsMetric("DIT", 3)
+		expect resultD, containsMetric("DIT", 2)
+	}
 
-    def "calculate depth and use maximum even if a minimum path to a root node is shorter"() {
+	def "calculate depth and use maximum even if a minimum path to a root node is shorter"() {
 
-        given:
-        def project = projectFromSnippet '''
+		given:
+		def project = projectFromSnippet '''
         package org.whatever.stuff;
 
         class A {
@@ -83,22 +83,22 @@ class SpecializationIndexCalculatorSpec extends Specification {
         }
         '''
 
-        Type typeFour = project.locateType("ShouldBeFour")
-        Type typeTwo = project.locateType("ShouldBeTwo")
+		Type typeFour = project.locateType("ShouldBeFour")
+		Type typeTwo = project.locateType("ShouldBeTwo")
 
-        when:
-        def resultFour = new SpecializationIndexCalculator().calculate(typeFour);
-        def resultTwo = new SpecializationIndexCalculator().calculate(typeTwo);
+		when:
+		def resultFour = new SpecializationIndexCalculator().calculate(typeFour);
+		def resultTwo = new SpecializationIndexCalculator().calculate(typeTwo);
 
-        then:
-        expect resultFour, containsMetric("DIT", 4)
-        expect resultTwo, containsMetric("DIT", 2)
-    }
+		then:
+		expect resultFour, containsMetric("DIT", 4)
+		expect resultTwo, containsMetric("DIT", 2)
+	}
 
-    def "calculate depth uses the correct class when classes have same name"() {
+	def "calculate depth uses the correct class when classes have same name"() {
 
-        given:
-        def project = projectFromSnippet '''
+		given:
+		def project = projectFromSnippet '''
         package org.whatever.stuff;
 
         interface I {
@@ -124,19 +124,19 @@ class SpecializationIndexCalculatorSpec extends Specification {
         }
         '''
 
-        Type typeA = project.locateType("org.whatever.stuff2.A")
-        
-        when:
-        def result = new SpecializationIndexCalculator().calculate(typeA);
+		Type typeA = project.locateType("org.whatever.stuff2.A")
 
-        then:
-        expect result, containsMetric("DIT", 2)
-    }
+		when:
+		def result = new SpecializationIndexCalculator().calculate(typeA);
 
-    def "calculate depth uses the correct class even if it's not the closest class when classes have same name"() {
+		then:
+		expect result, containsMetric("DIT", 2)
+	}
 
-        given:
-        def project = projectFromSnippet '''
+	def "calculate depth uses the correct class even if it's not the closest class when classes have same name"() {
+
+		given:
+		def project = projectFromSnippet '''
         package org.whatever.stuff;
 
         interface I {
@@ -162,23 +162,23 @@ class SpecializationIndexCalculatorSpec extends Specification {
         }
         '''
 
-        Type typeA = project.locateType("org.whatever.stuff2.A")
+		Type typeA = project.locateType("org.whatever.stuff2.A")
 
-        when:
-        def result = new SpecializationIndexCalculator().calculate(typeA);
+		when:
+		def result = new SpecializationIndexCalculator().calculate(typeA);
 
-        then:
-        expect result, containsMetric("DIT", 4)
-    }
+		then:
+		expect result, containsMetric("DIT", 4)
+	}
 
 
 
-    //TODO: need to make sure static inner classes work, I think they currently won't
+	//TODO: need to make sure static inner classes work, I think they currently won't
 
-    def "calculate number of overridden methods"() {
+	def "calculate number of overridden methods"() {
 
-        given:
-        def project = projectFromSnippet '''
+		given:
+		def project = projectFromSnippet '''
         package org.whatever.stuff;
 
         interface I {
@@ -226,22 +226,22 @@ class SpecializationIndexCalculatorSpec extends Specification {
         }
         '''
 
-        Type typeD = project.locateType("org.whatever.stuff.D")
+		Type typeD = project.locateType("org.whatever.stuff.D")
 
-        when:
-        def result = new SpecializationIndexCalculator().calculate(typeD);
+		when:
+		def result = new SpecializationIndexCalculator().calculate(typeD);
 
-        then:
-        expect result, containsMetric("NORM", 3)
-        expect result, containsMetric("NM", 4)
-        expect result, containsMetric("NMA", 1)
-        expect result, containsMetric("NMI", 2)
-    }
+		then:
+		expect result, containsMetric("NORM", 3)
+		expect result, containsMetric("NM", 4)
+		expect result, containsMetric("NMA", 1)
+		expect result, containsMetric("NMI", 2)
+	}
 
-    def "calculate number of overridden methods works when the overriding method doesn't use the same parameter names"() {
+	def "calculate number of overridden methods works when the overriding method doesn't use the same parameter names"() {
 
-        given:
-        def project = projectFromSnippet '''
+		given:
+		def project = projectFromSnippet '''
         package org.whatever.stuff;
 
         abstract class A {
@@ -264,20 +264,20 @@ class SpecializationIndexCalculatorSpec extends Specification {
         }
         '''
 
-        Type typeC = project.locateType("org.whatever.stuff.C")
+		Type typeC = project.locateType("org.whatever.stuff.C")
 
-        when:
-        def result = new SpecializationIndexCalculator().calculate(typeC);
+		when:
+		def result = new SpecializationIndexCalculator().calculate(typeC);
 
-        then:
-        expect result, containsMetric("NORM", 2)
-        expect result, containsMetric("NM", 2)
-    }
+		then:
+		expect result, containsMetric("NORM", 2)
+		expect result, containsMetric("NM", 2)
+	}
 
-    def "does not double count methods in the inheritance hierarchy"() {
+	def "does not double count methods in the inheritance hierarchy"() {
 
-        given:
-        def project = projectFromSnippet '''
+		given:
+		def project = projectFromSnippet '''
         package org.whatever.stuff;
 
         abstract class A {
@@ -299,20 +299,20 @@ class SpecializationIndexCalculatorSpec extends Specification {
         }
         '''
 
-        Type typeC = project.locateType("org.whatever.stuff.C")
+		Type typeC = project.locateType("org.whatever.stuff.C")
 
-        when:
-        def result = new SpecializationIndexCalculator().calculate(typeC);
+		when:
+		def result = new SpecializationIndexCalculator().calculate(typeC);
 
-        then:
-        expect result, containsMetric("NORM", 1)
-        expect result, containsMetric("NM", 1)
-    }
+		then:
+		expect result, containsMetric("NORM", 1)
+		expect result, containsMetric("NM", 1)
+	}
 
-    def "calculate specialization index"() {
+	def "calculate specialization index"() {
 
-        given:
-        def project = projectFromSnippet '''
+		given:
+		def project = projectFromSnippet '''
         package org.whatever.stuff;
 
         abstract class A {
@@ -338,16 +338,15 @@ class SpecializationIndexCalculatorSpec extends Specification {
         }
         '''
 
-        //TODO do we need to worry about cycles
-        Type typeC = project.locateType("org.whatever.stuff.C")
+		//TODO do we need to worry about cycles
+		Type typeC = project.locateType("org.whatever.stuff.C")
 
-        when:
-        def result = new SpecializationIndexCalculator().calculate(typeC);
+		when:
+		def result = new SpecializationIndexCalculator().calculate(typeC);
 
-        then:
-        expect result, containsMetric("SIX", 1.5)
-        expect result, containsMetric("NMA", 1)
-        expect result, containsMetric("NMI", 1)
-    }
+		then:
+		expect result, containsMetric("SIX", 1.5)
+		expect result, containsMetric("NMA", 1)
+		expect result, containsMetric("NMI", 1)
+	}
 }
-

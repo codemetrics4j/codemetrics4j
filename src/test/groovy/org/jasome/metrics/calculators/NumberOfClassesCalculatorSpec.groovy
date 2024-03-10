@@ -1,16 +1,16 @@
 package org.jasome.metrics.calculators
 
-import spock.lang.Specification
-
 import static org.jasome.util.Matchers.containsMetric
 import static org.jasome.util.TestUtil.packageFromSnippet
 import static spock.util.matcher.HamcrestSupport.expect
 
-class NumberOfClassesCalculatorSpec extends Specification {
-    def "calculate simple metric"() {
+import spock.lang.Specification
 
-        given:
-        def aPackage = packageFromSnippet '''
+class NumberOfClassesCalculatorSpec extends Specification {
+	def "calculate simple metric"() {
+
+		given:
+		def aPackage = packageFromSnippet '''
         package org.whatever.stuff;
 
         public class Doubler {
@@ -26,31 +26,31 @@ class NumberOfClassesCalculatorSpec extends Specification {
         }
         '''
 
-        when:
-        def result = new NumberOfClassesCalculator().calculate(aPackage)
+		when:
+		def result = new NumberOfClassesCalculator().calculate(aPackage)
 
-        then:
-        expect result, containsMetric("NOC", 2)
-    }
+		then:
+		expect result, containsMetric("NOC", 2)
+	}
 
-    def "calculate number of classes for empty package"() {
+	def "calculate number of classes for empty package"() {
 
-        given:
-        def aPackage = packageFromSnippet '''
+		given:
+		def aPackage = packageFromSnippet '''
         package org.whatever.stuff;
         '''
 
-        when:
-        def result = new NumberOfClassesCalculator().calculate(aPackage)
+		when:
+		def result = new NumberOfClassesCalculator().calculate(aPackage)
 
-        then:
-        expect result, containsMetric("NOC", 0)
-    }
+		then:
+		expect result, containsMetric("NOC", 0)
+	}
 
-    def "counts interfaces when counting classes"() {
+	def "counts interfaces when counting classes"() {
 
-        given:
-        def aPackage = packageFromSnippet '''
+		given:
+		def aPackage = packageFromSnippet '''
         package org.whatever.stuff;
 
         interface Doubler {
@@ -72,12 +72,12 @@ class NumberOfClassesCalculatorSpec extends Specification {
         }
         '''
 
-        when:
-        def result = new NumberOfClassesCalculator().calculate(aPackage)
+		when:
+		def result = new NumberOfClassesCalculator().calculate(aPackage)
 
-        then:
-        expect result, containsMetric("NOC", 3)
-    }
+		then:
+		expect result, containsMetric("NOC", 3)
+	}
 
-    //TODO: does not count inner or anonymous classes
+	//TODO: does not count inner or anonymous classes
 }

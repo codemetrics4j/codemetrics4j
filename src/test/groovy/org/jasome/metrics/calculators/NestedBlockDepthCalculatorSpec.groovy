@@ -1,36 +1,36 @@
 package org.jasome.metrics.calculators
 
-import org.jasome.input.Type
-import spock.lang.Specification
-
 import static org.jasome.util.Matchers.containsMetric
 import static org.jasome.util.TestUtil.methodFromSnippet
 import static org.jasome.util.TestUtil.packageFromSnippet
 import static spock.util.matcher.HamcrestSupport.expect
 
+import org.jasome.input.Type
+import spock.lang.Specification
+
 class NestedBlockDepthCalculatorSpec extends Specification {
 
-    def "calculate simple metric when empty"() {
+	def "calculate simple metric when empty"() {
 
-        given:
-        def method = methodFromSnippet '''
+		given:
+		def method = methodFromSnippet '''
             public void method() {               
 
             }
         '''
 
-        when:
-        def result = new NestedBlockDepthCalculator().calculate(method)
+		when:
+		def result = new NestedBlockDepthCalculator().calculate(method)
 
-        then:
-        expect result, containsMetric("NBD", 1)
-    }
+		then:
+		expect result, containsMetric("NBD", 1)
+	}
 
 
-    def "calculate complex metric"() {
+	def "calculate complex metric"() {
 
-        given:
-        def method = methodFromSnippet '''
+		given:
+		def method = methodFromSnippet '''
             public void method() {
                 for(int i=0;i<10;i++) {
                     if(i < 5) 
@@ -59,17 +59,17 @@ class NestedBlockDepthCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new NestedBlockDepthCalculator().calculate(method)
+		when:
+		def result = new NestedBlockDepthCalculator().calculate(method)
 
-        then:
-        expect result, containsMetric("NBD", 6)
-    }
+		then:
+		expect result, containsMetric("NBD", 6)
+	}
 
-    def "calculate simple if metric"() {
+	def "calculate simple if metric"() {
 
-        given:
-        def method = methodFromSnippet '''
+		given:
+		def method = methodFromSnippet '''
             public void method() {
                 if(9 < 10) {
                     System.out.println("Duh");
@@ -78,17 +78,17 @@ class NestedBlockDepthCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new NestedBlockDepthCalculator().calculate(method)
+		when:
+		def result = new NestedBlockDepthCalculator().calculate(method)
 
-        then:
-        expect result, containsMetric("NBD", 2)
-    }
+		then:
+		expect result, containsMetric("NBD", 2)
+	}
 
-    def "calculate simple try metric"() {
+	def "calculate simple try metric"() {
 
-        given:
-        def method = methodFromSnippet '''
+		given:
+		def method = methodFromSnippet '''
             public void method() {
                 if(9 < 10) {
                     try {
@@ -101,17 +101,17 @@ class NestedBlockDepthCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new NestedBlockDepthCalculator().calculate(method)
+		when:
+		def result = new NestedBlockDepthCalculator().calculate(method)
 
-        then:
-        expect result, containsMetric("NBD", 3)
-    }
+		then:
+		expect result, containsMetric("NBD", 3)
+	}
 
-    def "calculate complex try"() {
+	def "calculate complex try"() {
 
-        given:
-        def method = methodFromSnippet '''
+		given:
+		def method = methodFromSnippet '''
             public void method() {
                 if(9 < 10) {
                     try {
@@ -126,17 +126,17 @@ class NestedBlockDepthCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new NestedBlockDepthCalculator().calculate(method)
+		when:
+		def result = new NestedBlockDepthCalculator().calculate(method)
 
-        then:
-        expect result, containsMetric("NBD", 4)
-    }
+		then:
+		expect result, containsMetric("NBD", 4)
+	}
 
-    def "calculate complex metric again"() {
+	def "calculate complex metric again"() {
 
-        given:
-        def method = methodFromSnippet '''
+		given:
+		def method = methodFromSnippet '''
             public void method() {
                 for(int i=0;i<10;i++) {
                     if(i < 5) {
@@ -155,17 +155,17 @@ class NestedBlockDepthCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new NestedBlockDepthCalculator().calculate(method)
+		when:
+		def result = new NestedBlockDepthCalculator().calculate(method)
 
-        then:
-        expect result, containsMetric("NBD", 5)
-    }
+		then:
+		expect result, containsMetric("NBD", 5)
+	}
 
-    def "calculate blocks in lambdas"() {
+	def "calculate blocks in lambdas"() {
 
-        given:
-        def method = methodFromSnippet '''
+		given:
+		def method = methodFromSnippet '''
             public int triple(int x) {
                 List<Integer> t = new ArrayList<Integer>();
                 t.add(x);
@@ -175,17 +175,17 @@ class NestedBlockDepthCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new NestedBlockDepthCalculator().calculate(method)
+		when:
+		def result = new NestedBlockDepthCalculator().calculate(method)
 
-        then:
-        expect result, containsMetric("NBD", 2)
-    }
+		then:
+		expect result, containsMetric("NBD", 2)
+	}
 
-    def "calculate blocks in lambdas with no braces (so no nesting)"() {
+	def "calculate blocks in lambdas with no braces (so no nesting)"() {
 
-        given:
-        def method = methodFromSnippet '''
+		given:
+		def method = methodFromSnippet '''
             public int triple(int x) {
                 List<Integer> t = new ArrayList<Integer>();
                 t.add(x);
@@ -193,17 +193,17 @@ class NestedBlockDepthCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new NestedBlockDepthCalculator().calculate(method)
+		when:
+		def result = new NestedBlockDepthCalculator().calculate(method)
 
-        then:
-        expect result, containsMetric("NBD", 1)
-    }
+		then:
+		expect result, containsMetric("NBD", 1)
+	}
 
-    def "calculate blocks in deeply nested lambdas"() {
+	def "calculate blocks in deeply nested lambdas"() {
 
-        given:
-        def method = methodFromSnippet '''
+		given:
+		def method = methodFromSnippet '''
             public int triple(int x) {
                 List<Integer> t = new ArrayList<Integer>();
                 t.add(x);
@@ -221,17 +221,17 @@ class NestedBlockDepthCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new NestedBlockDepthCalculator().calculate(method)
+		when:
+		def result = new NestedBlockDepthCalculator().calculate(method)
 
-        then:
-        expect result, containsMetric("NBD", 4)
-    }
+		then:
+		expect result, containsMetric("NBD", 4)
+	}
 
-    def "calculate handles differently formatted if else statements identically"() {
+	def "calculate handles differently formatted if else statements identically"() {
 
-        given:
-        def method = methodFromSnippet '''
+		given:
+		def method = methodFromSnippet '''
             public int triple(int x) {
                 List<Integer> t = new ArrayList<Integer>();
                 t.add(x);
@@ -247,17 +247,17 @@ class NestedBlockDepthCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new NestedBlockDepthCalculator().calculate(method)
+		when:
+		def result = new NestedBlockDepthCalculator().calculate(method)
 
-        then:
-        expect result, containsMetric("NBD", 4)
-    }
+		then:
+		expect result, containsMetric("NBD", 4)
+	}
 
-    def "calculate anoynmous classes properly"() {
+	def "calculate anoynmous classes properly"() {
 
-        given:
-        def aPackage = packageFromSnippet '''
+		given:
+		def aPackage = packageFromSnippet '''
             package whatever.stuff;
             
             class Hello {
@@ -306,13 +306,12 @@ class NestedBlockDepthCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        Type type = aPackage.types.find{ t->t.name=="Hello"}
-        def method = type.methods.find{m -> m.name == "public void sayHello()"}
-        def result = new NestedBlockDepthCalculator().calculate(method)
+		when:
+		Type type = aPackage.types.find{ t->t.name=="Hello"}
+		def method = type.methods.find{m -> m.name == "public void sayHello()"}
+		def result = new NestedBlockDepthCalculator().calculate(method)
 
-        then:
-        expect result, containsMetric("NBD", 3)
-    }
-
+		then:
+		expect result, containsMetric("NBD", 3)
+	}
 }

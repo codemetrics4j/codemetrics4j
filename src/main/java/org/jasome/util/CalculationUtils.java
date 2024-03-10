@@ -19,88 +19,102 @@ import com.google.common.graph.Graph;
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.ImmutableGraph;
 import com.google.common.graph.MutableGraph;
-import org.apache.commons.lang3.tuple.Pair;
-import org.jasome.input.Package;
-import org.jasome.input.Project;
-import org.jasome.input.Type;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.tuple.Pair;
+import org.jasome.input.Package;
+import org.jasome.input.Project;
+import org.jasome.input.Type;
 
 public class CalculationUtils {
-    //TODO: Can likely make this faster/more accurate using java resolver
-    public static LoadingCache<Pair<MethodDeclaration, VariableDeclarator>, Boolean> isFieldAccessedWithinMethod = CacheBuilder.newBuilder()
-            .expireAfterWrite(10, TimeUnit.MINUTES)
-            .build(new CacheLoader<Pair<MethodDeclaration, VariableDeclarator>, Boolean>() {
-                @Override
-                public Boolean load(Pair<MethodDeclaration, VariableDeclarator> key) throws Exception {
-                    MethodDeclaration method = key.getLeft();
-                    VariableDeclarator variable = key.getRight();
+    // TODO: Can likely make this faster/more accurate using java resolver
+    public static LoadingCache<Pair<MethodDeclaration, VariableDeclarator>, Boolean> isFieldAccessedWithinMethod =
+            CacheBuilder.newBuilder()
+                    .expireAfterWrite(10, TimeUnit.MINUTES)
+                    .build(new CacheLoader<Pair<MethodDeclaration, VariableDeclarator>, Boolean>() {
+                        @Override
+                        public Boolean load(Pair<MethodDeclaration, VariableDeclarator> key) throws Exception {
+                            MethodDeclaration method = key.getLeft();
+                            VariableDeclarator variable = key.getRight();
 
-                    if (!method.getBody().isPresent()) return false;
+                            if (!method.getBody().isPresent()) return false;
 
-                    List<FieldAccessExpr> fieldAccesses = method.getBody().get().getNodesByType(FieldAccessExpr.class);
+                            List<FieldAccessExpr> fieldAccesses =
+                                    method.getBody().get().getNodesByType(FieldAccessExpr.class);
 
-                    //If we have a field match we can just count it, it's directly prefixed with 'this.' so there's no room for shadowing
+                            // If we have a field match we can just count it, it's directly prefixed with 'this.' so
+                            // there's no room for shadowing
 
-                    boolean anyDirectAccess = fieldAccesses.stream().anyMatch(fieldAccessExpr -> fieldAccessExpr.getName().equals(variable.getName()));
+                            boolean anyDirectAccess = fieldAccesses.stream()
+                                    .anyMatch(fieldAccessExpr ->
+                                            fieldAccessExpr.getName().equals(variable.getName()));
 
-                    if (anyDirectAccess) return true;
-                    else {
-                        List<NameExpr> nameAccesses = method.getBody().get().getNodesByType(NameExpr.class);
+                            if (anyDirectAccess) return true;
+                            else {
+                                List<NameExpr> nameAccesses =
+                                        method.getBody().get().getNodesByType(NameExpr.class);
 
-                        boolean anyIndirectAccess = nameAccesses
-                                .stream()
-                                .anyMatch(nameAccessExpr -> {
+                                boolean anyIndirectAccess = nameAccesses.stream()
+                                        .anyMatch(nameAccessExpr -> {
+                                            List<BlockStmt> allBlocksFromMethodDeclarationToNameAccessExpr =
+                                                    getAllVariableDefinitionScopesBetweenMethodDefinitionAndNode(
+                                                            nameAccessExpr);
 
+                                            List<VariableDeclarator> variablesDefinedInMethod =
+                                                    method.getNodesByType(VariableDeclarator.class);
 
-                                    List<BlockStmt> allBlocksFromMethodDeclarationToNameAccessExpr = getAllVariableDefinitionScopesBetweenMethodDefinitionAndNode(nameAccessExpr);
+                                            boolean isVariableRedefinedInScope = variablesDefinedInMethod.stream()
+                                                    .anyMatch(variableDeclaration -> {
+                                                        // if any of these variables have all their parents in the
+                                                        // allBlocks list above, then that variable shadows nameExpr (as
+                                                        // long as the name matches)
+                                                        // It essentially means that this variable declaration is
+                                                        // BETWEEN the variable access and the method declaration, which
+                                                        // means this variable
+                                                        // shadows the field when doing the name access.  If this
+                                                        // variable declaration were LOWER on the nesting chain or
+                                                        // divergent entirely, it would
+                                                        // have at least one block between it and the method declaration
+                                                        // that ISN'T between the name access and the method
 
-                                    List<VariableDeclarator> variablesDefinedInMethod = method.getNodesByType(VariableDeclarator.class);
+                                                        if (variableDeclaration
+                                                                .getName()
+                                                                .equals(nameAccessExpr.getName())) {
+                                                            List<BlockStmt>
+                                                                    allBlocksFromMethodDeclarationToVariableDeclaration =
+                                                                            getAllVariableDefinitionScopesBetweenMethodDefinitionAndNode(
+                                                                                    variableDeclaration);
+                                                            return allBlocksFromMethodDeclarationToNameAccessExpr
+                                                                    .containsAll(
+                                                                            allBlocksFromMethodDeclarationToVariableDeclaration);
+                                                        } else {
+                                                            return false;
+                                                        }
+                                                    });
 
-                                    boolean isVariableRedefinedInScope = variablesDefinedInMethod
-                                            .stream()
-                                            .anyMatch(variableDeclaration -> {
-                                                //if any of these variables have all their parents in the allBlocks list above, then that variable shadows nameExpr (as long as the name matches)
-                                                //It essentially means that this variable declaration is BETWEEN the variable access and the method declaration, which means this variable
-                                                //shadows the field when doing the name access.  If this variable declaration were LOWER on the nesting chain or divergent entirely, it would
-                                                //have at least one block between it and the method declaration that ISN'T between the name access and the method
+                                            boolean isVariableRedefinedByMethodSignature =
+                                                    method.getParameters().stream()
+                                                            .anyMatch(parameter -> parameter
+                                                                    .getName()
+                                                                    .equals(nameAccessExpr.getName()));
 
-                                                if (variableDeclaration.getName().equals(nameAccessExpr.getName())) {
-                                                    List<BlockStmt> allBlocksFromMethodDeclarationToVariableDeclaration = getAllVariableDefinitionScopesBetweenMethodDefinitionAndNode(variableDeclaration);
-                                                    return allBlocksFromMethodDeclarationToNameAccessExpr.containsAll(allBlocksFromMethodDeclarationToVariableDeclaration);
-                                                } else {
-                                                    return false;
-                                                }
-                                            });
+                                            if (isVariableRedefinedInScope || isVariableRedefinedByMethodSignature) {
+                                                return false;
+                                            } else {
+                                                return nameAccessExpr.getName().equals(variable.getName());
+                                            }
+                                        });
 
-                                    boolean isVariableRedefinedByMethodSignature = method.getParameters()
-                                            .stream()
-                                            .anyMatch(parameter -> parameter.getName().equals(nameAccessExpr.getName()));
+                                if (anyIndirectAccess) return true;
+                            }
 
-
-                                    if (isVariableRedefinedInScope || isVariableRedefinedByMethodSignature) {
-                                        return false;
-                                    } else {
-                                        return nameAccessExpr.getName().equals(variable.getName());
-                                    }
-                                });
-
-                        if (anyIndirectAccess) return true;
-                    }
-
-
-                    return false;
-                }
-
-            });
-
-    
-
+                            return false;
+                        }
+                    });
 
     private static List<BlockStmt> getAllVariableDefinitionScopesBetweenMethodDefinitionAndNode(Node theNode) {
         List<BlockStmt> blocksOnPathToMethodDeclaration = new ArrayList<>();
@@ -130,21 +144,21 @@ public class CalculationUtils {
 
                     Multimap<String, Type> allClassesByName = HashMultimap.create();
 
-                    parentProject.getPackages()
-                            .stream()
+                    parentProject.getPackages().stream()
                             .map(Package::getTypes)
                             .flatMap(Set::stream)
                             .forEach(type -> allClassesByName.put(type.getName(), type));
 
-                    Set<Type> allClasses = parentProject.getPackages()
-                            .stream()
+                    Set<Type> allClasses = parentProject.getPackages().stream()
                             .map(Package::getTypes)
                             .flatMap(Set::stream)
                             .collect(Collectors.toSet());
 
                     for (Type type : allClasses) {
-                        List<ClassOrInterfaceType> extendedTypes = type.getSource().getExtendedTypes();
-                        List<ClassOrInterfaceType> implementedTypes = type.getSource().getImplementedTypes();
+                        List<ClassOrInterfaceType> extendedTypes =
+                                type.getSource().getExtendedTypes();
+                        List<ClassOrInterfaceType> implementedTypes =
+                                type.getSource().getImplementedTypes();
 
                         graph.addNode(type);
 
@@ -154,16 +168,14 @@ public class CalculationUtils {
 
                         for (ClassOrInterfaceType parentType : parentTypes) {
                             try {
-                                ResolvedReferenceType refType = parentType.resolve().asReferenceType();
+                                ResolvedReferenceType refType =
+                                        parentType.resolve().asReferenceType();
                                 Optional<Type> closestType = CalculationUtils.lookupType(parentProject, refType);
 
-                                closestType.ifPresent(c ->
-                                        graph.putEdge(c, type)
-                                );
+                                closestType.ifPresent(c -> graph.putEdge(c, type));
                             } catch (Exception e) {
-                                //Ignore if a symbol can't be resolved
+                                // Ignore if a symbol can't be resolved
                             }
-
                         }
                     }
                     return ImmutableGraph.copyOf(graph);
@@ -172,8 +184,10 @@ public class CalculationUtils {
 
     public static Optional<Type> lookupType(Project parentProject, ResolvedReferenceType refType) {
         try {
-            Optional<Package> optPackage = parentProject.lookupPackageByName(refType.getTypeDeclaration().get().getPackageName());
-            return optPackage.flatMap(pkg -> pkg.lookupTypeByName(refType.getTypeDeclaration().get().getClassName()));
+            Optional<Package> optPackage = parentProject.lookupPackageByName(
+                    refType.getTypeDeclaration().get().getPackageName());
+            return optPackage.flatMap(pkg ->
+                    pkg.lookupTypeByName(refType.getTypeDeclaration().get().getClassName()));
         } catch (Exception e) {
             e.printStackTrace();
             return Optional.empty();
@@ -181,8 +195,6 @@ public class CalculationUtils {
     }
 
     public static <T extends Node> Set<Modifier.Keyword> getModifierKeywords(NodeWithAccessModifiers<T> field) {
-        return field.getModifiers().stream()
-                .map(Modifier::getKeyword)
-                .collect(Collectors.toSet());
+        return field.getModifiers().stream().map(Modifier::getKeyword).collect(Collectors.toSet());
     }
 }

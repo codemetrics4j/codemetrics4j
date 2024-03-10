@@ -1,14 +1,13 @@
 package org.jasome.input;
 
+import java.util.HashSet;
+import java.util.Set;
 import org.jasome.metrics.Calculator;
 import org.jasome.metrics.Metric;
 import org.jasome.util.ProjectMetadata;
 
-import java.util.HashSet;
-import java.util.Set;
-
-
-//TODO: try to figure out a way to move this to org.jasome.metrics - it needs to access a package-level method on Code which prevents this
+// TODO: try to figure out a way to move this to org.jasome.metrics - it needs to access a package-level method on Code
+// which prevents this
 public class Processor {
     private Set<Calculator<Project>> projectCalculators;
     private Set<Calculator<Package>> packageCalculators;
@@ -43,11 +42,8 @@ public class Processor {
         ProjectMetadata metadata = new ProjectMetadata(project);
 
         project.getPackages().parallelStream().forEach(aPackage -> {
-
             aPackage.getTypes().parallelStream().forEach(type -> {
-
                 type.getMethods().parallelStream().forEach(method -> {
-
                     methodCalculators.parallelStream().forEach(methodMetricCalculator -> {
                         Set<Metric> methodMetrics = methodMetricCalculator.calculate(method);
                         method.addMetrics(methodMetrics);
@@ -64,7 +60,6 @@ public class Processor {
                 Set<Metric> packageMetrics = packageMetricCalculator.calculate(aPackage);
                 aPackage.addMetrics(packageMetrics);
             });
-
         });
 
         projectCalculators.parallelStream().forEach(projectMetricCalculator -> {

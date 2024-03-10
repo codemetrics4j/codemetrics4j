@@ -1,19 +1,19 @@
 package org.jasome.metrics.calculators
 
-import org.jasome.metrics.value.NumericValue
-import spock.lang.Specification
-
 import static org.jasome.util.Matchers.containsMetric
 import static org.jasome.util.Matchers.doesNotContainMetric
 import static org.jasome.util.TestUtil.typeFromSnippet
 import static spock.util.matcher.HamcrestSupport.expect
 
+import org.jasome.metrics.value.NumericValue
+import spock.lang.Specification
+
 class LackOfCohesionMethodsCalculatorSpec extends Specification {
 
-    def "calculate simple LCOM"() {
+	def "calculate simple LCOM"() {
 
-        given:
-        def type = typeFromSnippet '''
+		given:
+		def type = typeFromSnippet '''
             public class Rectangle {
               private double width;
               private double height;
@@ -34,17 +34,17 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new LackOfCohesionMethodsCalculator().calculate(type)
+		when:
+		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("LCOM*", 0)
-    }
+		then:
+		expect result, containsMetric("LCOM*", 0)
+	}
 
-    def "calculate simple LCOM for non-perfect example"() {
+	def "calculate simple LCOM for non-perfect example"() {
 
-        given:
-        def type = typeFromSnippet '''
+		given:
+		def type = typeFromSnippet '''
             public class Circle {
               private double x, y;
               private double radius;
@@ -69,17 +69,17 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new LackOfCohesionMethodsCalculator().calculate(type)
+		when:
+		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("LCOM*", NumericValue.of(1).divide(NumericValue.of(3)));
-    }
+		then:
+		expect result, containsMetric("LCOM*", NumericValue.of(1).divide(NumericValue.of(3)));
+	}
 
-    def "calculate simple LCOM sees variable use in for loops"() {
+	def "calculate simple LCOM sees variable use in for loops"() {
 
-        given:
-        def type = typeFromSnippet '''
+		given:
+		def type = typeFromSnippet '''
             public class Class {
               private double x;          
             
@@ -98,17 +98,17 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new LackOfCohesionMethodsCalculator().calculate(type)
+		when:
+		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("LCOM*", 0)
-    }
+		then:
+		expect result, containsMetric("LCOM*", 0)
+	}
 
-    def "LCOM is undefined when only one method and one field"() {
+	def "LCOM is undefined when only one method and one field"() {
 
-        given:
-        def type = typeFromSnippet '''
+		given:
+		def type = typeFromSnippet '''
             public class Class {
               private double x;          
             
@@ -120,17 +120,17 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new LackOfCohesionMethodsCalculator().calculate(type)
+		when:
+		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
-        then:
-        expect result, doesNotContainMetric("LCOM*")
-    }
+		then:
+		expect result, doesNotContainMetric("LCOM*")
+	}
 
-    def "detects when usages have been shadowed by identically-named variables"() {
+	def "detects when usages have been shadowed by identically-named variables"() {
 
-        given:
-        def type = typeFromSnippet '''
+		given:
+		def type = typeFromSnippet '''
             public class Class {
               private double x;          
             
@@ -147,17 +147,17 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new LackOfCohesionMethodsCalculator().calculate(type)
+		when:
+		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("LCOM*", 2)
-    }
+		then:
+		expect result, containsMetric("LCOM*", 2)
+	}
 
-    def "detects when usages have been shadowed by identically-named variables outside of the scope in which they are used"() {
+	def "detects when usages have been shadowed by identically-named variables outside of the scope in which they are used"() {
 
-        given:
-        def type = typeFromSnippet '''
+		given:
+		def type = typeFromSnippet '''
             public class Class {
               private double x;          
             
@@ -178,17 +178,17 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new LackOfCohesionMethodsCalculator().calculate(type)
+		when:
+		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("LCOM*", 2)
-    }
+		then:
+		expect result, containsMetric("LCOM*", 2)
+	}
 
-    def "simple baseline metric for straight variable access"() {
+	def "simple baseline metric for straight variable access"() {
 
-        given:
-        def type = typeFromSnippet '''
+		given:
+		def type = typeFromSnippet '''
             public class Class {
               private double x;
               private double y;          
@@ -204,18 +204,18 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new LackOfCohesionMethodsCalculator().calculate(type)
+		when:
+		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("LCOM*", 1.5)
-    }
+		then:
+		expect result, containsMetric("LCOM*", 1.5)
+	}
 
 
-    def "simple baseline metric for low cohesion"() {
+	def "simple baseline metric for low cohesion"() {
 
-        given:
-        def type = typeFromSnippet '''
+		given:
+		def type = typeFromSnippet '''
             public class Class {
               private double x;
               private double y;          
@@ -231,17 +231,17 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new LackOfCohesionMethodsCalculator().calculate(type)
+		when:
+		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("LCOM*", 1)
-    }
+		then:
+		expect result, containsMetric("LCOM*", 1)
+	}
 
-    def "detects shadowing in for loop initializer"() {
+	def "detects shadowing in for loop initializer"() {
 
-        given:
-        def type = typeFromSnippet '''
+		given:
+		def type = typeFromSnippet '''
             public class Class {
               private double x;
               private double y;          
@@ -259,18 +259,18 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new LackOfCohesionMethodsCalculator().calculate(type)
+		when:
+		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("LCOM*", 1.5)
-    }
+		then:
+		expect result, containsMetric("LCOM*", 1.5)
+	}
 
 
-    def "baseline for field access when shadowed in lower scope"() {
+	def "baseline for field access when shadowed in lower scope"() {
 
-        given:
-        def type = typeFromSnippet '''
+		given:
+		def type = typeFromSnippet '''
             public class Class {
               private double x;          
             
@@ -288,18 +288,18 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new LackOfCohesionMethodsCalculator().calculate(type)
+		when:
+		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("LCOM*", 1)
-    }
+		then:
+		expect result, containsMetric("LCOM*", 1)
+	}
 
 
-    def "detects when usages have been shadowed by identically-named variables but still counts the method if it has a genuine access"() {
+	def "detects when usages have been shadowed by identically-named variables but still counts the method if it has a genuine access"() {
 
-        given:
-        def type = typeFromSnippet '''
+		given:
+		def type = typeFromSnippet '''
             public class Class {
               private double x;          
             
@@ -317,17 +317,17 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new LackOfCohesionMethodsCalculator().calculate(type)
+		when:
+		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("LCOM*", 1)
-    }
+		then:
+		expect result, containsMetric("LCOM*", 1)
+	}
 
-    def "detects when usages have been shadowed by identically-named variables but still counts the method if it has a genuine access even if shadowed declaration is in different scope from use"() {
+	def "detects when usages have been shadowed by identically-named variables but still counts the method if it has a genuine access even if shadowed declaration is in different scope from use"() {
 
-        given:
-        def type = typeFromSnippet '''
+		given:
+		def type = typeFromSnippet '''
             public class Class {
               private double x;          
             
@@ -347,17 +347,17 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new LackOfCohesionMethodsCalculator().calculate(type)
+		when:
+		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("LCOM*", 1)
-    }
+		then:
+		expect result, containsMetric("LCOM*", 1)
+	}
 
-    def "detects when usages have been shadowed in else statement"() {
+	def "detects when usages have been shadowed in else statement"() {
 
-        given:
-        def type = typeFromSnippet '''
+		given:
+		def type = typeFromSnippet '''
             public class Class {
               private double x;          
             
@@ -379,17 +379,17 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new LackOfCohesionMethodsCalculator().calculate(type)
+		when:
+		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("LCOM*", 1)
-    }
+		then:
+		expect result, containsMetric("LCOM*", 1)
+	}
 
-    def "calculate LCOM counts assignments as usages"() {
+	def "calculate LCOM counts assignments as usages"() {
 
-        given:
-        def type = typeFromSnippet '''
+		given:
+		def type = typeFromSnippet '''
             public class Class {
               private double x;
               private double y;          
@@ -406,17 +406,17 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new LackOfCohesionMethodsCalculator().calculate(type)
+		when:
+		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("LCOM*", 0)
-    }
+		then:
+		expect result, containsMetric("LCOM*", 0)
+	}
 
-    def "detects variable shadowing via method parameters"() {
+	def "detects variable shadowing via method parameters"() {
 
-        given:
-        def type = typeFromSnippet '''
+		given:
+		def type = typeFromSnippet '''
             public class Class {
               private double x;
               private double y;          
@@ -432,13 +432,13 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
             }
         '''
 
-        when:
-        def result = new LackOfCohesionMethodsCalculator().calculate(type)
+		when:
+		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
-        then:
-        expect result, containsMetric("LCOM*", 2)
-    }
-    
-    //TODO: don't factor in interface or abstract methods? should they not even count in the total?
-    //TODO: one method, one variable - this is high cohesion right? so why is it 0/0 which is NaN or 1?
+		then:
+		expect result, containsMetric("LCOM*", 2)
+	}
+
+	//TODO: don't factor in interface or abstract methods? should they not even count in the total?
+	//TODO: one method, one variable - this is high cohesion right? so why is it 0/0 which is NaN or 1?
 }

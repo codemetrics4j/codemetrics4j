@@ -1,10 +1,10 @@
 dependencyResolutionManagement {
-    repositories {
-        mavenCentral()
-    }
-    versionCatalogs {
-        libs {
-            from(files("libs.versions.toml"))
-        }
-    }
+	repositories {
+		mavenCentral()
+	}
+	versionCatalogs {
+		libs {
+			from(files("libs.versions.toml"))
+		}
+	}
 }

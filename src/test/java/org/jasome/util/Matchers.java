@@ -1,13 +1,12 @@
 package org.jasome.util;
 
+import java.util.Optional;
+import java.util.Set;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.jasome.metrics.Metric;
 import org.jasome.metrics.value.NumericValue;
-
-import java.util.Optional;
-import java.util.Set;
 
 public class Matchers {
 
@@ -17,20 +16,22 @@ public class Matchers {
             @SuppressWarnings("unchecked")
             public boolean matches(final Object item) {
                 final Set<Metric> metrics = (Set<Metric>) item;
-                if(metrics == null || metrics.size() == 0) return false;
-                Optional<Metric> namedMetric = metrics
-                        .stream()
+                if (metrics == null || metrics.size() == 0) return false;
+                Optional<Metric> namedMetric = metrics.stream()
                         .filter((m) -> m.getName().equalsIgnoreCase(name))
                         .findFirst();
-                return namedMetric.isPresent() &&
-                        Math.abs(value.doubleValue() - namedMetric.get().getValue().doubleValue()) < 0.000000000001;
-
-
+                return namedMetric.isPresent()
+                        && Math.abs(value.doubleValue()
+                                        - namedMetric.get().getValue().doubleValue())
+                                < 0.000000000001;
             }
 
             @Override
             public void describeTo(final Description description) {
-                description.appendText("expected metrics to contain").appendValue(name).appendValue(value);
+                description
+                        .appendText("expected metrics to contain")
+                        .appendValue(name)
+                        .appendValue(value);
             }
         };
     }
@@ -49,7 +50,9 @@ public class Matchers {
             @SuppressWarnings("unchecked")
             public boolean matches(final Object item) {
                 final Set<Metric> metrics = (Set<Metric>) item;
-                Optional<Metric> namedMetric = metrics.stream().filter((m) -> m.getName().equalsIgnoreCase(name)).findFirst();
+                Optional<Metric> namedMetric = metrics.stream()
+                        .filter((m) -> m.getName().equalsIgnoreCase(name))
+                        .findFirst();
                 return !namedMetric.isPresent();
             }
 

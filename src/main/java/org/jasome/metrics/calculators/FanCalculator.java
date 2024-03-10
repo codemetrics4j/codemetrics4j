@@ -4,20 +4,23 @@ import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.type.VoidType;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.Network;
+import java.util.Set;
 import org.jasome.input.Method;
 import org.jasome.metrics.Calculator;
 import org.jasome.metrics.Metric;
 import org.jasome.metrics.value.NumericValue;
 import org.jasome.util.Distinct;
 
-import java.util.Set;
-
 public class FanCalculator implements Calculator<Method> {
 
     @Override
     public synchronized Set<Metric> calculate(Method method) {
 
-        Network<Method, Distinct<Expression>> methodCalls = method.getParentType().getParentPackage().getParentProject().getMetadata().getCallNetwork();
+        Network<Method, Distinct<Expression>> methodCalls = method.getParentType()
+                .getParentPackage()
+                .getParentProject()
+                .getMetadata()
+                .getCallNetwork();
 
         Set<Method> methodsCalled = methodCalls.successors(method);
 
@@ -51,10 +54,6 @@ public class FanCalculator implements Calculator<Method> {
                 Metric.of("Si", "Structural Complexity", structuralComplexity),
                 Metric.of("IOVars", "Input/Output Variables", iovars),
                 Metric.of("Di", "Data Complexity", dataComplexity),
-                Metric.of("Ci", "System Complexity", systemComplexity)
-        );
-
-
+                Metric.of("Ci", "System Complexity", systemComplexity));
     }
-
 }

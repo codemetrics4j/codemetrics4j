@@ -6,7 +6,7 @@ import org.jscience.mathematics.number.Real;
 
 class Coerce {
     public static Rational toRational(LargeInteger i) {
-         return Rational.valueOf(i, LargeInteger.ONE);
+        return Rational.valueOf(i, LargeInteger.ONE);
     }
 
     public static Real toReal(LargeInteger value) {

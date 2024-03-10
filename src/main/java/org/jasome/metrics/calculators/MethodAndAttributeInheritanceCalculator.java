@@ -9,6 +9,8 @@ import com.github.javaparser.ast.expr.SimpleName;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.google.common.graph.Graph;
+import java.util.*;
+import java.util.stream.Collectors;
 import org.jasome.input.Method;
 import org.jasome.input.Type;
 import org.jasome.metrics.Calculator;
@@ -16,15 +18,12 @@ import org.jasome.metrics.Metric;
 import org.jasome.metrics.value.NumericValue;
 import org.jasome.util.CalculationUtils;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 public class MethodAndAttributeInheritanceCalculator implements Calculator<Type> {
-
 
     @Override
     public Set<Metric> calculate(Type type) {
-        Graph<Type> inheritanceGraph = type.getParentPackage().getParentProject().getMetadata().getInheritanceGraph();
+        Graph<Type> inheritanceGraph =
+                type.getParentPackage().getParentProject().getMetadata().getInheritanceGraph();
 
         ClassOrInterfaceDeclaration declaration = type.getSource();
 
@@ -42,21 +41,24 @@ public class MethodAndAttributeInheritanceCalculator implements Calculator<Type>
             typesToCheck.addAll(inheritanceGraph.predecessors(typeToCheck));
         }
 
-
         Set<Method> inheritableMethods = ancestors.stream()
-                .flatMap(p->p.getMethods().stream())
+                .flatMap(p -> p.getMethods().stream())
                 .filter(method -> {
-                    //We only want to count a method as inherited if it's a parent method that has an implementation
-                    //In other words we want to exclude anything on an interface unless it's got a default impl
-                    //And we want to exclude any abstract methods
-                    boolean isDefinedOnAbstractClass = method.getParentType().getSource().isAbstract();
-                    boolean isAbstract = isDefinedOnAbstractClass && method.getSource().isAbstract();
-                    boolean isDefinedOnInterface = method.getParentType().getSource().isInterface();
-                    boolean isDefaultImpl = isDefinedOnInterface && method.getSource().isDefault();
+                    // We only want to count a method as inherited if it's a parent method that has an implementation
+                    // In other words we want to exclude anything on an interface unless it's got a default impl
+                    // And we want to exclude any abstract methods
+                    boolean isDefinedOnAbstractClass =
+                            method.getParentType().getSource().isAbstract();
+                    boolean isAbstract =
+                            isDefinedOnAbstractClass && method.getSource().isAbstract();
+                    boolean isDefinedOnInterface =
+                            method.getParentType().getSource().isInterface();
+                    boolean isDefaultImpl =
+                            isDefinedOnInterface && method.getSource().isDefault();
 
-                    if(isDefinedOnInterface) {
+                    if (isDefinedOnInterface) {
                         return isDefaultImpl;
-                    } else if(isDefinedOnAbstractClass) {
+                    } else if (isDefinedOnAbstractClass) {
                         return !isAbstract;
                     } else {
                         return true;
@@ -66,14 +68,18 @@ public class MethodAndAttributeInheritanceCalculator implements Calculator<Type>
 
         Set<Method> definedMethods = type.getMethods().stream()
                 .filter(method -> {
-                    boolean isDefinedOnAbstractClass = method.getParentType().getSource().isAbstract();
-                    boolean isAbstract = isDefinedOnAbstractClass && method.getSource().isAbstract();
-                    boolean isDefinedOnInterface = method.getParentType().getSource().isInterface();
-                    boolean isDefaultImpl = isDefinedOnInterface && method.getSource().isDefault();
+                    boolean isDefinedOnAbstractClass =
+                            method.getParentType().getSource().isAbstract();
+                    boolean isAbstract =
+                            isDefinedOnAbstractClass && method.getSource().isAbstract();
+                    boolean isDefinedOnInterface =
+                            method.getParentType().getSource().isInterface();
+                    boolean isDefaultImpl =
+                            isDefinedOnInterface && method.getSource().isDefault();
 
-                    if(isAbstract) {
+                    if (isAbstract) {
                         return false;
-                    } else if(isDefinedOnInterface && !isDefaultImpl) {
+                    } else if (isDefinedOnInterface && !isDefaultImpl) {
                         return false;
                     } else {
                         return true;
@@ -82,94 +88,129 @@ public class MethodAndAttributeInheritanceCalculator implements Calculator<Type>
                 .collect(Collectors.toSet());
 
         Set<String> inheritedMethodSignatures = inheritableMethods.stream()
-                .map(im->im.getSource().getSignature().asString())
+                .map(im -> im.getSource().getSignature().asString())
                 .collect(Collectors.toSet());
 
         Set<Method> overriddenMethods = definedMethods.stream()
-                .filter(dm -> inheritedMethodSignatures.contains(dm.getSource().getSignature().asString()))
+                .filter(dm -> inheritedMethodSignatures.contains(
+                        dm.getSource().getSignature().asString()))
                 .collect(Collectors.toSet());
 
         Set<String> overriddenMethodSignatures = overriddenMethods.stream()
-                .map(im->im.getSource().getSignature().asString())
+                .map(im -> im.getSource().getSignature().asString())
                 .collect(Collectors.toSet());
 
         Set<Method> inheritedAndNotOverriddenMethods = inheritableMethods.stream()
-                .filter(im -> !overriddenMethodSignatures.contains(im.getSource().getSignature().asString()))
+                .filter(im -> !overriddenMethodSignatures.contains(
+                        im.getSource().getSignature().asString()))
                 .filter(im -> !im.getSource().isPrivate())
                 .collect(Collectors.toSet());
 
         Set<Method> allMethods = Sets.union(definedMethods, inheritedAndNotOverriddenMethods);
 
-        Set<Method> publicDefinedMethods = definedMethods.stream()
-                .filter(dm->dm.getSource().isPublic())
-                .collect(Collectors.toSet());
+        Set<Method> publicDefinedMethods =
+                definedMethods.stream().filter(dm -> dm.getSource().isPublic()).collect(Collectors.toSet());
 
         Set<Method> publicInheritedNotOverriddenMethods = inheritedAndNotOverriddenMethods.stream()
-                .filter(dm->dm.getSource().isPublic())
+                .filter(dm -> dm.getSource().isPublic())
                 .collect(Collectors.toSet());
 
-        Set<Method> hiddenInheritedNotOverridden = Sets.difference(inheritedAndNotOverriddenMethods, publicInheritedNotOverriddenMethods)
-                .stream()
-                .filter(method -> method.getSource().isDefault() || method.getSource().isProtected()) //Private methods aren't 'inherited' because they can't be called
-                .collect(Collectors.toSet());
-        
+        Set<Method> hiddenInheritedNotOverridden =
+                Sets.difference(inheritedAndNotOverriddenMethods, publicInheritedNotOverriddenMethods).stream()
+                        .filter(method -> method.getSource().isDefault()
+                                || method.getSource()
+                                        .isProtected()) // Private methods aren't 'inherited' because they can't
+                        // be called
+                        .collect(Collectors.toSet());
+
         Set<Method> hiddenDefined = Sets.difference(definedMethods, publicDefinedMethods);
 
         ImmutableSet.Builder<Metric> metricBuilder = ImmutableSet.<Metric>builder()
                 .add(Metric.of("Mit", "Number of Methods Inherited (Total)", inheritableMethods.size()))
-                .add(Metric.of("Mi", "Number of Methods Inherited and Not Overridden", inheritedAndNotOverriddenMethods.size()))
+                .add(Metric.of(
+                        "Mi",
+                        "Number of Methods Inherited and Not Overridden",
+                        inheritedAndNotOverriddenMethods.size()))
                 .add(Metric.of("Md", "Number of Methods Defined", definedMethods.size()))
                 .add(Metric.of("Mo", "Number of Methods Overridden", overriddenMethods.size()))
                 .add(Metric.of("Ma", "Number of Methods (All)", allMethods.size()))
-                .add(Metric.of("PMi", "Number of Public Methods Inherited and Not Overridden", publicInheritedNotOverriddenMethods.size()))
+                .add(Metric.of(
+                        "PMi",
+                        "Number of Public Methods Inherited and Not Overridden",
+                        publicInheritedNotOverriddenMethods.size()))
                 .add(Metric.of("PMd", "Number of Public Methods Defined", publicDefinedMethods.size()))
-                .add(Metric.of("HMi", "Number of Hidden Methods Inherited and Not Overridden", hiddenInheritedNotOverridden.size()))
+                .add(Metric.of(
+                        "HMi",
+                        "Number of Hidden Methods Inherited and Not Overridden",
+                        hiddenInheritedNotOverridden.size()))
                 .add(Metric.of("HMd", "Number of Hidden Methods Defined", hiddenDefined.size()));
 
-        if(inheritableMethods.size() > 0) {
-            metricBuilder.add(Metric.of("NMIR", "Number of Methods Inherited Ratio", NumericValue.ofRational(inheritedAndNotOverriddenMethods.size(), inheritableMethods.size()).times(NumericValue.of(100))));
+        if (inheritableMethods.size() > 0) {
+            metricBuilder.add(Metric.of(
+                    "NMIR",
+                    "Number of Methods Inherited Ratio",
+                    NumericValue.ofRational(inheritedAndNotOverriddenMethods.size(), inheritableMethods.size())
+                            .times(NumericValue.of(100))));
         }
 
-        if(!allMethods.isEmpty()) {
-            metricBuilder.add(Metric.of("MIF", "Method Inheritance Factor", NumericValue.of(inheritedAndNotOverriddenMethods.size()).divide(NumericValue.of(allMethods.size()))));
-            NumericValue publicMethods = NumericValue.of(publicInheritedNotOverriddenMethods.size()).plus(NumericValue.of(publicDefinedMethods.size()));
-            metricBuilder.add(Metric.of("PMR", "Public Methods Ratio", publicMethods.divide(NumericValue.of(allMethods.size()))));
-        }
-        
-        if(!definedMethods.isEmpty()) {
-            metricBuilder.add(Metric.of("MHF", "Method Hiding Factor", NumericValue.of(publicDefinedMethods.size()).divide(NumericValue.of(definedMethods.size()))));
+        if (!allMethods.isEmpty()) {
+            metricBuilder.add(Metric.of(
+                    "MIF",
+                    "Method Inheritance Factor",
+                    NumericValue.of(inheritedAndNotOverriddenMethods.size())
+                            .divide(NumericValue.of(allMethods.size()))));
+            NumericValue publicMethods = NumericValue.of(publicInheritedNotOverriddenMethods.size())
+                    .plus(NumericValue.of(publicDefinedMethods.size()));
+            metricBuilder.add(
+                    Metric.of("PMR", "Public Methods Ratio", publicMethods.divide(NumericValue.of(allMethods.size()))));
         }
 
+        if (!definedMethods.isEmpty()) {
+            metricBuilder.add(Metric.of(
+                    "MHF",
+                    "Method Hiding Factor",
+                    NumericValue.of(publicDefinedMethods.size()).divide(NumericValue.of(definedMethods.size()))));
+        }
 
         Set<Attribute> inheritableAttributes = ancestors.stream()
-                .flatMap(p->getFlattenedAttributes(p).stream())
+                .flatMap(p -> getFlattenedAttributes(p).stream())
                 .filter(attribute -> !attribute.isPrivate())
                 .collect(Collectors.toSet());
 
         Set<Attribute> definedAttributes = getFlattenedAttributes(type);
 
-        Set<Attribute> inheritedNotOverriddenAttributes = Sets.difference(inheritableAttributes,definedAttributes);
+        Set<Attribute> inheritedNotOverriddenAttributes = Sets.difference(inheritableAttributes, definedAttributes);
         Set<Attribute> overriddenAttributes = Sets.intersection(inheritableAttributes, definedAttributes);
         Set<Attribute> allAttributes = Sets.union(definedAttributes, inheritedNotOverriddenAttributes);
 
         Set<Attribute> publicDefinedAttributes = definedAttributes.stream()
-                .filter(attribute->attribute.isPublicish())
+                .filter(attribute -> attribute.isPublicish())
                 .collect(Collectors.toSet());
 
         metricBuilder
                 .add(Metric.of("Ait", "Number of Attributes Inherited (Total)", inheritableAttributes.size()))
-                .add(Metric.of("Ai", "Number of Attributes Inherited and Not Overridden", inheritedNotOverriddenAttributes.size()))
+                .add(Metric.of(
+                        "Ai",
+                        "Number of Attributes Inherited and Not Overridden",
+                        inheritedNotOverriddenAttributes.size()))
                 .add(Metric.of("Ad", "Number of Attributes Defined", definedAttributes.size()))
                 .add(Metric.of("Ao", "Number of Attributes Overridden", overriddenAttributes.size()))
                 .add(Metric.of("Aa", "Number of Attributes (All)", allAttributes.size()))
                 .add(Metric.of("Av", "Number of Public Attributes Defined", publicDefinedAttributes.size()));
 
-        if(!allAttributes.isEmpty()) {
-            metricBuilder.add(Metric.of("AIF", "Attribute Inheritance Factor", NumericValue.of(inheritedNotOverriddenAttributes.size()).divide(NumericValue.of(allAttributes.size()))));
+        if (!allAttributes.isEmpty()) {
+            metricBuilder.add(Metric.of(
+                    "AIF",
+                    "Attribute Inheritance Factor",
+                    NumericValue.of(inheritedNotOverriddenAttributes.size())
+                            .divide(NumericValue.of(allAttributes.size()))));
         }
 
-        if(!definedAttributes.isEmpty()) {
-            metricBuilder.add(Metric.of("AHF", "Attribute Hiding Factor", NumericValue.of(publicDefinedAttributes.size()).divide(NumericValue.of(definedAttributes.size()))));
+        if (!definedAttributes.isEmpty()) {
+            metricBuilder.add(Metric.of(
+                    "AHF",
+                    "Attribute Hiding Factor",
+                    NumericValue.of(publicDefinedAttributes.size()).divide(NumericValue.of(definedAttributes.size()))));
         }
 
         return metricBuilder.build();
@@ -178,10 +219,10 @@ public class MethodAndAttributeInheritanceCalculator implements Calculator<Type>
     private Set<Attribute> getFlattenedAttributes(Type type) {
         Set<Attribute> attributes = new HashSet<>();
         List<FieldDeclaration> declarations = type.getSource().getFields();
-        for(FieldDeclaration declaration: declarations) {
+        for (FieldDeclaration declaration : declarations) {
             Set<Modifier.Keyword> modifiers = CalculationUtils.getModifierKeywords(declaration);
             NodeList<VariableDeclarator> variables = declaration.getVariables();
-            for(VariableDeclarator variableDeclarator: variables) {
+            for (VariableDeclarator variableDeclarator : variables) {
                 com.github.javaparser.ast.type.Type variableType = variableDeclarator.getType();
                 SimpleName name = variableDeclarator.getName();
                 attributes.add(new Attribute(type, modifiers, variableType, name));
@@ -198,7 +239,11 @@ public class MethodAndAttributeInheritanceCalculator implements Calculator<Type>
         private com.github.javaparser.ast.type.Type variableType;
         private SimpleName name;
 
-        public Attribute(Type parentType, Set<Modifier.Keyword> modifiers, com.github.javaparser.ast.type.Type variableType, SimpleName name) {
+        public Attribute(
+                Type parentType,
+                Set<Modifier.Keyword> modifiers,
+                com.github.javaparser.ast.type.Type variableType,
+                SimpleName name) {
             this.parentType = parentType;
             this.modifiers = modifiers;
             this.variableType = variableType;
@@ -226,8 +271,8 @@ public class MethodAndAttributeInheritanceCalculator implements Calculator<Type>
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Attribute attribute = (Attribute) o;
-            return Objects.equals(variableType.asString(), attribute.variableType.asString()) &&
-                    Objects.equals(name.getIdentifier(), attribute.name.getIdentifier());
+            return Objects.equals(variableType.asString(), attribute.variableType.asString())
+                    && Objects.equals(name.getIdentifier(), attribute.name.getIdentifier());
         }
 
         @Override
@@ -236,7 +281,8 @@ public class MethodAndAttributeInheritanceCalculator implements Calculator<Type>
         }
 
         public boolean isPublicish() {
-            return !modifiers.contains(Modifier.Keyword.PRIVATE) && !modifiers.contains(Modifier.Keyword.PROTECTED); //Public and default are both public enough
+            return !modifiers.contains(Modifier.Keyword.PRIVATE)
+                    && !modifiers.contains(Modifier.Keyword.PROTECTED); // Public and default are both public enough
         }
     }
 }

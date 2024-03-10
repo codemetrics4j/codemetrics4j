@@ -5,7 +5,7 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 public class Method extends Code {
     private final MethodDeclaration declaration;
 
-    public final static Method UNKNOWN = new Method();
+    public static final Method UNKNOWN = new Method();
 
     private Method() {
         super("unknownMethod");

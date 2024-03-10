@@ -1,39 +1,39 @@
 package org.jasome.metrics.calculators
 
-import spock.lang.Specification
-
 import static org.jasome.util.Matchers.containsMetric
 import static org.jasome.util.TestUtil.typeFromSnippet
 import static spock.util.matcher.HamcrestSupport.expect
 
+import spock.lang.Specification
+
 class RawTotalLinesOfCodeCalculatorSpec extends Specification {
-    RawTotalLinesOfCodeCalculator unit
+	RawTotalLinesOfCodeCalculator unit
 
-    def setup() {
-        unit = new RawTotalLinesOfCodeCalculator()
-    }
+	def setup() {
+		unit = new RawTotalLinesOfCodeCalculator()
+	}
 
-    def "calculate simple metric"() {
+	def "calculate simple metric"() {
 
-        given:
-        def type = typeFromSnippet '''
+		given:
+		def type = typeFromSnippet '''
             class Example {
                 public int stuff;
             }
 
         '''
 
-        when:
-        def result = unit.calculate(type)
+		when:
+		def result = unit.calculate(type)
 
-        then:
-        expect result, containsMetric("RTLOC", 3)
-    }
+		then:
+		expect result, containsMetric("RTLOC", 3)
+	}
 
-    def "calculate counts raw lines of code in a class including comments"() {
+	def "calculate counts raw lines of code in a class including comments"() {
 
-        given:
-        def type = typeFromSnippet '''package org.whatever.stuff;
+		given:
+		def type = typeFromSnippet '''package org.whatever.stuff;
 
             import lineone;
             import line2.stuff.junk;
@@ -62,25 +62,24 @@ class RawTotalLinesOfCodeCalculatorSpec extends Specification {
             }                                            //22
         '''
 
-        when:
-        def result = unit.calculate(type)
+		when:
+		def result = unit.calculate(type)
 
-        then:
-        expect result, containsMetric("RTLOC", 22)
-    }
+		then:
+		expect result, containsMetric("RTLOC", 22)
+	}
 
-    def "calculate class length when only one line"() {
+	def "calculate class length when only one line"() {
 
-        given:
-        def type = typeFromSnippet '''
+		given:
+		def type = typeFromSnippet '''
             interface Exampleable {}
         '''
 
-        when:
-        def result = unit.calculate(type)
+		when:
+		def result = unit.calculate(type)
 
-        then:
-        expect result, containsMetric("RTLOC", 1)
-    }
-
+		then:
+		expect result, containsMetric("RTLOC", 1)
+	}
 }

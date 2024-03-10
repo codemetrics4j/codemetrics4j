@@ -1,12 +1,9 @@
 package org.jasome.metrics;
 
-import org.jasome.input.Code;
-import org.jasome.util.ProjectMetadata;
-
 import java.util.Set;
+import org.jasome.input.Code;
 
 public interface Calculator<T extends Code> {
 
     Set<Metric> calculate(T t);
-
 }

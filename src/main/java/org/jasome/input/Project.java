@@ -1,13 +1,11 @@
 package org.jasome.input;
 
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
-import com.github.javaparser.symbolsolver.resolution.SymbolSolver;
-import org.jasome.util.ProjectMetadata;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import org.jasome.util.ProjectMetadata;
 
 public class Project extends Code {
 
@@ -20,10 +18,10 @@ public class Project extends Code {
         packageLookup = new HashMap<>();
         metadata = new ProjectMetadata(this);
     }
-    
+
     @SuppressWarnings("unchecked")
     public Set<Package> getPackages() {
-        return (Set<Package>)(Set<?>)getChildren();
+        return (Set<Package>) (Set<?>) getChildren();
     }
 
     public ProjectMetadata getMetadata() {
@@ -37,10 +35,10 @@ public class Project extends Code {
 
     @Override
     public String toString() {
-        return "Project("+this.getName()+")";
+        return "Project(" + this.getName() + ")";
     }
-    
-    //Normally equals is just, a matching name and parent
+
+    // Normally equals is just, a matching name and parent
     @Override
     public boolean equals(Object o) {
         return super.equals(o);
@@ -60,11 +58,11 @@ public class Project extends Code {
     }
 
     public Optional<Package> lookupPackageByName(String packageName) {
-        if(packageName == null || packageName.trim().equals("")) {
+        if (packageName == null || packageName.trim().equals("")) {
             packageName = "default";
         }
-        
-        if(packageLookup.containsKey(packageName)) {
+
+        if (packageLookup.containsKey(packageName)) {
             return Optional.of(packageLookup.get(packageName));
         } else {
             return Optional.empty();
