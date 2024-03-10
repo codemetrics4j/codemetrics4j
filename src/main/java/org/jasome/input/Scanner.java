@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.*;
+import java.util.regex.Matcher;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
@@ -116,7 +117,8 @@ public abstract class Scanner {
                         cu.getPackageDeclaration().map((p) -> p.getName().asString());
 
                 if (packageName.isPresent()) {
-                    String packagePrefix = packageName.get().replaceAll("[.]", File.separator) + "/";
+                    String packagePrefix = packageName.get().replaceAll("[.]", Matcher.quoteReplacement(File.separator))
+                            + File.separator;
                     String sourceDir = FilenameUtils.getPath(sourceFileName);
                     String baseSourceDir = sourceDir.replace(packagePrefix, "");
                     String finalSourceBaseDir = baseSourceDir.replace(".", projectPath);

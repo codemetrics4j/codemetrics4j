@@ -5,6 +5,7 @@ import com.github.javaparser.JavaParser
 import com.github.javaparser.ast.CompilationUnit
 import com.github.javaparser.ast.PackageDeclaration
 import com.google.common.io.Files
+import java.util.regex.Matcher
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
 import org.jasome.input.FileScanner
@@ -75,7 +76,7 @@ class TestUtil {
 			if(packageDecOpt.isPresent()) {
 				PackageDeclaration packageDeclaration = packageDecOpt.get()
 				String packageName = packageDeclaration.name.asString()
-				String targetDir = packageName.replaceAll("[.]", File.separator)
+				String targetDir = packageName.replaceAll("[.]", Matcher.quoteReplacement(File.separator))
 				File targetFile = new File(tempDir, targetDir);
 				targetFile.mkdirs()
 				rootDir = targetFile;
