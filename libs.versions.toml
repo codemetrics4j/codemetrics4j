@@ -7,9 +7,8 @@ commons-io = "2.9.0"
 commons-cli = "1.3.1"
 javaparser = "3.25.8"
 slf4j = "1.7.25"
-groovy = "2.4.8"
-junit = "4.13.2"
-spock = "1.0-groovy-2.4"
+groovy = "4.0.19"
+spock = "2.3-groovy-4.0"
 mockito = "1.10.19"
 javafaker = "0.12"
 
@@ -22,8 +21,7 @@ commons-io = { module = "commons-io:commons-io", version.ref = "commons-io" }
 commons-cli = { module = "commons-cli:commons-cli", version.ref = "commons-cli" }
 javaparser = { module = "com.github.javaparser:javaparser-symbol-solver-core", version.ref = "javaparser" }
 slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
-groovy = { module = "org.codehaus.groovy:groovy-all", version.ref = "groovy" }
-junit = { module = "junit:junit", version.ref = "junit" }
+groovy = { module = "org.apache.groovy:groovy-all", version.ref = "groovy" }
 spock = { module = "org.spockframework:spock-core", version.ref = "spock" }
 mockito = { module = "org.mockito:mockito-all", version.ref = "mockito" }
 javafaker = { module = "com.github.javafaker:javafaker", version.ref = "javafaker" }

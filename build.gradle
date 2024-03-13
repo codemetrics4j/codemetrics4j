@@ -35,10 +35,7 @@ dependencies {
 
 	// Testing
 	testImplementation libs.groovy
-	testImplementation libs.junit
-	testImplementation(libs.spock) {
-		exclude module: 'groovy-all'
-	}
+	testImplementation libs.spock
 	testImplementation libs.mockito
 	testImplementation libs.javafaker
 }
@@ -59,4 +56,8 @@ spotless {
 		target '*.gradle' // default target of groovyGradle
 		greclipse()
 	}
+}
+
+test {
+	useJUnitPlatform()
 }
