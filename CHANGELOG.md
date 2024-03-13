@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Upgrade groovy to `4.0.19` and spock to `2.3-groovy-4.0`.
+
 ### Fixed
 
 - Fix file path handling OS inconsistencies. Adds Windows support.
