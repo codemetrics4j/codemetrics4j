@@ -12,10 +12,10 @@ java {
 	targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-group = 'org.jasome'
+group = 'org.codemetrics4j'
 
 application {
-	mainClass = 'org.jasome.executive.CommandLineExecutive'
+	mainClass = 'org.codemetrics4j.executive.CommandLineExecutive'
 }
 
 dependencies {

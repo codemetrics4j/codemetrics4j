@@ -1,62 +1,35 @@
-> [!IMPORTANT]  
-> This is a fork of https://github.com/rodhilton/jasome.
->
-> I use this repository for active development, while trying to share my changes with the upstream project.
+# codemetrics4j
+[![Build Status](https://github.com/kdunee/codemetrics4j/actions/workflows/gradle.yml/badge.svg)](https://github.com/kdunee/codemetrics4j/actions/workflows/gradle.yml)
+[![GitHub issues](https://img.shields.io/github/issues/kdunee/codemetrics4j.svg)](https://github.com/kdunee/codemetrics4j/issues)
+[![Latest release](https://img.shields.io/github/release/kdunee/codemetrics4j.svg?colorB=dfb430)](https://github.com/kdunee/codemetrics4j/releases/latest)
+[![Github All Releases](https://img.shields.io/github/downloads/kdunee/codemetrics4j/total.svg?colorB=0083c3)](https://github.com/kdunee/codemetrics4j/releases)
 
-# JaSoMe: Java Source Metrics
-[![Build Status](https://github.com/kdunee/jasome/actions/workflows/gradle.yml/badge.svg)](https://github.com/kdunee/jasome/actions/workflows/gradle.yml)
-[![GitHub issues](https://img.shields.io/github/issues/kdunee/jasome.svg)](https://github.com/rodhilton/kdunee/issues)
-[![Latest release](https://img.shields.io/github/release/kdunee/jasome.svg?colorB=dfb430)](https://github.com/kdunee/jasome/releases/latest)
-[![Github All Releases](https://img.shields.io/github/downloads/kdunee/jasome/total.svg?colorB=0083c3)](https://github.com/kdunee/jasome/releases)
+**codemetrics4j** (formerly JaSoMe) is a Java source code analyzer that calculates insightful quality metrics without requiring project compilation.  This means you can analyze code even when dependencies are missing or code generation steps are incomplete.
 
-Jasome (JAH-suhm, rhymes with awesome) is a source code analyzer that mines 
-internal quality metrics from projects based on source code alone.  This 
-distinguishes Jasome from similar tools by not requiring the project first be
-compiled, or even compilable.
- 
-Most analyzers only work on projects that successfully compile, which in the
-case of Java projects means all dependencies must be satisfied, any external
-libraries are properly on the classpath, any code generation utilities must
-properly run, and so on.  However, when all you need is the quality metrics
-for Java source code, this compilation requirement is unnecessary since most
-metrics can be derived from the source code alone.
+Key Features:
 
-Jasome scans a given directory for .java files and performs Best Guess Metrics
-Analysis to derive various quality metrics, and then outputs those metrics on a
-a per-file basis as XML.  Each XML output will contain the name/path of the file
-analyzed, and the values of its per-class and per-method metrics. It will also
-list directory structures and their per-package metrics.
+- Compilation-free analysis: Get metrics directly from your .java files, streamlining the analysis process.
+- File-level metrics: Provides granular metrics for classes and methods within each file.
+- Package-level insights: Receive aggregated metrics at the package level.
+- XML Output: Results are delivered in a structured XML format for easy integration.
 
-Best Guess Metrics Analysis means Jasome will continue collecting metrics even
-when individual files make it difficult.  When code references methods or objects
-defined in dependencies that may or may not be on the class path, Jasome will
-assume those dependencies are present and properly compilable.  If Jasome cannot
-make a clear determination for analysis, it will make a best guess and output
-metrics whose values are as close as possible to the actual metrics values one
-would achieve if analyzing the data with a metrics engine that relies on proper
-compilation.  When a java class is syntactically invalid and would not compile,
-Jasome will either skip the offending methods or classes, or skip the file entirely
-but continue processing the remaining files.  In other words, there are definitely
-ways someone can manipulate their code to intentionally change the measurements
-for metrics, but by and large on a normal project Jasome will be accurate.
+> [!NOTE]  
+> This project was originally forked from https://github.com/rodhilton/jasome.  Due to the original repository being unmaintained, I've published my fork under the name `codemetrics4j`. This ensures easy access to the version containing the latest features and bug fixes.  The previous version can still be found at https://github.com/kdunee/jasome. 
 
 # Getting Started
 
 Download the latest distribution and unzip, change into directory, then run:
 
   ```
-  bin/jasome <directory to analyze>
+  bin/codemetrics4j <directory to analyze>
   ```
   
-JaSoMe will gather metrics and output them to the console.  You can save the XML
+codemetrics4j will gather metrics and output them to the console.  You can save the XML
 to a file using the `--output <file>` option.
-
-JaSoMe runs in Linux and MacOS - Windows is not supported and there are reports that
-it will not run properly in Windows.
 
 # Metrics
 
-Jasome is either currently tracking or planning to track the following metrics:
+codemetrics4j is currently tracking the following metrics:
    
  - [x] **Raw Total Lines of Code (RTLOC)** - The actual number of lines of code in a
    class, using the line numbers of the file itself.  Comments, whitespace, and
@@ -140,28 +113,3 @@ Jasome is either currently tracking or planning to track the following metrics:
  - [x] **Class Relative System Complexity (ClRCi)** - avg(Ci) over all methods in class _(class)_
  - [x] **Package Total System Complexity (PkgTCi)** - sum(Ci) over all methods in all classes in a package _(package)_
  - [x] **Package Relative System Complexity (PkgRCi)** - avg(Ci) over all methods in all classes in a package _(package)_
- - [ ] **Number of Collaborations (CRC)** - The number of collaborations between a class and all others _(class)_
- - [ ] **Data Abstraction Coupling (DAC)** - Number of attributes in a class that represent other class types. See Li and Henry
- - [ ] **Size2 (SIZE2)** - Number of attributes and the number of local methods defined in a class. Li and Henry
- - [ ] **Data Access Metric (DAM)** - Bansiya and Davis
- - [ ] **Direct Class Coupling (DCC)** - Bansiya and Davis
- - [ ] **Measure of Aggregation (MOA)** - Bansiya and Davis
- 
- 
-  
-More metrics coming soon, I plan to gather every metric outlined in the following sources:
- 
- 
- * http://www.aivosto.com/project/help/pm-syscomplexity.html system complexity metrics, sums and avgs of Ci per class? package? 
- * http://support.objecteering.com/objecteering6.1/help/us/metrics/toc.htm
- * https://link.springer.com/chapter/10.1007%2F978-3-642-15228-3_7 (debbabi2010metrics) 
- * http://metrics.sourceforge.net/
- * http://www.cs.kent.edu/~jmaletic/cs63901/lectures/SoftwareMetrics.pdf
- * http://www.alibris.com/Object-Oriented-Metrics-Measures-of-Complexity-Brian-Henderson-Sellers/book/29695100
- * http://www.objectmentor.com/resources/articles/oodmetrc.pdf
- * http://www.win.tue.nl/~aserebre/2IS55/2009-2010/10.pdf
- * Halstead measures (1977) 
- 
-And a lot more
-
-MOOD metrics note: MOOD are system level metrics. where possible these are calculated for lower entities such as classes
