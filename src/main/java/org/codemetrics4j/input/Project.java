@@ -38,16 +38,6 @@ public class Project extends Code {
         return "Project(" + this.getName() + ")";
     }
 
-    // Normally equals is just, a matching name and parent
-    @Override
-    public boolean equals(Object o) {
-        return super.equals(o);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
 
     public void setSymbolSolver(JavaSymbolSolver symbolSolver) {
         this.symbolSolver = symbolSolver;
