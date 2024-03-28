@@ -13,7 +13,7 @@ public abstract class Code {
     private final Map<String, Metric> metrics;
     private final Map<String, String> attributes;
 
-    public Code(String name) {
+    protected Code(String name) {
         this.name = name;
         this.children = new HashSet<Code>();
         this.metrics = new HashMap<String, Metric>();
