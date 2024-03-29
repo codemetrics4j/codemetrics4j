@@ -2,7 +2,6 @@ package org.codemetrics4j.executive;
 
 import com.google.common.collect.ImmutableSet;
 import java.io.File;
-import java.io.IOException;
 import java.util.Set;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
@@ -15,28 +14,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.codemetrics4j.input.FileScanner;
 import org.codemetrics4j.input.Project;
 import org.codemetrics4j.output.XMLOutputter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 public class CommandLineExecutive {
+    private static final Logger logger = LoggerFactory.getLogger(CommandLineExecutive.class);
 
-    public static void main(String[] args) throws IOException, ParseException {
+    public static void main(String[] args) throws ParseException {
 
-        Options options = new Options();
-
-        {
-
-            // TODO: still need a way to do excludes, regex or something.  joda has an example package I want to ignore
-
-            Option help = new Option("h", "help", false, "print this message");
-            Option version = new Option("v", "version", false, "print the version information and exit");
-            Option excludetests = new Option("xt", "excludetests", false, "exclude test files from scanning");
-            Option output = new Option("o", "output", true, "where to save output (default is print to STDOUT");
-
-            options.addOption(help);
-            options.addOption(version);
-            options.addOption(excludetests);
-            options.addOption(output);
-        }
+        Options options = prepareOptions();
 
         CommandLineParser parser = new DefaultParser();
         CommandLine line = parser.parse(options, args);
@@ -100,22 +87,37 @@ public class CommandLineExecutive {
                     result = new StreamResult(System.out);
                     transformer.transform(source, result);
                 }
-            } catch (TransformerConfigurationException e) {
-                e.printStackTrace();
             } catch (TransformerException e) {
-                e.printStackTrace();
+                logger.error("", e);
             }
         }
     }
 
+    private static Options prepareOptions() {
+        Options options = new Options();
+
+        // TODO: still need a way to do excludes, regex or something.  joda has an example package I want to ignore
+
+        Option help = new Option("h", "help", false, "print this message");
+        Option version = new Option("v", "version", false, "print the version information and exit");
+        Option excludetests = new Option("xt", "excludetests", false, "exclude test files from scanning");
+        Option output = new Option("o", "output", true, "where to save output (default is print to STDOUT");
+
+        options.addOption(help);
+        options.addOption(version);
+        options.addOption(excludetests);
+        options.addOption(output);
+        return options;
+    }
+
     private static class ExcludeTestsFilter implements IOFileFilter {
-        private static Set<String> testSuffixes =
+        private static final Set<String> testSuffixes =
                 ImmutableSet.of("Test", "Spec", "Tests", "Specs", "Suite", "TestCase");
 
-        private static Set<String> testDirectories =
+        private static final Set<String> testDirectories =
                 ImmutableSet.of("test", "tests", "examples", "example", "samples", "sample");
 
-        private IOFileFilter underlyingFilter;
+        private final IOFileFilter underlyingFilter;
 
         public ExcludeTestsFilter(File baseDir) {
             String baseDirPath = baseDir.getPath();

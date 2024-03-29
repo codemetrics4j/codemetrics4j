@@ -18,8 +18,8 @@ public class CouplingFactorCalculator implements Calculator<Type> {
         Set<Type> serverRelationships = unchecked.predecessors(type);
 
         NumericValue totalClasses = NumericValue.of(type.getParentPackage().getParentProject().getPackages().stream()
-                .flatMap(p -> p.getTypes().stream())
-                .count());
+                .mapToLong(p -> p.getTypes().size())
+                .sum());
         NumericValue totalPossibleRelationships = totalClasses
                 .minus(NumericValue.ONE)
                 .times(NumericValue.of(2)); // Can have a server or client relationship with every class other than self

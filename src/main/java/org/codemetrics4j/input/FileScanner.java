@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 public class FileScanner extends Scanner {
     private static final Logger logger = LoggerFactory.getLogger(FileScanner.class);
 
-    private File scanDir;
+    private final File scanDir;
     private IOFileFilter filter =
             FileFilterUtils.and(new SuffixFileFilter(".java"), CanReadFileFilter.CAN_READ, HiddenFileFilter.VISIBLE);
 
@@ -64,15 +64,15 @@ public class FileScanner extends Scanner {
         if (file.isDirectory()) {
             Collection<File> javaFiles = FileUtils.listFiles(file, filter, TrueFileFilter.INSTANCE);
 
-            if (javaFiles.size() == 0) {
-                logger.error("No .java files found in " + file.toString());
+            if (javaFiles.isEmpty()) {
+                logger.error("No .java files found in " + file);
                 System.exit(-1);
             }
 
             filesToScan = javaFiles;
         } else {
             if (!filter.accept(file)) {
-                logger.error("Not a .java source file: " + file.toString());
+                logger.error("Not a .java source file: " + file);
                 System.exit(-1);
             }
 

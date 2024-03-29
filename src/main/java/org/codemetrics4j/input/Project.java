@@ -10,8 +10,8 @@ import org.codemetrics4j.util.ProjectMetadata;
 public class Project extends Code {
 
     private JavaSymbolSolver symbolSolver;
-    private Map<String, Package> packageLookup;
-    private ProjectMetadata metadata;
+    private final Map<String, Package> packageLookup;
+    private final ProjectMetadata metadata;
 
     public Project(String name) {
         super(name);
@@ -58,7 +58,7 @@ public class Project extends Code {
     }
 
     public Optional<Package> lookupPackageByName(String packageName) {
-        if (packageName == null || packageName.trim().equals("")) {
+        if (packageName == null || packageName.trim().isEmpty()) {
             packageName = "default";
         }
 

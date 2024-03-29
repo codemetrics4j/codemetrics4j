@@ -27,7 +27,7 @@ import org.jscience.mathematics.number.Real;
 public class NumericValue implements Comparable<NumericValue> {
     private static final DecimalFormat METRIC_VALUE_FORMAT = new DecimalFormat("0.0########");
 
-    private Number value;
+    private final Number value;
 
     public static final NumericValue ZERO = new NumericValue(LargeInteger.ZERO);
     public static final NumericValue ONE = new NumericValue(LargeInteger.ONE);
@@ -234,7 +234,7 @@ public class NumericValue implements Comparable<NumericValue> {
         Number other = that.value;
         if (value instanceof LargeInteger) {
             if (other instanceof LargeInteger) {
-                return ((LargeInteger) value).compareTo((LargeInteger) other);
+                return value.compareTo(other);
             } else if (other instanceof Rational) {
                 return Coerce.toRational((LargeInteger) value).compareTo((Rational) other);
             } else if (other instanceof Real) {
@@ -243,18 +243,18 @@ public class NumericValue implements Comparable<NumericValue> {
 
         } else if (value instanceof Rational) {
             if (other instanceof LargeInteger) {
-                return 0 - that.compareTo(this);
+                return -that.compareTo(this);
             } else if (other instanceof Rational) {
-                return ((Rational) value).compareTo((Rational) other);
+                return value.compareTo(other);
             } else if (other instanceof Real) {
                 return compareReals(Coerce.toReal((Rational) value), (Real) other);
             }
 
         } else if (value instanceof Real) {
             if (other instanceof LargeInteger) {
-                return 0 - that.compareTo(this);
+                return -that.compareTo(this);
             } else if (other instanceof Rational) {
-                return 0 - that.compareTo(this);
+                return -that.compareTo(this);
             } else if (other instanceof Real) {
                 return compareReals((Real) this.value, (Real) other);
             }
@@ -273,7 +273,7 @@ public class NumericValue implements Comparable<NumericValue> {
         return new Collector<NumericValue, NumericValueSummaryStatistics, NumericValueSummaryStatistics>() {
             @Override
             public Supplier<NumericValueSummaryStatistics> supplier() {
-                return () -> new NumericValueSummaryStatistics();
+                return NumericValueSummaryStatistics::new;
             }
 
             @Override

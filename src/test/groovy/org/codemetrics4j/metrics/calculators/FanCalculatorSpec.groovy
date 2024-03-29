@@ -50,7 +50,7 @@ class FanCalculatorSpec extends Specification {
 		Method printDouble = (classA.getMethods() as List<Method>).find { method -> method.name == "public void printDouble(ClassB b)" }
 
 		when:
-		def result = new FanCalculator().calculate(printDouble);
+		def result = new FanCalculator().calculate(printDouble)
 
 		then:
 
@@ -179,7 +179,7 @@ class FanCalculatorSpec extends Specification {
 		Method getDoubleNumber = (classB.getMethods() as List<Method>).find { method -> method.name == "public int getDoubleNumber()" }
 
 		when:
-		def result = new FanCalculator().calculate(getDoubleNumber);
+		def result = new FanCalculator().calculate(getDoubleNumber)
 
 		then:
 
@@ -226,7 +226,7 @@ class FanCalculatorSpec extends Specification {
 		Method getNumber = (classB.getMethods() as List<Method>).find { method -> method.name == "public int getNumber()" }
 
 		when:
-		def result = new FanCalculator().calculate(getNumber);
+		def result = new FanCalculator().calculate(getNumber)
 
 		then:
 		expect result, containsMetric("Fin", 4)
@@ -274,7 +274,7 @@ class FanCalculatorSpec extends Specification {
 		Method getNumber = (classC.getMethods() as List<Method>).find { method -> method.name == "public void doPrint(ClassB thingy)" }
 
 		when:
-		def result = new FanCalculator().calculate(getNumber);
+		def result = new FanCalculator().calculate(getNumber)
 
 		then:
 		expect result, containsMetric("Fout", 2)
@@ -329,10 +329,10 @@ class FanCalculatorSpec extends Specification {
 		Optional<Method> classCPrint = project.locateType("ClassC").lookupMethodBySignature("print()")
 
 		when:
-		def doPrintResult = new FanCalculator().calculate(doPrint.get());
-		def classAgetBResult = new FanCalculator().calculate(classAgetB.get());
-		def classBgetCResult = new FanCalculator().calculate(classBgetC.get());
-		def classCPrintResult = new FanCalculator().calculate(classCPrint.get());
+		def doPrintResult = new FanCalculator().calculate(doPrint.get())
+		def classAgetBResult = new FanCalculator().calculate(classAgetB.get())
+		def classBgetCResult = new FanCalculator().calculate(classBgetC.get())
+		def classCPrintResult = new FanCalculator().calculate(classCPrint.get())
 
 		then:
 		expect doPrintResult, containsMetric("Fout", 3)
@@ -384,8 +384,8 @@ class FanCalculatorSpec extends Specification {
 		Method printDoubleInt = classA.lookupMethodBySignature("printDoubleInt(ClassB, int)").get()
 
 		when:
-		def resultVoid = new FanCalculator().calculate(printDoubleVoid);
-		def resultInt = new FanCalculator().calculate(printDoubleInt);
+		def resultVoid = new FanCalculator().calculate(printDoubleVoid)
+		def resultInt = new FanCalculator().calculate(printDoubleInt)
 
 		then:
 

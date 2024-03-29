@@ -56,10 +56,10 @@ class CouplingFactorCalculatorTest extends Specification {
 		Type mainClass = project.locateType("MainClass")
 
 		when:
-		def classAResult = new CouplingFactorCalculator().calculate(classA);
-		def classBResult = new CouplingFactorCalculator().calculate(classB);
-		def classCResult = new CouplingFactorCalculator().calculate(classC);
-		def mainClassResult = new CouplingFactorCalculator().calculate(mainClass);
+		def classAResult = new CouplingFactorCalculator().calculate(classA)
+		def classBResult = new CouplingFactorCalculator().calculate(classB)
+		def classCResult = new CouplingFactorCalculator().calculate(classC)
+		def mainClassResult = new CouplingFactorCalculator().calculate(mainClass)
 
 		then:
 		expect classAResult, containsMetric("CF", NumericValue.ofRational(2,6))  //Uses ClassB, is used by MainClass
@@ -108,9 +108,9 @@ class CouplingFactorCalculatorTest extends Specification {
 		Type mainClass = project.locateType("MainClass")
 
 		when:
-		def classAResult = new CouplingFactorCalculator().calculate(classA);
-		def classBResult = new CouplingFactorCalculator().calculate(classB);
-		def mainClassResult = new CouplingFactorCalculator().calculate(mainClass);
+		def classAResult = new CouplingFactorCalculator().calculate(classA)
+		def classBResult = new CouplingFactorCalculator().calculate(classB)
+		def mainClassResult = new CouplingFactorCalculator().calculate(mainClass)
 
 		then:
 		expect classAResult, containsMetric("CF", NumericValue.ofRational(2,4))
@@ -157,12 +157,12 @@ class CouplingFactorCalculatorTest extends Specification {
 		Type classY = project.locateType("ClassY")
 
 		when:
-		def resultA = new CouplingFactorCalculator().calculate(classA);
-		def resultI = new CouplingFactorCalculator().calculate(interfaceI);
-		def resultJ = new CouplingFactorCalculator().calculate(interfaceJ);
-		def resultK = new CouplingFactorCalculator().calculate(interfaceK);
-		def resultX = new CouplingFactorCalculator().calculate(classX);
-		def resultY = new CouplingFactorCalculator().calculate(classY);
+		def resultA = new CouplingFactorCalculator().calculate(classA)
+		def resultI = new CouplingFactorCalculator().calculate(interfaceI)
+		def resultJ = new CouplingFactorCalculator().calculate(interfaceJ)
+		def resultK = new CouplingFactorCalculator().calculate(interfaceK)
+		def resultX = new CouplingFactorCalculator().calculate(classX)
+		def resultY = new CouplingFactorCalculator().calculate(classY)
 
 		then:
 		expect resultA, containsMetric("CF", NumericValue.ofRational(2,10)) //Uses none, used by X and Y

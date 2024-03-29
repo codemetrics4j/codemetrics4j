@@ -38,7 +38,7 @@ public class McclureCalculator implements Calculator<Method> {
 
         conditionalExprs.addAll(methodDeclaration.findAll(ForStmt.class).stream()
                 .map(ForStmt::getCompare)
-                .flatMap(o -> o.isPresent() ? Stream.of(o.get()) : Stream.empty())
+                .flatMap(o -> o.map(Stream::of).orElseGet(Stream::empty))
                 .collect(Collectors.toList()));
 
         conditionalExprs.addAll(methodDeclaration.findAll(SwitchStmt.class).stream()

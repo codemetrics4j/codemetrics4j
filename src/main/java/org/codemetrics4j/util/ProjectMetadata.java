@@ -23,7 +23,7 @@ import org.codemetrics4j.input.Type;
 
 public class ProjectMetadata {
 
-    private Project project;
+    private final Project project;
 
     public ProjectMetadata(Project project) {
         this.project = project;
@@ -243,9 +243,7 @@ public class ProjectMetadata {
 
             if (!typ.isPresent()) return Optional.empty();
 
-            Optional<Method> method = typ.get().lookupMethodBySignature(blah.getSignature());
-
-            return method;
+            return typ.get().lookupMethodBySignature(blah.getSignature());
         } catch (Exception e) {
             return Optional.empty();
         }

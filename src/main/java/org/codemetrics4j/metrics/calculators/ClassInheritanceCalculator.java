@@ -18,9 +18,9 @@ public class ClassInheritanceCalculator implements Calculator<Type> {
         Set<Type> parents = inheritanceGraph.predecessors(type);
         Set<Type> children = inheritanceGraph.successors(type);
 
-        // Cyclic inheritance is prevented in Java so we don't have to worry here
+        // Cyclic inheritance is prevented in Java, so we don't have to worry here
         HashSet<Type> ancestors = new HashSet<>();
-        Stack<Type> ancestorStack = new Stack<Type>();
+        Stack<Type> ancestorStack = new Stack<>();
         ancestorStack.push(type);
         while (!ancestorStack.isEmpty()) {
             Type t = ancestorStack.pop();
@@ -30,7 +30,7 @@ public class ClassInheritanceCalculator implements Calculator<Type> {
         }
 
         HashSet<Type> descendants = new HashSet<>();
-        Stack<Type> descendantStack = new Stack<Type>();
+        Stack<Type> descendantStack = new Stack<>();
         descendantStack.push(type);
         while (!descendantStack.isEmpty()) {
             Type t = descendantStack.pop();

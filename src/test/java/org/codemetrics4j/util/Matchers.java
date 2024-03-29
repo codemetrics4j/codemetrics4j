@@ -16,7 +16,7 @@ public class Matchers {
             @SuppressWarnings("unchecked")
             public boolean matches(final Object item) {
                 final Set<Metric> metrics = (Set<Metric>) item;
-                if (metrics == null || metrics.size() == 0) return false;
+                if (metrics == null || metrics.isEmpty()) return false;
                 Optional<Metric> namedMetric = metrics.stream()
                         .filter((m) -> m.getName().equalsIgnoreCase(name))
                         .findFirst();

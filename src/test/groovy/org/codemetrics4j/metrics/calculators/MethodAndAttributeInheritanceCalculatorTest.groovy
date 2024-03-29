@@ -62,12 +62,12 @@ class MethodAndAttributeInheritanceCalculatorTest extends Specification {
 		Type interfaceQ = project.locateType("Q")
 
 		when:
-		def resultA = new MethodAndAttributeInheritanceCalculator().calculate(typeA);
-		def resultB = new MethodAndAttributeInheritanceCalculator().calculate(typeB);
-		def resultC = new MethodAndAttributeInheritanceCalculator().calculate(typeC);
-		def resultD = new MethodAndAttributeInheritanceCalculator().calculate(typeD);
-		def resultI = new MethodAndAttributeInheritanceCalculator().calculate(interfaceI);
-		def resultQ = new MethodAndAttributeInheritanceCalculator().calculate(interfaceQ);
+		def resultA = new MethodAndAttributeInheritanceCalculator().calculate(typeA)
+		def resultB = new MethodAndAttributeInheritanceCalculator().calculate(typeB)
+		def resultC = new MethodAndAttributeInheritanceCalculator().calculate(typeC)
+		def resultD = new MethodAndAttributeInheritanceCalculator().calculate(typeD)
+		def resultI = new MethodAndAttributeInheritanceCalculator().calculate(interfaceI)
+		def resultQ = new MethodAndAttributeInheritanceCalculator().calculate(interfaceQ)
 
 		then:
 		expect resultA, containsMetric("Mit", 0)
@@ -180,12 +180,12 @@ class MethodAndAttributeInheritanceCalculatorTest extends Specification {
 		Type interfaceQ = project.locateType("Q")
 
 		when:
-		def resultA = new MethodAndAttributeInheritanceCalculator().calculate(typeA);
-		def resultB = new MethodAndAttributeInheritanceCalculator().calculate(typeB);
-		def resultC = new MethodAndAttributeInheritanceCalculator().calculate(typeC);
-		def resultD = new MethodAndAttributeInheritanceCalculator().calculate(typeD);
-		def resultI = new MethodAndAttributeInheritanceCalculator().calculate(interfaceI);
-		def resultQ = new MethodAndAttributeInheritanceCalculator().calculate(interfaceQ);
+		def resultA = new MethodAndAttributeInheritanceCalculator().calculate(typeA)
+		def resultB = new MethodAndAttributeInheritanceCalculator().calculate(typeB)
+		def resultC = new MethodAndAttributeInheritanceCalculator().calculate(typeC)
+		def resultD = new MethodAndAttributeInheritanceCalculator().calculate(typeD)
+		def resultI = new MethodAndAttributeInheritanceCalculator().calculate(interfaceI)
+		def resultQ = new MethodAndAttributeInheritanceCalculator().calculate(interfaceQ)
 
 		then:
 		expect resultA, containsMetric("PMd", 2)
@@ -277,12 +277,12 @@ class MethodAndAttributeInheritanceCalculatorTest extends Specification {
 		Type interfaceQ = project.locateType("Q")
 
 		when:
-		def resultA = new MethodAndAttributeInheritanceCalculator().calculate(typeA);
-		def resultB = new MethodAndAttributeInheritanceCalculator().calculate(typeB);
-		def resultC = new MethodAndAttributeInheritanceCalculator().calculate(typeC);
-		def resultD = new MethodAndAttributeInheritanceCalculator().calculate(typeD);
-		def resultI = new MethodAndAttributeInheritanceCalculator().calculate(interfaceI);
-		def resultQ = new MethodAndAttributeInheritanceCalculator().calculate(interfaceQ);
+		def resultA = new MethodAndAttributeInheritanceCalculator().calculate(typeA)
+		def resultB = new MethodAndAttributeInheritanceCalculator().calculate(typeB)
+		def resultC = new MethodAndAttributeInheritanceCalculator().calculate(typeC)
+		def resultD = new MethodAndAttributeInheritanceCalculator().calculate(typeD)
+		def resultI = new MethodAndAttributeInheritanceCalculator().calculate(interfaceI)
+		def resultQ = new MethodAndAttributeInheritanceCalculator().calculate(interfaceQ)
 
 		then:
 		expect resultA, containsMetric("Ait", 0)

@@ -4,9 +4,9 @@ import com.google.common.base.Objects;
 import org.codemetrics4j.metrics.value.NumericValue;
 
 public class Metric {
-    private String name;
-    private String description;
-    private NumericValue value;
+    private final String name;
+    private final String description;
+    private final NumericValue value;
 
     protected Metric(String name, String description, NumericValue value) {
         this.name = name;

@@ -80,7 +80,7 @@ codemetrics4j is currently tracking the following metrics:
  - [x] **Method Hiding Factor (AHF)** Ah / Ad _(class)_
  - [x] **McCabe Cyclomatic Complexity (VG)** - The number of unique possible paths
      through code _(method)_
- - [x] **Weighed Methods per Class (WMC)** - The summation of all of the cyclomatic
+ - [x] **Weighed Methods per Class (WMC)** - The summation of all the cyclomatic
        complexities of all methods on a class _(class)_
  - [x] **Lack of Cohesion Methods (LCOM)** - A measure for the Cohesiveness of a class.
        Calculated with the Henderson-Sellers method, based on the number of disjoint sets

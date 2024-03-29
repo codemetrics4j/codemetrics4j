@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public class Package extends Code {
-    private Map<String, Type> typeLookup;
+    private final Map<String, Type> typeLookup;
 
     public Package(String name) {
         super(name);

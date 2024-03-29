@@ -18,7 +18,7 @@ public class TypeAggregatorCalculator implements Calculator<Type> {
         NumericValueSummaryStatistics ciStats =
                 methodMetrics(type.getMethods(), "Ci").collect(NumericValue.summarizingCollector());
 
-        ImmutableSet.Builder<Metric> metricBuilder = ImmutableSet.<Metric>builder();
+        ImmutableSet.Builder<Metric> metricBuilder = ImmutableSet.builder();
 
         if (ciStats.getCount().isGreaterThan(NumericValue.ZERO)) {
 
@@ -48,11 +48,8 @@ public class TypeAggregatorCalculator implements Calculator<Type> {
     private Stream<NumericValue> methodMetrics(Set<Method> methods, String metricName) {
         return methods.stream().flatMap(method -> {
             Optional<Metric> metric = method.getMetric(metricName);
-            if (metric.isPresent()) {
-                return Stream.of(metric.get().getValue());
-            } else {
-                return Stream.empty();
-            }
+            return metric.<Stream<? extends NumericValue>>map(value -> Stream.of(value.getValue()))
+                    .orElseGet(Stream::empty);
         });
     }
 }

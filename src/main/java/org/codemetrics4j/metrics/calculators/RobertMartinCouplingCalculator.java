@@ -22,7 +22,7 @@ public class RobertMartinCouplingCalculator implements Calculator<Package> {
                 .map(Package::getTypes)
                 .flatMap(Set::stream)
                 .filter(type -> type.getSource()
-                        .isPublic()) // only public classes count, nothing else is visible outside of the package)
+                        .isPublic()) // only public classes count, nothing else is visible outside the package.
                 .collect(Collectors.groupingBy(Type::getName));
 
         Map<String, Type> allClassesInsideOfPackage = aPackage.getTypes().parallelStream()
@@ -111,7 +111,7 @@ public class RobertMartinCouplingCalculator implements Calculator<Package> {
                 "NOI", "Number of Interfaces and Abstract Classes", numberOfAbstractClassesAndInterfacesInPackage));
 
         Optional<NumericValue> abstractnessOpt = Optional.ofNullable(
-                aPackage.getTypes().size() > 0
+                !aPackage.getTypes().isEmpty()
                         ? numberOfAbstractClassesAndInterfacesInPackage.divide(
                                 NumericValue.of(aPackage.getTypes().size()))
                         : null);

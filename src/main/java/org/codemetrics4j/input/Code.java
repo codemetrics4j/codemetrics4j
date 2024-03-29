@@ -7,17 +7,17 @@ import java.util.*;
 import org.codemetrics4j.metrics.Metric;
 
 public abstract class Code {
-    private String name;
-    protected Set<Code> children = new HashSet<Code>();
+    private final String name;
+    protected final Set<Code> children;
     private Code parent = null;
     private final Map<String, Metric> metrics;
     private final Map<String, String> attributes;
 
     protected Code(String name) {
         this.name = name;
-        this.children = new HashSet<Code>();
-        this.metrics = new HashMap<String, Metric>();
-        this.attributes = new HashMap<String, String>();
+        this.children = new HashSet<>();
+        this.metrics = new HashMap<>();
+        this.attributes = new HashMap<>();
     }
 
     public String getName() {

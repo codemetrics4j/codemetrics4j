@@ -41,14 +41,14 @@ public class NestedBlockDepthCalculator implements Calculator<Method> {
                                 || theNode instanceof ClassOrInterfaceDeclaration
                                 || theNode instanceof MethodDeclaration
                                 || theNode instanceof SynchronizedStmt) {
-                            // Javaparser has an interesting relationship that shows up here.. basically if you have
+                            // Javaparser has an interesting relationship that shows up here... basically if you have
                             // something like an
                             // if statement, even though that "nests" 1 level, the block statement itself is a separate
                             // thing
                             // with the if statement as a parent, which means that we'd count it two.  A few other
-                            // classes nest like this
+                            // classes nest like this,
                             // so we have to only increase the counter when the node we're looking at isn't one of them.
-                            //  Thus we
+                            // Thus, we
                             // essentially whitelist the kind of statements that DO increase nesting
                             i++;
                         }

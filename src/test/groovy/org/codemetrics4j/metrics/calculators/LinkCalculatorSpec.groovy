@@ -60,10 +60,10 @@ class LinkCalculatorSpec extends Specification {
 		Type classC = project.locateType("ClassC")
 
 		when:
-		def mainClassResult = new LinkCalculator().calculate(mainClass);
-		def classAResult = new LinkCalculator().calculate(classA);
-		def classBResult = new LinkCalculator().calculate(classB);
-		def classCResult = new LinkCalculator().calculate(classC);
+		def mainClassResult = new LinkCalculator().calculate(mainClass)
+		def classAResult = new LinkCalculator().calculate(classA)
+		def classBResult = new LinkCalculator().calculate(classB)
+		def classCResult = new LinkCalculator().calculate(classC)
 
 		then:
 		expect classAResult, containsMetric("NOL", 1)
@@ -121,10 +121,10 @@ class LinkCalculatorSpec extends Specification {
 		Type classC = project.locateType("ClassC")
 
 		when:
-		def mainClassResult = new LinkCalculator().calculate(mainClass);
-		def classAResult = new LinkCalculator().calculate(classA);
-		def classBResult = new LinkCalculator().calculate(classB);
-		def classCResult = new LinkCalculator().calculate(classC);
+		def mainClassResult = new LinkCalculator().calculate(mainClass)
+		def classAResult = new LinkCalculator().calculate(classA)
+		def classBResult = new LinkCalculator().calculate(classB)
+		def classCResult = new LinkCalculator().calculate(classC)
 
 		then:
 		expect classAResult, containsMetric("NOL", 1)

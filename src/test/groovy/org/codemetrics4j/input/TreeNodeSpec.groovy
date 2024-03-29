@@ -91,7 +91,7 @@ class TreeNodeSpec extends Specification {
 		packages.size() == 1
 		Package firstPackage = packages.toArray()[0]
 
-		firstPackage.getTypes().size() == 2;
+		firstPackage.getTypes().size() == 2
 
 		Type thing1 = firstPackage.getTypes().find{t->t.name == "Thing1"}
 		Type innerClass = firstPackage.getTypes().find{t->t.name == "Thing1.InnerClass"}

@@ -18,6 +18,7 @@ public class XMLOutputter implements Outputter<Document> {
     public Document output(Project project) {
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            docFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
             Document doc = docBuilder.newDocument();
@@ -71,14 +72,7 @@ public class XMLOutputter implements Outputter<Document> {
     }
 
     private <T extends Code> List<T> sortChildren(Collection<T> children) {
-        return children.stream()
-                .sorted(new Comparator<Code>() {
-                    @Override
-                    public int compare(Code o1, Code o2) {
-                        return o1.getName().compareTo(o2.getName());
-                    }
-                })
-                .collect(Collectors.toList());
+        return children.stream().sorted(Comparator.comparing(Code::getName)).collect(Collectors.toList());
     }
 
     private void addAttributes(Code classNode, Element classElement) {
@@ -91,9 +85,8 @@ public class XMLOutputter implements Outputter<Document> {
         Element metricsContainer = doc.createElement("Metrics");
 
         Set<Metric> metrics = node.getMetrics();
-        List<Metric> sortedMetrics = metrics.stream()
-                .sorted((m1, m2) -> m1.getName().compareTo(m2.getName()))
-                .collect(Collectors.toList());
+        List<Metric> sortedMetrics =
+                metrics.stream().sorted(Comparator.comparing(Metric::getName)).collect(Collectors.toList());
         for (Metric metric : sortedMetrics) {
             Element metricsElement = doc.createElement("Metric");
 
