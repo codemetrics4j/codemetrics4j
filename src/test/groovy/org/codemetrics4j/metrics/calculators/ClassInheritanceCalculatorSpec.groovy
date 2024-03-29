@@ -48,10 +48,10 @@ class ClassInheritanceCalculatorSpec extends Specification {
 		Type classK = (aPackage.getTypes() as List<Type>).find { type -> type.name == "K" }
 
 		when:
-		def resultX = new ClassInheritanceCalculator().calculate(classX);
-		def resultY = new ClassInheritanceCalculator().calculate(classY);
-		def resultA = new ClassInheritanceCalculator().calculate(classA);
-		def resultK = new ClassInheritanceCalculator().calculate(classK);
+		def resultX = new ClassInheritanceCalculator().calculate(classX)
+		def resultY = new ClassInheritanceCalculator().calculate(classY)
+		def resultA = new ClassInheritanceCalculator().calculate(classA)
+		def resultK = new ClassInheritanceCalculator().calculate(classK)
 
 		then:
 		expect resultX, containsMetric("NOPa", 2)
@@ -98,9 +98,9 @@ class ClassInheritanceCalculatorSpec extends Specification {
 		Type classI = (aPackage.getTypes() as List<Type>).find { type -> type.name == "I" }
 
 		when:
-		def resultA = new ClassInheritanceCalculator().calculate(classA);
-		def resultK = new ClassInheritanceCalculator().calculate(classK);
-		def resultI = new ClassInheritanceCalculator().calculate(classI);
+		def resultA = new ClassInheritanceCalculator().calculate(classA)
+		def resultK = new ClassInheritanceCalculator().calculate(classK)
+		def resultI = new ClassInheritanceCalculator().calculate(classI)
 
 		then:
 		expect resultA, containsMetric("NOD", 2)
@@ -146,8 +146,8 @@ class ClassInheritanceCalculatorSpec extends Specification {
 		Type classY = (aPackage.getTypes() as List<Type>).find { type -> type.name == "ClassY" }
 
 		when:
-		def resultX = new ClassInheritanceCalculator().calculate(classX);
-		def resultY = new ClassInheritanceCalculator().calculate(classY);
+		def resultX = new ClassInheritanceCalculator().calculate(classX)
+		def resultY = new ClassInheritanceCalculator().calculate(classY)
 
 		then:
 
@@ -190,7 +190,7 @@ class ClassInheritanceCalculatorSpec extends Specification {
 		Type classY = (aPackage.getTypes() as List<Type>).find { type -> type.name == "ClassY" }
 
 		when:
-		def resultY = new ClassInheritanceCalculator().calculate(classY);
+		def resultY = new ClassInheritanceCalculator().calculate(classY)
 
 		then:
 
@@ -214,7 +214,7 @@ class ClassInheritanceCalculatorSpec extends Specification {
 		Type classY = (aPackage.getTypes() as List<Type>).find { type -> type.name == "ClassY" }
 
 		when:
-		def resultY = new ClassInheritanceCalculator().calculate(classY);
+		def resultY = new ClassInheritanceCalculator().calculate(classY)
 
 		then:
 
@@ -252,7 +252,7 @@ class ClassInheritanceCalculatorSpec extends Specification {
 		Type classY = (aPackage.getTypes() as List<Type>).find { type -> type.name == "ClassX" }
 
 		when:
-		def resultY = new ClassInheritanceCalculator().calculate(classY);
+		def resultY = new ClassInheritanceCalculator().calculate(classY)
 
 		then:
 
@@ -291,7 +291,7 @@ class ClassInheritanceCalculatorSpec extends Specification {
 		Type classY = (aPackage.getTypes() as List<Type>).find { type -> type.name == "ClassX" }
 
 		when:
-		def resultY = new ClassInheritanceCalculator().calculate(classY);
+		def resultY = new ClassInheritanceCalculator().calculate(classY)
 
 		then:
 

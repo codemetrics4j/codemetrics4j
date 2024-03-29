@@ -117,7 +117,7 @@ public class TotalLinesOfCodeCalculator {
 
         @Override
         public Set<Metric> calculate(Type type) {
-            Stack<Node> nodeStack = new Stack<Node>();
+            Stack<Node> nodeStack = new Stack<>();
             nodeStack.add(type.getSource());
 
             NumericValue total = performCalculation(nodeStack);
@@ -129,7 +129,7 @@ public class TotalLinesOfCodeCalculator {
 
         @Override
         public Set<Metric> calculate(Method method) {
-            Stack<Node> nodeStack = new Stack<Node>();
+            Stack<Node> nodeStack = new Stack<>();
             nodeStack.add(method.getSource());
 
             NumericValue total = performCalculation(nodeStack);
@@ -170,7 +170,7 @@ public class TotalLinesOfCodeCalculator {
             } else if (node instanceof EnumConstantDeclaration) {
                 count = count + 1;
                 EnumConstantDeclaration enumConstantDeclaration = (EnumConstantDeclaration) node;
-                if (enumConstantDeclaration.getClassBody().size() > 0) {
+                if (!enumConstantDeclaration.getClassBody().isEmpty()) {
                     count = count + 1; // for the closing, we already counted the opening
                     nodeStack.addAll(enumConstantDeclaration.getClassBody());
                 }
@@ -252,7 +252,8 @@ public class TotalLinesOfCodeCalculator {
 
                 if (tryStmt.getFinallyBlock().isPresent()) {
                     count = count
-                            + 1; // Only 1 because the close brace of the catches/try is the start of the finally clause
+                            + 1; // Only 1 because the close brace of the catches/try is the start of the `finally`
+                    // clause
                     nodeStack.add(tryStmt.getFinallyBlock().get());
                 }
             } else if (node instanceof SwitchStmt) {

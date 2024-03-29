@@ -42,9 +42,9 @@ class SpecializationIndexCalculatorSpec extends Specification {
 		Type typeD = project.locateType("D")
 
 		when:
-		def resultA = new SpecializationIndexCalculator().calculate(typeA);
-		def resultC = new SpecializationIndexCalculator().calculate(typeC);
-		def resultD = new SpecializationIndexCalculator().calculate(typeD);
+		def resultA = new SpecializationIndexCalculator().calculate(typeA)
+		def resultC = new SpecializationIndexCalculator().calculate(typeC)
+		def resultD = new SpecializationIndexCalculator().calculate(typeD)
 
 		then:
 		expect resultA, containsMetric("DIT", 1)
@@ -87,8 +87,8 @@ class SpecializationIndexCalculatorSpec extends Specification {
 		Type typeTwo = project.locateType("ShouldBeTwo")
 
 		when:
-		def resultFour = new SpecializationIndexCalculator().calculate(typeFour);
-		def resultTwo = new SpecializationIndexCalculator().calculate(typeTwo);
+		def resultFour = new SpecializationIndexCalculator().calculate(typeFour)
+		def resultTwo = new SpecializationIndexCalculator().calculate(typeTwo)
 
 		then:
 		expect resultFour, containsMetric("DIT", 4)
@@ -127,7 +127,7 @@ class SpecializationIndexCalculatorSpec extends Specification {
 		Type typeA = project.locateType("org.whatever.stuff2.A")
 
 		when:
-		def result = new SpecializationIndexCalculator().calculate(typeA);
+		def result = new SpecializationIndexCalculator().calculate(typeA)
 
 		then:
 		expect result, containsMetric("DIT", 2)
@@ -165,7 +165,7 @@ class SpecializationIndexCalculatorSpec extends Specification {
 		Type typeA = project.locateType("org.whatever.stuff2.A")
 
 		when:
-		def result = new SpecializationIndexCalculator().calculate(typeA);
+		def result = new SpecializationIndexCalculator().calculate(typeA)
 
 		then:
 		expect result, containsMetric("DIT", 4)
@@ -229,7 +229,7 @@ class SpecializationIndexCalculatorSpec extends Specification {
 		Type typeD = project.locateType("org.whatever.stuff.D")
 
 		when:
-		def result = new SpecializationIndexCalculator().calculate(typeD);
+		def result = new SpecializationIndexCalculator().calculate(typeD)
 
 		then:
 		expect result, containsMetric("NORM", 3)
@@ -267,7 +267,7 @@ class SpecializationIndexCalculatorSpec extends Specification {
 		Type typeC = project.locateType("org.whatever.stuff.C")
 
 		when:
-		def result = new SpecializationIndexCalculator().calculate(typeC);
+		def result = new SpecializationIndexCalculator().calculate(typeC)
 
 		then:
 		expect result, containsMetric("NORM", 2)
@@ -302,7 +302,7 @@ class SpecializationIndexCalculatorSpec extends Specification {
 		Type typeC = project.locateType("org.whatever.stuff.C")
 
 		when:
-		def result = new SpecializationIndexCalculator().calculate(typeC);
+		def result = new SpecializationIndexCalculator().calculate(typeC)
 
 		then:
 		expect result, containsMetric("NORM", 1)
@@ -342,7 +342,7 @@ class SpecializationIndexCalculatorSpec extends Specification {
 		Type typeC = project.locateType("org.whatever.stuff.C")
 
 		when:
-		def result = new SpecializationIndexCalculator().calculate(typeC);
+		def result = new SpecializationIndexCalculator().calculate(typeC)
 
 		then:
 		expect result, containsMetric("SIX", 1.5)

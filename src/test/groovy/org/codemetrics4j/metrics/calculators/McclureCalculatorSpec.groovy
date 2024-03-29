@@ -49,14 +49,14 @@ class McclureCalculatorSpec extends Specification {
 
 		org.codemetrics4j.input.Package aPackage = (project.getPackages() as List<Package>)[0]
 
-		Type classA = project.locateType("SomeClass");
+		Type classA = project.locateType("SomeClass")
 
 		Method doWork = classA.lookupMethodBySignature("doWork(int)").get()
 		Method factorial = classA.lookupMethodBySignature("factorial(int)").get()
 
 		when:
-		def resultDoWork = new McclureCalculator().calculate(doWork);
-		def resultFactorial = new McclureCalculator().calculate(factorial);
+		def resultDoWork = new McclureCalculator().calculate(doWork)
+		def resultFactorial = new McclureCalculator().calculate(factorial)
 
 		then:
 

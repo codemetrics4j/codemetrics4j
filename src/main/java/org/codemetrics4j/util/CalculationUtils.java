@@ -20,6 +20,7 @@ import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.ImmutableGraph;
 import com.google.common.graph.MutableGraph;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -29,15 +30,19 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.codemetrics4j.input.Package;
 import org.codemetrics4j.input.Project;
 import org.codemetrics4j.input.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CalculationUtils {
+    private static final Logger logger = LoggerFactory.getLogger(CalculationUtils.class);
+
     // TODO: Can likely make this faster/more accurate using java resolver
-    public static LoadingCache<Pair<MethodDeclaration, VariableDeclarator>, Boolean> isFieldAccessedWithinMethod =
+    public static final LoadingCache<Pair<MethodDeclaration, VariableDeclarator>, Boolean> isFieldAccessedWithinMethod =
             CacheBuilder.newBuilder()
                     .expireAfterWrite(10, TimeUnit.MINUTES)
                     .build(new CacheLoader<Pair<MethodDeclaration, VariableDeclarator>, Boolean>() {
                         @Override
-                        public Boolean load(Pair<MethodDeclaration, VariableDeclarator> key) throws Exception {
+                        public Boolean load(Pair<MethodDeclaration, VariableDeclarator> key) {
                             MethodDeclaration method = key.getLeft();
                             VariableDeclarator variable = key.getRight();
 
@@ -88,7 +93,8 @@ public class CalculationUtils {
                                                                     allBlocksFromMethodDeclarationToVariableDeclaration =
                                                                             getAllVariableDefinitionScopesBetweenMethodDefinitionAndNode(
                                                                                     variableDeclaration);
-                                                            return allBlocksFromMethodDeclarationToNameAccessExpr
+                                                            return new HashSet<>(
+                                                                            allBlocksFromMethodDeclarationToNameAccessExpr)
                                                                     .containsAll(
                                                                             allBlocksFromMethodDeclarationToVariableDeclaration);
                                                         } else {
@@ -109,10 +115,8 @@ public class CalculationUtils {
                                             }
                                         });
 
-                                if (anyIndirectAccess) return true;
+                                return anyIndirectAccess;
                             }
-
-                            return false;
                         }
                     });
 
@@ -139,7 +143,7 @@ public class CalculationUtils {
             .expireAfterWrite(10, TimeUnit.MINUTES)
             .build(new CacheLoader<Project, Graph<Type>>() {
                 @Override
-                public Graph<Type> load(Project parentProject) throws Exception {
+                public Graph<Type> load(Project parentProject) {
                     MutableGraph<Type> graph = GraphBuilder.directed().build();
 
                     Multimap<String, Type> allClassesByName = HashMultimap.create();
@@ -189,7 +193,7 @@ public class CalculationUtils {
             return optPackage.flatMap(pkg ->
                     pkg.lookupTypeByName(refType.getTypeDeclaration().get().getClassName()));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.warn("", e);
             return Optional.empty();
         }
     }

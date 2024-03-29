@@ -25,8 +25,8 @@ class TestUtil {
 	}
 
 	static Type typeFromStream(InputStream stream) {
-		String snippet = IOUtils.toString(stream, "UTF-8");
-		return typeFromSnippet(snippet);
+		String snippet = IOUtils.toString(stream, "UTF-8")
+		return typeFromSnippet(snippet)
 	}
 
 	static Method methodFromSnippet(String sourceCode) {
@@ -52,11 +52,11 @@ class TestUtil {
 	}
 
 	static Project projectFromResources(String path) {
-		File srcPath = new File(new File( "." ).getCanonicalPath(), "src/test/resources/"+path);
+		File srcPath = new File(new File( "." ).getCanonicalPath(), "src/test/resources/"+path)
 
-		augmentProjectMetaclass();
+		augmentProjectMetaclass()
 
-		return new FileScanner(srcPath).scan();
+		return new FileScanner(srcPath).scan()
 	}
 
 
@@ -70,18 +70,18 @@ class TestUtil {
 		JavaParser parser = new JavaParser()
 
 		for(String sourceCode: sourceCodes) {
-			CompilationUnit cu = parser.parse(sourceCode).getResult().get();
-			Optional<PackageDeclaration> packageDecOpt = cu.getPackageDeclaration();
-			File rootDir;
+			CompilationUnit cu = parser.parse(sourceCode).getResult().get()
+			Optional<PackageDeclaration> packageDecOpt = cu.getPackageDeclaration()
+			File rootDir
 			if(packageDecOpt.isPresent()) {
 				PackageDeclaration packageDeclaration = packageDecOpt.get()
 				String packageName = packageDeclaration.name.asString()
 				String targetDir = packageName.replaceAll("[.]", Matcher.quoteReplacement(File.separator))
-				File targetFile = new File(tempDir, targetDir);
+				File targetFile = new File(tempDir, targetDir)
 				targetFile.mkdirs()
-				rootDir = targetFile;
+				rootDir = targetFile
 			} else {
-				rootDir = tempDir;
+				rootDir = tempDir
 			}
 
 			File sourceFile = new File(rootDir, new Faker().letterify("Source?????.java"))
@@ -90,9 +90,9 @@ class TestUtil {
 		}
 
 
-		augmentProjectMetaclass();
+		augmentProjectMetaclass()
 
-		return new FileScanner(tempDir).scan();
+		return new FileScanner(tempDir).scan()
 	}
 
 	static def augmentProjectMetaclass() {
@@ -107,7 +107,7 @@ class TestUtil {
 				for(Package pkg: p.getPackages()) {
 					if(pkg.name == targetPkg) {
 						for (Type typ : pkg.getTypes()) {
-							if (typ.name == targetTyp) return typ;
+							if (typ.name == targetTyp) return typ
 						}
 					}
 				}
@@ -115,13 +115,13 @@ class TestUtil {
 			} else {
 				for(Package pkg: p.getPackages()) {
 					for(Type typ: pkg.getTypes()) {
-						if(typ.name == typeName) return typ;
+						if(typ.name == typeName) return typ
 					}
 				}
 			}
 
 
-			return null;
+			return null
 		}
 	}
 }

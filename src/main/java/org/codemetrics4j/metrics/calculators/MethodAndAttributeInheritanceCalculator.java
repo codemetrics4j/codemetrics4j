@@ -27,7 +27,7 @@ public class MethodAndAttributeInheritanceCalculator implements Calculator<Type>
 
         ClassOrInterfaceDeclaration declaration = type.getSource();
 
-        Set<Type> ancestors = new HashSet<Type>();
+        Set<Type> ancestors = new HashSet<>();
 
         Set<Type> parents = inheritanceGraph.predecessors(type);
 
@@ -79,11 +79,7 @@ public class MethodAndAttributeInheritanceCalculator implements Calculator<Type>
 
                     if (isAbstract) {
                         return false;
-                    } else if (isDefinedOnInterface && !isDefaultImpl) {
-                        return false;
-                    } else {
-                        return true;
-                    }
+                    } else return !isDefinedOnInterface || isDefaultImpl;
                 })
                 .collect(Collectors.toSet());
 
@@ -145,7 +141,7 @@ public class MethodAndAttributeInheritanceCalculator implements Calculator<Type>
                         hiddenInheritedNotOverridden.size()))
                 .add(Metric.of("HMd", "Number of Hidden Methods Defined", hiddenDefined.size()));
 
-        if (inheritableMethods.size() > 0) {
+        if (!inheritableMethods.isEmpty()) {
             metricBuilder.add(Metric.of(
                     "NMIR",
                     "Number of Methods Inherited Ratio",
@@ -183,9 +179,8 @@ public class MethodAndAttributeInheritanceCalculator implements Calculator<Type>
         Set<Attribute> overriddenAttributes = Sets.intersection(inheritableAttributes, definedAttributes);
         Set<Attribute> allAttributes = Sets.union(definedAttributes, inheritedNotOverriddenAttributes);
 
-        Set<Attribute> publicDefinedAttributes = definedAttributes.stream()
-                .filter(attribute -> attribute.isPublicish())
-                .collect(Collectors.toSet());
+        Set<Attribute> publicDefinedAttributes =
+                definedAttributes.stream().filter(Attribute::isPublicish).collect(Collectors.toSet());
 
         metricBuilder
                 .add(Metric.of("Ait", "Number of Attributes Inherited (Total)", inheritableAttributes.size()))
@@ -232,12 +227,12 @@ public class MethodAndAttributeInheritanceCalculator implements Calculator<Type>
         return ImmutableSet.copyOf(attributes);
     }
 
-    private class Attribute {
+    private static class Attribute {
 
-        private Type parentType;
-        private Set<Modifier.Keyword> modifiers;
-        private com.github.javaparser.ast.type.Type variableType;
-        private SimpleName name;
+        private final Type parentType;
+        private final Set<Modifier.Keyword> modifiers;
+        private final com.github.javaparser.ast.type.Type variableType;
+        private final SimpleName name;
 
         public Attribute(
                 Type parentType,

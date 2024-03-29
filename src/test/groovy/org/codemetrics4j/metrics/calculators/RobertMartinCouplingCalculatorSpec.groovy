@@ -98,8 +98,8 @@ class RobertMartinCouplingCalculatorSpec extends Specification {
 
 
 		when:
-		def firstResult = new RobertMartinCouplingCalculator().calculate(firstPackage);
-		def secondResult = new RobertMartinCouplingCalculator().calculate(secondPackage);
+		def firstResult = new RobertMartinCouplingCalculator().calculate(firstPackage)
+		def secondResult = new RobertMartinCouplingCalculator().calculate(secondPackage)
 
 		then:
 		expect firstResult, containsMetric("Ce", 2)
@@ -156,8 +156,8 @@ class RobertMartinCouplingCalculatorSpec extends Specification {
 
 
 		when:
-		def firstResult = new RobertMartinCouplingCalculator().calculate(firstPackage);
-		def secondResult = new RobertMartinCouplingCalculator().calculate(secondPackage);
+		def firstResult = new RobertMartinCouplingCalculator().calculate(firstPackage)
+		def secondResult = new RobertMartinCouplingCalculator().calculate(secondPackage)
 
 		then:
 		expect firstResult, containsMetric("Ce", NumericValue.ZERO)
@@ -208,8 +208,8 @@ class RobertMartinCouplingCalculatorSpec extends Specification {
 
 
 		when:
-		def firstResult = new RobertMartinCouplingCalculator().calculate(firstPackage);
-		def secondResult = new RobertMartinCouplingCalculator().calculate(secondPackage);
+		def firstResult = new RobertMartinCouplingCalculator().calculate(firstPackage)
+		def secondResult = new RobertMartinCouplingCalculator().calculate(secondPackage)
 
 		then:
 		expect firstResult, containsMetric("Ce", NumericValue.ZERO)
@@ -260,8 +260,8 @@ class RobertMartinCouplingCalculatorSpec extends Specification {
 
 
 		when:
-		def firstResult = new RobertMartinCouplingCalculator().calculate(firstPackage);
-		def secondResult = new RobertMartinCouplingCalculator().calculate(secondPackage);
+		def firstResult = new RobertMartinCouplingCalculator().calculate(firstPackage)
+		def secondResult = new RobertMartinCouplingCalculator().calculate(secondPackage)
 
 		then:
 		expect firstResult, containsMetric("Ce", NumericValue.ZERO)

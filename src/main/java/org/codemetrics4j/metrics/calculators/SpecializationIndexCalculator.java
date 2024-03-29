@@ -1,6 +1,7 @@
 package org.codemetrics4j.metrics.calculators;
 
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.Graph;
 import java.util.*;
@@ -90,7 +91,7 @@ public class SpecializationIndexCalculator implements Calculator<Type> {
         com.github.javaparser.ast.type.Type returnType = method.getSource().getType();
         String name = method.getSource().getName().getIdentifier();
         List<com.github.javaparser.ast.type.Type> parameterTypes = method.getSource().getParameters().stream()
-                .map(parameter -> parameter.getType())
+                .map(Parameter::getType)
                 .collect(Collectors.toList());
 
         return Triple.of(returnType, name, parameterTypes);
@@ -113,6 +114,6 @@ public class SpecializationIndexCalculator implements Calculator<Type> {
             maximums.add(1 + calculateInheritanceDepth(t));
         }
 
-        return maximums.stream().mapToInt(i -> i.intValue()).max().orElse(1);
+        return maximums.stream().mapToInt(i -> i).max().orElse(1);
     }
 }

@@ -129,7 +129,7 @@ public abstract class Scanner {
 
             } catch (ParseProblemException e) {
                 String file = attributes.get("sourceFile");
-                logger.warn("Unable to parse code from file %s, ignoring\n", file);
+                logger.warn("Unable to parse code from file {}, ignoring\n", file);
                 logger.warn(e.getProblems().toString());
             }
         }
@@ -143,7 +143,7 @@ public abstract class Scanner {
             try {
                 combinedTypeSolver.add(new JavaParserTypeSolver(sourceDir));
             } catch (IllegalStateException e) {
-                logger.warn("Unable to parse code from dir %s, ignoring\n", sourceDir);
+                logger.warn("Unable to parse code from dir {}, ignoring\n", sourceDir);
                 StringWriter sw = new StringWriter();
                 e.printStackTrace(new PrintWriter(sw));
                 logger.warn(sw.toString());
@@ -185,7 +185,7 @@ public abstract class Scanner {
                 }
             } catch (ParseProblemException e) {
                 String file = attributes.get("sourceFile");
-                logger.warn("Unable to parse code from file %s, ignoring\n", file);
+                logger.warn("Unable to parse code from file {}, ignoring\n", file);
                 logger.warn(e.getProblems().toString());
             }
         }

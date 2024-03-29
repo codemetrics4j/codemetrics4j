@@ -35,22 +35,16 @@ public class PackageAggregatorCalculator implements Calculator<Package> {
     private Stream<NumericValue> typeMetrics(Stream<Type> types, String metricName) {
         return types.flatMap(type -> {
             Optional<Metric> metric = type.getMetric(metricName);
-            if (metric.isPresent()) {
-                return Stream.of(metric.get().getValue());
-            } else {
-                return Stream.empty();
-            }
+            return metric.<Stream<? extends NumericValue>>map(value -> Stream.of(value.getValue()))
+                    .orElseGet(Stream::empty);
         });
     }
 
     private Stream<NumericValue> methodMetrics(Stream<Method> methods, String metricName) {
         return methods.flatMap(type -> {
             Optional<Metric> metric = type.getMetric(metricName);
-            if (metric.isPresent()) {
-                return Stream.of(metric.get().getValue());
-            } else {
-                return Stream.empty();
-            }
+            return metric.<Stream<? extends NumericValue>>map(value -> Stream.of(value.getValue()))
+                    .orElseGet(Stream::empty);
         });
     }
 }

@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class Type extends Code {
     private final ClassOrInterfaceDeclaration declaration;
-    private Map<String, Method> methodLookup;
+    private final Map<String, Method> methodLookup;
 
     public Type(ClassOrInterfaceDeclaration declaration) {
         super(getClassNameFromDeclaration(declaration));

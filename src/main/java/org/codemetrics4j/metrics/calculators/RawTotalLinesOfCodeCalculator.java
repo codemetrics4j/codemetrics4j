@@ -11,7 +11,7 @@ import org.codemetrics4j.metrics.Metric;
 
 /**
  * Counts the raw number of lines of code within a class (excludes package
- * declaration, import statements, and comments outside of a class).  Within a
+ * declaration, import statements, and comments outside a class).  Within a
  * class declaration, will count whitespace, comments, multi-line statements,
  * and brackets.
  *
@@ -28,9 +28,9 @@ public class RawTotalLinesOfCodeCalculator implements Calculator<Type> {
         Optional<Position> end = decl.getEnd();
         Optional<Position> begin = decl.getBegin();
 
-        if (!begin.isPresent()) return ImmutableSet.of();
-        if (!end.isPresent()) return ImmutableSet.of();
-
-        return ImmutableSet.of(Metric.of("RTLOC", "Raw Total Lines of Code", end.get().line - begin.get().line + 1));
+        return begin.map(value -> end.<Set<Metric>>map(position -> ImmutableSet.of(
+                                Metric.of("RTLOC", "Raw Total Lines of Code", position.line - value.line + 1)))
+                        .orElseGet(ImmutableSet::of))
+                .orElseGet(ImmutableSet::of);
     }
 }

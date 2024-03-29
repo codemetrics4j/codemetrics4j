@@ -10,10 +10,10 @@ import org.codemetrics4j.util.ProjectMetadata;
 // on Code
 // which prevents this
 public class Processor {
-    private Set<Calculator<Project>> projectCalculators;
-    private Set<Calculator<Package>> packageCalculators;
-    private Set<Calculator<Type>> typeCalculators;
-    private Set<Calculator<Method>> methodCalculators;
+    private final Set<Calculator<Project>> projectCalculators;
+    private final Set<Calculator<Package>> packageCalculators;
+    private final Set<Calculator<Type>> typeCalculators;
+    private final Set<Calculator<Method>> methodCalculators;
 
     public Processor() {
         projectCalculators = new HashSet<>();
@@ -44,12 +44,11 @@ public class Processor {
 
         project.getPackages().parallelStream().forEach(aPackage -> {
             aPackage.getTypes().parallelStream().forEach(type -> {
-                type.getMethods().parallelStream().forEach(method -> {
-                    methodCalculators.parallelStream().forEach(methodMetricCalculator -> {
-                        Set<Metric> methodMetrics = methodMetricCalculator.calculate(method);
-                        method.addMetrics(methodMetrics);
-                    });
-                });
+                type.getMethods().parallelStream()
+                        .forEach(method -> methodCalculators.parallelStream().forEach(methodMetricCalculator -> {
+                            Set<Metric> methodMetrics = methodMetricCalculator.calculate(method);
+                            method.addMetrics(methodMetrics);
+                        }));
 
                 typeCalculators.parallelStream().forEach(typeMetricCalculator -> {
                     Set<Metric> classMetrics = typeMetricCalculator.calculate(type);
