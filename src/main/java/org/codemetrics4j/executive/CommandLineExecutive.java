@@ -13,6 +13,7 @@ import org.apache.commons.io.filefilter.NotFileFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.codemetrics4j.input.FileScanner;
 import org.codemetrics4j.input.Project;
+import org.codemetrics4j.input.RegexpFilter;
 import org.codemetrics4j.output.XMLOutputter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +50,11 @@ public class CommandLineExecutive {
             IOFileFilter fileFilter =
                     line.hasOption("excludetests") ? new ExcludeTestsFilter(scanDir) : FileFilterUtils.trueFileFilter();
 
-            scanner.setFilter(fileFilter);
+            scanner.addFilter(fileFilter);
+
+            if (line.hasOption("regexp")) {
+                scanner.addFilter(new RegexpFilter(line.getOptionValue("regexp")));
+            }
 
             long startTime = System.currentTimeMillis();
 
@@ -96,17 +101,19 @@ public class CommandLineExecutive {
     private static Options prepareOptions() {
         Options options = new Options();
 
-        // TODO: still need a way to do excludes, regex or something.  joda has an example package I want to ignore
-
         Option help = new Option("h", "help", false, "print this message");
         Option version = new Option("v", "version", false, "print the version information and exit");
         Option excludetests = new Option("xt", "excludetests", false, "exclude test files from scanning");
-        Option output = new Option("o", "output", true, "where to save output (default is print to STDOUT");
+        Option output = new Option("o", "output", true, "where to save output (default is print to STDOUT)");
+        Option regexp = new Option(
+                "r", "regexp", true, "include only files for which the absolute path matches this expression");
 
         options.addOption(help);
         options.addOption(version);
         options.addOption(excludetests);
         options.addOption(output);
+        options.addOption(regexp);
+
         return options;
     }
 
