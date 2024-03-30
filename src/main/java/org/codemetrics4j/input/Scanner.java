@@ -13,8 +13,6 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSol
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
 import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.*;
 import java.util.regex.Matcher;
 import org.apache.commons.io.FilenameUtils;
@@ -119,7 +117,7 @@ public abstract class Scanner {
                 if (packageName.isPresent()) {
                     String packagePrefix = packageName.get().replaceAll("[.]", Matcher.quoteReplacement(File.separator))
                             + File.separator;
-                    String sourceDir = FilenameUtils.getPath(sourceFileName);
+                    String sourceDir = FilenameUtils.getFullPath(sourceFileName);
                     String baseSourceDir = sourceDir.replace(packagePrefix, "");
                     String finalSourceBaseDir = baseSourceDir.replace(".", projectPath);
                     sourceDirs.add(new File(finalSourceBaseDir));
@@ -144,9 +142,7 @@ public abstract class Scanner {
                 combinedTypeSolver.add(new JavaParserTypeSolver(sourceDir));
             } catch (IllegalStateException e) {
                 logger.warn("Unable to parse code from dir {}, ignoring\n", sourceDir);
-                StringWriter sw = new StringWriter();
-                e.printStackTrace(new PrintWriter(sw));
-                logger.warn(sw.toString());
+                logger.warn("", e);
             }
         }
 

@@ -54,7 +54,7 @@ public class FileScanner extends Scanner {
         return project;
     }
 
-    public void setFilter(IOFileFilter filter) {
+    public void addFilter(IOFileFilter filter) {
         this.filter = FileFilterUtils.and(filter, this.filter);
     }
 
