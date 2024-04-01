@@ -27,6 +27,10 @@ Download the latest distribution and unzip, change into directory, then run:
 codemetrics4j will gather metrics and output them to the console.  You can save the XML
 to a file using the `--output <file>` option.
 
+# Java compatibility
+
+This project requires Java 17 or later to function correctly. Please ensure you have a compatible Java Runtime Environment (JRE) or Java Development Kit (JDK) installed.
+
 # Metrics
 
 codemetrics4j is currently tracking the following metrics:

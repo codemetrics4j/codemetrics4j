@@ -6,5 +6,6 @@ out
 *.iml
 *.ipr
 *.iws
+.run
 
 test.xml

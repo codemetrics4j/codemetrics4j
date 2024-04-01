@@ -193,32 +193,32 @@ class MethodAndAttributeInheritanceCalculatorTest extends Specification {
 		expect resultC, containsMetric("PMd", 0)
 		expect resultD, containsMetric("PMd", 3)
 		expect resultI, containsMetric("PMd", 0) //The method isn't "defined" on the interface, only its contract
-		expect resultQ, containsMetric("PMd", 0)
+		expect resultQ, containsMetric("PMd", 1)
 
 		expect resultA, containsMetric("PMi", 0)
 		expect resultB, containsMetric("PMi", 0)
-		expect resultC, containsMetric("PMi", 3)
+		expect resultC, containsMetric("PMi", 4)
 		expect resultD, containsMetric("PMi", 2)
 		expect resultI, containsMetric("PMi", 0)
 		expect resultQ, containsMetric("PMi", 0)
 
 		expect resultA, containsMetric("PMR", NumericValue.ofRational(2, 3))
 		expect resultB, containsMetric("PMR", NumericValue.ofRational(3, 4))
-		expect resultC, containsMetric("PMR", NumericValue.ofRational(3, 5))
+		expect resultC, containsMetric("PMR", NumericValue.ofRational(4, 5))
 		expect resultD, containsMetric("PMR", NumericValue.ofRational(5, 6))
 		expect resultI, doesNotContainMetric("PMR")
-		expect resultQ, containsMetric("PMR", NumericValue.of(0))
+		expect resultQ, containsMetric("PMR", NumericValue.of(1))
 
 		expect resultA, containsMetric("HMd", 1)
 		expect resultB, containsMetric("HMd", 1)
 		expect resultC, containsMetric("HMd", 1)
 		expect resultD, containsMetric("HMd", 0)
 		expect resultI, containsMetric("HMd", 0)
-		expect resultQ, containsMetric("HMd", 1)
+		expect resultQ, containsMetric("HMd", 0)
 
 		expect resultA, containsMetric("HMi", 0)
 		expect resultB, containsMetric("HMi", 0)
-		expect resultC, containsMetric("HMi", 1)
+		expect resultC, containsMetric("HMi", 0)
 		expect resultD, containsMetric("HMi", 0)
 		expect resultI, containsMetric("HMi", 0)
 		expect resultQ, containsMetric("HMi", 0)
@@ -228,7 +228,7 @@ class MethodAndAttributeInheritanceCalculatorTest extends Specification {
 		expect resultC, containsMetric("MHF", 0)
 		expect resultD, containsMetric("MHF", 1)
 		expect resultI, doesNotContainMetric("MHF")
-		expect resultQ, containsMetric("MHF", 0)
+		expect resultQ, containsMetric("MHF", 1)
 	}
 
 	def "calculates attribute factors"() {

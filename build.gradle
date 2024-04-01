@@ -8,8 +8,8 @@ plugins {
 }
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_1_8
-	targetCompatibility = JavaVersion.VERSION_1_8
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
 }
 
 group = 'org.codemetrics4j'
@@ -38,6 +38,7 @@ dependencies {
 	testImplementation libs.spock
 	testImplementation libs.mockito
 	testImplementation libs.javafaker
+	testImplementation libs.jgit
 }
 
 spotless {
@@ -58,6 +59,13 @@ spotless {
 	}
 }
 
-test {
-	useJUnitPlatform()
+tasks.withType(Test) {
+	useJUnitPlatform {
+		if (!project.hasProperty("runFunctionalTests")) {
+			excludeTags "functional"
+		}
+		if (!project.hasProperty("runExternalTests")) {
+			excludeTags "external"
+		}
+	}
 }
