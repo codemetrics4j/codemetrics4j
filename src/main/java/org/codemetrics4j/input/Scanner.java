@@ -1,8 +1,8 @@
 package org.codemetrics4j.input;
 
-import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.ParserConfiguration;
+import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
@@ -22,8 +22,6 @@ import org.slf4j.LoggerFactory;
 
 public abstract class Scanner {
     private static final Logger logger = LoggerFactory.getLogger(Scanner.class);
-
-    private JavaParser parser;
 
     protected Project doScan(Collection<Pair<String, Map<String, String>>> sourceCode, String projectPath) {
 
@@ -61,10 +59,8 @@ public abstract class Scanner {
                             constructorDeclaration.getModifiers(),
                             constructorDeclaration.getAnnotations(),
                             constructorDeclaration.getTypeParameters(),
-                            parser.parseClassOrInterfaceType(
-                                            classDefinition.getName().getIdentifier())
-                                    .getResult()
-                                    .get(),
+                            StaticJavaParser.parseClassOrInterfaceType(
+                                    classDefinition.getName().getIdentifier()),
                             constructorDeclaration.getName(),
                             constructorDeclaration.getParameters(),
                             constructorDeclaration.getThrownExceptions(),
@@ -99,15 +95,12 @@ public abstract class Scanner {
             Collection<Pair<String, Map<String, String>>> sourceCode, String projectPath) {
         Set<File> sourceDirs = new HashSet<>();
 
-        JavaParser bootstrapParser = new JavaParser();
-
         for (Pair<String, Map<String, String>> sourceFile : sourceCode) {
             String sourceCodeContent = sourceFile.getLeft();
             Map<String, String> attributes = sourceFile.getRight();
 
             try {
-                CompilationUnit cu =
-                        bootstrapParser.parse(sourceCodeContent).getResult().get();
+                CompilationUnit cu = StaticJavaParser.parse(sourceCodeContent);
 
                 String sourceFileName = attributes.get("sourceFile");
 
@@ -150,7 +143,7 @@ public abstract class Scanner {
 
         ParserConfiguration parserConfiguration =
                 new ParserConfiguration().setAttributeComments(false).setSymbolResolver(symbolSolver);
-        parser = new JavaParser(parserConfiguration);
+        StaticJavaParser.setConfiguration(parserConfiguration);
         return symbolSolver;
     }
 
@@ -164,7 +157,7 @@ public abstract class Scanner {
             Map<String, String> attributes = sourceFile.getRight();
 
             try {
-                CompilationUnit cu = parser.parse(sourceCode).getResult().get();
+                CompilationUnit cu = StaticJavaParser.parse(sourceCode);
 
                 String packageName = cu.getPackageDeclaration()
                         .map((p) -> p.getName().asString())

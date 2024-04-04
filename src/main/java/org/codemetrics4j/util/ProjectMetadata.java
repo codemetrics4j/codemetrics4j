@@ -1,5 +1,6 @@
 package org.codemetrics4j.util;
 
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
@@ -21,6 +22,7 @@ import org.codemetrics4j.input.Package;
 import org.codemetrics4j.input.Project;
 import org.codemetrics4j.input.Type;
 
+@SuppressWarnings("UnstableApiUsage")
 public class ProjectMetadata {
 
     private final Project project;
@@ -180,17 +182,22 @@ public class ProjectMetadata {
                 .allowsParallelEdges(true)
                 .build();
 
-        Set<Method> allMethods = project.getPackages().stream()
+        List<Method> allMethods = project.getPackages().stream()
                 .map(Package::getTypes)
                 .flatMap(Set::stream)
                 .map(Type::getMethods)
                 .flatMap(Set::stream)
-                .collect(Collectors.toSet());
+                .toList();
 
         for (Method method : allMethods) {
             network.addNode(method);
 
-            List<MethodCallExpr> calls = method.getSource().findAll(MethodCallExpr.class);
+            MethodDeclaration expectedMethod = method.getSource();
+            // Filtering the calls to avoid looping over method calls in a nested local class
+            List<MethodCallExpr> calls = method.getSource()
+                    .findAll(
+                            MethodCallExpr.class,
+                            e -> e.findAncestor(MethodDeclaration.class).get().equals(expectedMethod));
 
             for (MethodCallExpr methodCall : calls) {
 

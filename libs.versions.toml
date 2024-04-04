@@ -5,12 +5,13 @@ jscience = "4.3.1"
 pcollections = "3.0.2"
 commons-io = "2.9.0"
 commons-cli = "1.3.1"
-javaparser = "3.25.8"
+javaparser = "3.25.10"
 slf4j = "1.7.25"
 groovy = "4.0.19"
 spock = "2.3-groovy-4.0"
 mockito = "1.10.19"
 javafaker = "0.12"
+jgit = "6.9.0.202403050737-r"
 
 [libraries]
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
@@ -25,3 +26,4 @@ groovy = { module = "org.apache.groovy:groovy-all", version.ref = "groovy" }
 spock = { module = "org.spockframework:spock-core", version.ref = "spock" }
 mockito = { module = "org.mockito:mockito-all", version.ref = "mockito" }
 javafaker = { module = "com.github.javafaker:javafaker", version.ref = "javafaker" }
+jgit = { module = "org.eclipse.jgit:org.eclipse.jgit", version.ref = "jgit" }
