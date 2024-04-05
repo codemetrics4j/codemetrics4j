@@ -1,8 +1,8 @@
 # codemetrics4j
-[![Build Status](https://github.com/kdunee/codemetrics4j/actions/workflows/gradle.yml/badge.svg)](https://github.com/kdunee/codemetrics4j/actions/workflows/gradle.yml)
-[![GitHub issues](https://img.shields.io/github/issues/kdunee/codemetrics4j.svg)](https://github.com/kdunee/codemetrics4j/issues)
-[![Latest release](https://img.shields.io/github/release/kdunee/codemetrics4j.svg?colorB=dfb430)](https://github.com/kdunee/codemetrics4j/releases/latest)
-[![Github All Releases](https://img.shields.io/github/downloads/kdunee/codemetrics4j/total.svg?colorB=0083c3)](https://github.com/kdunee/codemetrics4j/releases)
+[![Build Status](https://github.com/codemetrics4j/codemetrics4j/actions/workflows/gradle.yml/badge.svg)](https://github.com/codemetrics4j/codemetrics4j/actions/workflows/gradle.yml)
+[![GitHub issues](https://img.shields.io/github/issues/codemetrics4j/codemetrics4j.svg)](https://github.com/codemetrics4j/codemetrics4j/issues)
+[![Latest release](https://img.shields.io/github/release/codemetrics4j/codemetrics4j.svg?colorB=dfb430)](https://github.com/codemetrics4j/codemetrics4j/releases/latest)
+[![Github All Releases](https://img.shields.io/github/downloads/codemetrics4j/codemetrics4j/total.svg?colorB=0083c3)](https://github.com/codemetrics4j/codemetrics4j/releases)
 
 **codemetrics4j** (formerly JaSoMe) is a Java source code analyzer that calculates insightful quality metrics without requiring project compilation.  This means you can analyze code even when dependencies are missing or code generation steps are incomplete.
 
