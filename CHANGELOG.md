@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Increased the language parsing level to 17 to use the full capabilities of javaparser.
+
 ## [1.1.1] - 2024-04-05
 
 ### Changed

@@ -95,6 +95,11 @@ public abstract class Scanner {
             Collection<Pair<String, Map<String, String>>> sourceCode, String projectPath) {
         Set<File> sourceDirs = new HashSet<>();
 
+        ParserConfiguration parserConfiguration = new ParserConfiguration()
+                .setAttributeComments(false)
+                .setLanguageLevel(ParserConfiguration.LanguageLevel.JAVA_17);
+        StaticJavaParser.setConfiguration(parserConfiguration);
+
         for (Pair<String, Map<String, String>> sourceFile : sourceCode) {
             String sourceCodeContent = sourceFile.getLeft();
             Map<String, String> attributes = sourceFile.getRight();
@@ -140,10 +145,8 @@ public abstract class Scanner {
         }
 
         JavaSymbolSolver symbolSolver = new JavaSymbolSolver(combinedTypeSolver);
+        parserConfiguration.setSymbolResolver(symbolSolver);
 
-        ParserConfiguration parserConfiguration =
-                new ParserConfiguration().setAttributeComments(false).setSymbolResolver(symbolSolver);
-        StaticJavaParser.setConfiguration(parserConfiguration);
         return symbolSolver;
     }
 

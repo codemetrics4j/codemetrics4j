@@ -264,6 +264,10 @@ public class TotalLinesOfCodeCalculator {
                 count = count + 1;
                 SwitchEntry switchEntryStmt = (SwitchEntry) node;
                 nodeStack.addAll(switchEntryStmt.getStatements());
+            } else if (node instanceof RecordDeclaration) {
+                count = count + 2; // for the opening and closing of the declaration
+                RecordDeclaration recordDeclaration = (RecordDeclaration) node;
+                nodeStack.addAll(recordDeclaration.getMembers());
             } else {
                 logger.warn("Encountered type I'm not ready for: " + node.getClass());
                 logger.warn("Lines " + node.getBegin().get().line + " to "
