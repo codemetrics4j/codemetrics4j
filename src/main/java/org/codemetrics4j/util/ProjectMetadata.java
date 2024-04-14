@@ -97,7 +97,6 @@ public class ProjectMetadata {
     }
 
     private Graph<Type> buildClientGraph() {
-
         MutableGraph<Type> dependencyGraph =
                 GraphBuilder.directed().allowsSelfLoops(false).build();
 
@@ -200,7 +199,6 @@ public class ProjectMetadata {
                             e -> e.findAncestor(MethodDeclaration.class).get().equals(expectedMethod));
 
             for (MethodCallExpr methodCall : calls) {
-
                 Optional<Method> methodCalled = getMethodCalledByMethodExpression(methodCall);
 
                 if (methodCalled.isPresent()) {
@@ -240,17 +238,17 @@ public class ProjectMetadata {
 
     private Optional<Method> getMethodCalledByMethodExpression(MethodCallExpr methodCall) {
         try {
-            ResolvedMethodDeclaration blah = methodCall.resolve();
-            ResolvedReferenceTypeDeclaration declaringType = blah.declaringType();
+            ResolvedMethodDeclaration resolvedMethodDeclaration = methodCall.resolve();
+            ResolvedReferenceTypeDeclaration declaringType = resolvedMethodDeclaration.declaringType();
 
             Optional<Package> pkg = project.lookupPackageByName(declaringType.getPackageName());
-            if (!pkg.isPresent()) return Optional.empty();
+            if (pkg.isEmpty()) return Optional.empty();
 
             Optional<Type> typ = pkg.get().lookupTypeByName(declaringType.getName());
 
-            if (!typ.isPresent()) return Optional.empty();
+            if (typ.isEmpty()) return Optional.empty();
 
-            return typ.get().lookupMethodBySignature(blah.getSignature());
+            return typ.get().lookupMethodBySignature(resolvedMethodDeclaration.getSignature());
         } catch (Exception e) {
             return Optional.empty();
         }
