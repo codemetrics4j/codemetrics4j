@@ -12,6 +12,7 @@ spock = "2.3-groovy-4.0"
 mockito = "1.10.19"
 javafaker = "0.12"
 jgit = "6.9.0.202403050737-r"
+jgrapht = "1.5.2"
 
 [libraries]
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
@@ -27,3 +28,5 @@ spock = { module = "org.spockframework:spock-core", version.ref = "spock" }
 mockito = { module = "org.mockito:mockito-all", version.ref = "mockito" }
 javafaker = { module = "com.github.javafaker:javafaker", version.ref = "javafaker" }
 jgit = { module = "org.eclipse.jgit:org.eclipse.jgit", version.ref = "jgit" }
+jgrapht = { module = "org.jgrapht:jgrapht-core", version.ref = "jgrapht" }
+jgrapht-guava = { module = "org.jgrapht:jgrapht-guava", version.ref = "jgrapht" }

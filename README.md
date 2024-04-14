@@ -103,6 +103,7 @@ codemetrics4j is currently tracking the following metrics:
 | **Input/Output Variables (IOVars)**              | NOP + 1 (0 for void return type)             | :ballot_box_with_check: |                         |                         |                         |
 | **Data Complexity (Di)**                         | IOVars / (Fout + 1)                          | :ballot_box_with_check: |                         |                         |                         |
 | **System Complexity (Ci)**                       | Si + Di                                      | :ballot_box_with_check: |                         |                         |                         |
+| **Katz Centrality (KATZ)**                       | Katz centrality of a method                  | :ballot_box_with_check: |                         |                         |                         |
 | **Class Total System Complexity (ClTCi)**        | Sum of Ci for all methods in class           |                         | :ballot_box_with_check: |                         |                         |
 | **Class Relative System Complexity (ClRCi)**     | Average Ci for all methods in class          |                         | :ballot_box_with_check: |                         |                         |
 | **Package Total System Complexity (PkgTCi)**     | Sum of Ci across all classes in package      |                         |                         | :ballot_box_with_check: |                         |

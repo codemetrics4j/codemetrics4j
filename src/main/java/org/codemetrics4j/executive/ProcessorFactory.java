@@ -39,6 +39,9 @@ class ProcessorFactory {
 
         processor.registerTypeCalculator(new TypeAggregatorCalculator());
         processor.registerPackageCalculator(new PackageAggregatorCalculator());
+
+        processor.registerMethodCalculator(new KatzCentralityCalculator());
+
         return processor;
     }
 }

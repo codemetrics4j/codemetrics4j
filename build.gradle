@@ -32,6 +32,8 @@ dependencies {
 	implementation libs.commons.cli
 	implementation libs.javaparser
 	implementation libs.slf4j
+	implementation libs.jgrapht
+	implementation libs.jgrapht.guava
 
 	// Testing
 	testImplementation libs.groovy

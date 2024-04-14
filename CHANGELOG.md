@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added Katz Centrality (`KATZ`) metric for methods.
+
 ### Changed
 
 - Increased the language parsing level to 17 to use the full capabilities of javaparser.
