@@ -5,6 +5,7 @@ import static org.codemetrics4j.util.TestUtil.projectFromSnippet
 import static spock.util.matcher.HamcrestSupport.expect
 
 import org.codemetrics4j.input.Type
+import org.codemetrics4j.metrics.MetricName
 import org.codemetrics4j.metrics.value.NumericValue
 import spock.lang.Specification
 
@@ -47,9 +48,9 @@ class SpecializationIndexCalculatorSpec extends Specification {
 		def resultD = new SpecializationIndexCalculator().calculate(typeD)
 
 		then:
-		expect resultA, containsMetric("DIT", 1)
-		expect resultC, containsMetric("DIT", 3)
-		expect resultD, containsMetric("DIT", 2)
+		expect resultA, containsMetric(MetricName.DIT, 1)
+		expect resultC, containsMetric(MetricName.DIT, 3)
+		expect resultD, containsMetric(MetricName.DIT, 2)
 	}
 
 	def "calculate depth and use maximum even if a minimum path to a root node is shorter"() {
@@ -91,8 +92,8 @@ class SpecializationIndexCalculatorSpec extends Specification {
 		def resultTwo = new SpecializationIndexCalculator().calculate(typeTwo)
 
 		then:
-		expect resultFour, containsMetric("DIT", 4)
-		expect resultTwo, containsMetric("DIT", 2)
+		expect resultFour, containsMetric(MetricName.DIT, 4)
+		expect resultTwo, containsMetric(MetricName.DIT, 2)
 	}
 
 	def "calculate depth uses the correct class when classes have same name"() {
@@ -130,7 +131,7 @@ class SpecializationIndexCalculatorSpec extends Specification {
 		def result = new SpecializationIndexCalculator().calculate(typeA)
 
 		then:
-		expect result, containsMetric("DIT", 2)
+		expect result, containsMetric(MetricName.DIT, 2)
 	}
 
 	def "calculate depth uses the correct class even if it's not the closest class when classes have same name"() {
@@ -168,7 +169,7 @@ class SpecializationIndexCalculatorSpec extends Specification {
 		def result = new SpecializationIndexCalculator().calculate(typeA)
 
 		then:
-		expect result, containsMetric("DIT", 4)
+		expect result, containsMetric(MetricName.DIT, 4)
 	}
 
 
@@ -232,10 +233,10 @@ class SpecializationIndexCalculatorSpec extends Specification {
 		def result = new SpecializationIndexCalculator().calculate(typeD)
 
 		then:
-		expect result, containsMetric("NORM", 3)
-		expect result, containsMetric("NM", 4)
-		expect result, containsMetric("NMA", 1)
-		expect result, containsMetric("NMI", 2)
+		expect result, containsMetric(MetricName.NORM, 3)
+		expect result, containsMetric(MetricName.NM, 4)
+		expect result, containsMetric(MetricName.NMA, 1)
+		expect result, containsMetric(MetricName.NMI, 2)
 	}
 
 	def "calculate number of overridden methods works when the overriding method doesn't use the same parameter names"() {
@@ -270,8 +271,8 @@ class SpecializationIndexCalculatorSpec extends Specification {
 		def result = new SpecializationIndexCalculator().calculate(typeC)
 
 		then:
-		expect result, containsMetric("NORM", 2)
-		expect result, containsMetric("NM", 2)
+		expect result, containsMetric(MetricName.NORM, 2)
+		expect result, containsMetric(MetricName.NM, 2)
 	}
 
 	def "does not double count methods in the inheritance hierarchy"() {
@@ -305,8 +306,8 @@ class SpecializationIndexCalculatorSpec extends Specification {
 		def result = new SpecializationIndexCalculator().calculate(typeC)
 
 		then:
-		expect result, containsMetric("NORM", 1)
-		expect result, containsMetric("NM", 1)
+		expect result, containsMetric(MetricName.NORM, 1)
+		expect result, containsMetric(MetricName.NM, 1)
 	}
 
 	def "calculate specialization index"() {
@@ -345,8 +346,8 @@ class SpecializationIndexCalculatorSpec extends Specification {
 		def result = new SpecializationIndexCalculator().calculate(typeC)
 
 		then:
-		expect result, containsMetric("SIX", 1.5)
-		expect result, containsMetric("NMA", 1)
-		expect result, containsMetric("NMI", 1)
+		expect result, containsMetric(MetricName.SIX, 1.5)
+		expect result, containsMetric(MetricName.NMA, 1)
+		expect result, containsMetric(MetricName.NMI, 1)
 	}
 }

@@ -7,6 +7,7 @@ import static org.codemetrics4j.util.TestUtil.typeFromSnippet
 import static org.codemetrics4j.util.TestUtil.typeFromStream
 import static spock.util.matcher.HamcrestSupport.expect
 
+import org.codemetrics4j.metrics.MetricName
 import spock.lang.Specification
 
 
@@ -26,7 +27,7 @@ class TotalLinesOfCodeCalculatorSpec extends Specification {
 
 		then:
 		type.parentPackage.name == "default"
-		expect result, containsMetric("TLOC", 3)
+		expect result, containsMetric(MetricName.TLOC, 3)
 	}
 
 	def "calculate counts lines"() {
@@ -67,7 +68,7 @@ class TotalLinesOfCodeCalculatorSpec extends Specification {
 
 		then:
 		type.parentPackage.name == "org.whatever.stuff"
-		expect result, containsMetric("TLOC", 9)
+		expect result, containsMetric(MetricName.TLOC, 9)
 	}
 
 	def "calculate class length when only two lines (open and close)"() {
@@ -81,7 +82,7 @@ class TotalLinesOfCodeCalculatorSpec extends Specification {
 		def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("TLOC", 2)
+		expect result, containsMetric(MetricName.TLOC, 2)
 	}
 
 	def "calculate counts for complex file"() {
@@ -94,7 +95,7 @@ class TotalLinesOfCodeCalculatorSpec extends Specification {
 		def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("TLOC", 159)
+		expect result, containsMetric(MetricName.TLOC, 159)
 	}
 
 	def "calculate counts lines in a synchronized block, but not for a synchronized variable or method"() {
@@ -124,7 +125,7 @@ class TotalLinesOfCodeCalculatorSpec extends Specification {
 		def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("TLOC", 11)
+		expect result, containsMetric(MetricName.TLOC, 11)
 	}
 
 	def "calculate counts lines and can handle an empty declaration"() {
@@ -146,7 +147,7 @@ class TotalLinesOfCodeCalculatorSpec extends Specification {
 		def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("TLOC", 4)
+		expect result, containsMetric(MetricName.TLOC, 4)
 	}
 
 	def "calculate counts lines handles interfaces properly"() {
@@ -171,7 +172,7 @@ class TotalLinesOfCodeCalculatorSpec extends Specification {
 		def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("TLOC", 3)
+		expect result, containsMetric(MetricName.TLOC, 3)
 	}
 
 	def "calculate counts try/catch/finally blocks properly"() {
@@ -236,7 +237,7 @@ class TotalLinesOfCodeCalculatorSpec extends Specification {
 		def result = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("TLOC", 29)
+		expect result, containsMetric(MetricName.TLOC, 29)
 	}
 
 	def "calculate counts complex if blocks properly"() {
@@ -299,9 +300,8 @@ class TotalLinesOfCodeCalculatorSpec extends Specification {
 		def equivalentResult = new TotalLinesOfCodeCalculator.TypeCalculator().calculate(equivalentType)
 
 		then:
-		expect result, containsMetric("TLOC", 22)
-		expect equivalentResult, containsMetric("TLOC", 22)
-
+		expect result, containsMetric(MetricName.TLOC, 22)
+		expect equivalentResult, containsMetric(MetricName.TLOC, 22)
 	}
 
 
@@ -323,6 +323,6 @@ class TotalLinesOfCodeCalculatorSpec extends Specification {
 		def result = new TotalLinesOfCodeCalculator.MethodCalculator().calculate(method)
 
 		then:
-		expect result, containsMetric("TLOC", 7)
+		expect result, containsMetric(MetricName.TLOC, 7)
 	}
 }

@@ -5,6 +5,7 @@ import static org.codemetrics4j.util.TestUtil.packageFromSnippet
 import static org.codemetrics4j.util.TestUtil.typeFromSnippet
 import static spock.util.matcher.HamcrestSupport.expect
 
+import org.codemetrics4j.metrics.MetricName
 import spock.lang.Specification
 
 class NumberOfFieldsCalculatorSpec extends Specification {
@@ -41,12 +42,12 @@ class NumberOfFieldsCalculatorSpec extends Specification {
 		def result = unit.calculate(type)
 
 		then:
-		expect result, containsMetric("NF", 3)
-		expect result, containsMetric("NSF", 1)
-		expect result, containsMetric("NPF", 2)
-		expect result, containsMetric("NM", 3)
-		expect result, containsMetric("NSM", 1)
-		expect result, containsMetric("NPM", 1)
+		expect result, containsMetric(MetricName.NF, 3)
+		expect result, containsMetric(MetricName.NSF, 1)
+		expect result, containsMetric(MetricName.NPF, 2)
+		expect result, containsMetric(MetricName.NM, 3)
+		expect result, containsMetric(MetricName.NSM, 1)
+		expect result, containsMetric(MetricName.NPM, 1)
 	}
 
 	def "calculate simple metric with nested class"() {
@@ -86,12 +87,12 @@ class NumberOfFieldsCalculatorSpec extends Specification {
 		def result = unit.calculate(type)
 
 		then:
-		expect result, containsMetric("NF", 3)
-		expect result, containsMetric("NSF", 1)
-		expect result, containsMetric("NPF", 2)
-		expect result, containsMetric("NM", 3)
-		expect result, containsMetric("NSM", 1)
-		expect result, containsMetric("NPM", 1)
+		expect result, containsMetric(MetricName.NF, 3)
+		expect result, containsMetric(MetricName.NSF, 1)
+		expect result, containsMetric(MetricName.NPF, 2)
+		expect result, containsMetric(MetricName.NM, 3)
+		expect result, containsMetric(MetricName.NSM, 1)
+		expect result, containsMetric(MetricName.NPM, 1)
 	}
 
 	def "calculate simple metric with anonymous class"() {
@@ -130,11 +131,11 @@ class NumberOfFieldsCalculatorSpec extends Specification {
 		def result = unit.calculate(type)
 
 		then:
-		expect result, containsMetric("NF", 3)
-		expect result, containsMetric("NSF", 1)
-		expect result, containsMetric("NPF", 2)
-		expect result, containsMetric("NM", 3)
-		expect result, containsMetric("NSM", 1)
-		expect result, containsMetric("NPM", 1)
+		expect result, containsMetric(MetricName.NF, 3)
+		expect result, containsMetric(MetricName.NSF, 1)
+		expect result, containsMetric(MetricName.NPF, 2)
+		expect result, containsMetric(MetricName.NM, 3)
+		expect result, containsMetric(MetricName.NSM, 1)
+		expect result, containsMetric(MetricName.NPM, 1)
 	}
 }

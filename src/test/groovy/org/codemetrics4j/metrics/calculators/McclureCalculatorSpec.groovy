@@ -6,6 +6,7 @@ import static spock.util.matcher.HamcrestSupport.expect
 
 import org.codemetrics4j.input.Method
 import org.codemetrics4j.input.Type
+import org.codemetrics4j.metrics.MetricName
 import spock.lang.Specification
 
 class McclureCalculatorSpec extends Specification {
@@ -60,13 +61,13 @@ class McclureCalculatorSpec extends Specification {
 
 		then:
 
-		expect resultDoWork, containsMetric("NCOMP", 4)
-		expect resultFactorial, containsMetric("NCOMP", 1)
+		expect resultDoWork, containsMetric(MetricName.NCOMP, 4)
+		expect resultFactorial, containsMetric(MetricName.NCOMP, 1)
 
-		expect resultDoWork, containsMetric("NVAR", 5)
-		expect resultFactorial, containsMetric("NVAR", 2)
+		expect resultDoWork, containsMetric(MetricName.NVAR, 5)
+		expect resultFactorial, containsMetric(MetricName.NVAR, 2)
 
-		expect resultDoWork, containsMetric("MCLC", 9)
-		expect resultFactorial, containsMetric("MCLC", 3)
+		expect resultDoWork, containsMetric(MetricName.MCLC, 9)
+		expect resultFactorial, containsMetric(MetricName.MCLC, 3)
 	}
 }

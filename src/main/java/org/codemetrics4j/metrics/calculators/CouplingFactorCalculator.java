@@ -6,6 +6,7 @@ import java.util.Set;
 import org.codemetrics4j.input.Type;
 import org.codemetrics4j.metrics.Calculator;
 import org.codemetrics4j.metrics.Metric;
+import org.codemetrics4j.metrics.MetricName;
 import org.codemetrics4j.metrics.value.NumericValue;
 
 public class CouplingFactorCalculator implements Calculator<Type> {
@@ -25,12 +26,12 @@ public class CouplingFactorCalculator implements Calculator<Type> {
                 .times(NumericValue.of(2)); // Can have a server or client relationship with every class other than self
 
         ImmutableSet.Builder<Metric> metricBuilder = ImmutableSet.<Metric>builder()
-                .add(Metric.of("NODa", "Number of Dependants", NumericValue.of(serverRelationships.size())))
-                .add(Metric.of("NODe", "Number of Dependencies", NumericValue.of(clientRelationships.size())));
+                .add(Metric.of(MetricName.NODa, "Number of Dependants", NumericValue.of(serverRelationships.size())))
+                .add(Metric.of(MetricName.NODe, "Number of Dependencies", NumericValue.of(clientRelationships.size())));
 
         if (totalPossibleRelationships.isGreaterThan(NumericValue.ZERO)) {
             metricBuilder.add(Metric.of(
-                    "CF",
+                    MetricName.CF,
                     "Coupling Factor",
                     NumericValue.of(clientRelationships.size() + serverRelationships.size())
                             .divide(totalPossibleRelationships)));

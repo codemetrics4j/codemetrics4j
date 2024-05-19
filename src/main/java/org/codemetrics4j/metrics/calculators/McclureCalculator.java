@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 import org.codemetrics4j.input.Method;
 import org.codemetrics4j.metrics.Calculator;
 import org.codemetrics4j.metrics.Metric;
+import org.codemetrics4j.metrics.MetricName;
 
 public class McclureCalculator implements Calculator<Method> {
     @Override
@@ -53,9 +54,11 @@ public class McclureCalculator implements Calculator<Method> {
                 controlVariables.stream().map(NameExpr::getNameAsString).collect(Collectors.toSet());
 
         return ImmutableSet.of(
-                Metric.of("NCOMP", "Number of Comparisons", comparisons.size()),
-                Metric.of("NVAR", "Number of Control Variables", uniqueControlVariableNames.size()),
+                Metric.of(MetricName.NCOMP, "Number of Comparisons", comparisons.size()),
+                Metric.of(MetricName.NVAR, "Number of Control Variables", uniqueControlVariableNames.size()),
                 Metric.of(
-                        "MCLC", "McClure's Complexity Metric", uniqueControlVariableNames.size() + comparisons.size()));
+                        MetricName.MCLC,
+                        "McClure's Complexity Metric",
+                        uniqueControlVariableNames.size() + comparisons.size()));
     }
 }

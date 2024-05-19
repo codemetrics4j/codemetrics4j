@@ -19,6 +19,7 @@ import org.codemetrics4j.input.Project;
 import org.codemetrics4j.input.Type;
 import org.codemetrics4j.metrics.Calculator;
 import org.codemetrics4j.metrics.Metric;
+import org.codemetrics4j.metrics.MetricName;
 import org.codemetrics4j.metrics.value.NumericValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,10 +95,10 @@ public class TotalLinesOfCodeCalculator {
         @Override
         public Set<Metric> calculate(Project aProject) {
             NumericValue total = aProject.getPackages().stream()
-                    .map(m -> m.getMetric("TLOC").get().getValue())
+                    .map(m -> m.getMetric(MetricName.TLOC).get().getValue())
                     .reduce(NumericValue.ZERO, NumericValue::plus);
 
-            return ImmutableSet.of(Metric.of("TLOC", "Total Lines of Code", total));
+            return ImmutableSet.of(Metric.of(MetricName.TLOC, "Total Lines of Code", total));
         }
     }
 
@@ -106,10 +107,10 @@ public class TotalLinesOfCodeCalculator {
         @Override
         public Set<Metric> calculate(Package aPackage) {
             NumericValue total = aPackage.getTypes().stream()
-                    .map(m -> m.getMetric("TLOC").get().getValue())
+                    .map(m -> m.getMetric(MetricName.TLOC).get().getValue())
                     .reduce(NumericValue.ZERO, NumericValue::plus);
 
-            return ImmutableSet.of(Metric.of("TLOC", "Total Lines of Code", total));
+            return ImmutableSet.of(Metric.of(MetricName.TLOC, "Total Lines of Code", total));
         }
     }
 
@@ -121,7 +122,7 @@ public class TotalLinesOfCodeCalculator {
             nodeStack.add(type.getSource());
 
             NumericValue total = performCalculation(nodeStack);
-            return ImmutableSet.of(Metric.of("TLOC", "Total Lines of Code", total));
+            return ImmutableSet.of(Metric.of(MetricName.TLOC, "Total Lines of Code", total));
         }
     }
 
@@ -133,7 +134,7 @@ public class TotalLinesOfCodeCalculator {
             nodeStack.add(method.getSource());
 
             NumericValue total = performCalculation(nodeStack);
-            return ImmutableSet.of(Metric.of("TLOC", "Total Lines of Code", total));
+            return ImmutableSet.of(Metric.of(MetricName.TLOC, "Total Lines of Code", total));
         }
     }
 

@@ -12,6 +12,7 @@ import org.codemetrics4j.input.Method;
 import org.codemetrics4j.input.Type;
 import org.codemetrics4j.metrics.Calculator;
 import org.codemetrics4j.metrics.Metric;
+import org.codemetrics4j.metrics.MetricName;
 import org.codemetrics4j.metrics.value.NumericValue;
 
 /**
@@ -34,17 +35,19 @@ public class SpecializationIndexCalculator implements Calculator<Type> {
         // more good and related ones here http://www.cs.kent.edu/~jmaletic/cs63901/lectures/SoftwareMetrics.pdf
 
         ImmutableSet.Builder<Metric> metricBuilder = ImmutableSet.<Metric>builder()
-                .add(Metric.of("DIT", "Depth of Inheritance Tree", depth))
-                .add(Metric.of("NORM", "Number of Overridden Methods", overriddenMethods))
-                .add(Metric.of("NM", "Number of Methods", numberOfMethods))
-                .add(Metric.of("NMI", "Number of Inherited Methods", inheritedMethods))
+                .add(Metric.of(MetricName.DIT, "Depth of Inheritance Tree", depth))
+                .add(Metric.of(MetricName.NORM, "Number of Overridden Methods", overriddenMethods))
+                .add(Metric.of(MetricName.NM, "Number of Methods", numberOfMethods))
+                .add(Metric.of(MetricName.NMI, "Number of Inherited Methods", inheritedMethods))
                 .add(Metric.of(
-                        "NMA", "Number of Methods Added to Inheritance", numberOfMethods.minus(overriddenMethods)));
+                        MetricName.NMA,
+                        "Number of Methods Added to Inheritance",
+                        numberOfMethods.minus(overriddenMethods)));
 
         if (numberOfMethods.compareTo(NumericValue.ZERO) > 0) {
             NumericValue numerator = overriddenMethods.times(depth);
             NumericValue specializationIndex = numerator.divide(numberOfMethods);
-            metricBuilder = metricBuilder.add(Metric.of("SIX", "Specialization Index", specializationIndex));
+            metricBuilder = metricBuilder.add(Metric.of(MetricName.SIX, "Specialization Index", specializationIndex));
         }
 
         return metricBuilder.build();

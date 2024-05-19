@@ -13,6 +13,7 @@ import org.codemetrics4j.input.Method;
 import org.codemetrics4j.input.Type;
 import org.codemetrics4j.metrics.Calculator;
 import org.codemetrics4j.metrics.Metric;
+import org.codemetrics4j.metrics.MetricName;
 import org.codemetrics4j.metrics.value.NumericValue;
 import org.codemetrics4j.util.CalculationUtils;
 
@@ -52,7 +53,7 @@ public class LackOfCohesionMethodsCalculator implements Calculator<Type> {
             NumericValue denominator = NumericValue.ONE.minus(numberOfMethodsAsRational);
 
             NumericValue lackOfCohesionMethods = numerator.divide(denominator);
-            return ImmutableSet.of(Metric.of("LCOM*", "Lack of Cohesion Methods (H-S)", lackOfCohesionMethods));
+            return ImmutableSet.of(Metric.of(MetricName.LCOM, "Lack of Cohesion Methods (H-S)", lackOfCohesionMethods));
         } catch (ArithmeticException e) {
             return ImmutableSet.of();
         }

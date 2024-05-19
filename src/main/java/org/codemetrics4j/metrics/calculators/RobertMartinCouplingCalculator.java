@@ -12,6 +12,7 @@ import org.codemetrics4j.input.Package;
 import org.codemetrics4j.input.Type;
 import org.codemetrics4j.metrics.Calculator;
 import org.codemetrics4j.metrics.Metric;
+import org.codemetrics4j.metrics.MetricName;
 import org.codemetrics4j.metrics.value.NumericValue;
 
 public class RobertMartinCouplingCalculator implements Calculator<Package> {
@@ -91,15 +92,15 @@ public class RobertMartinCouplingCalculator implements Calculator<Package> {
         }
 
         ImmutableSet.Builder<Metric> metrics = ImmutableSet.<Metric>builder()
-                .add(Metric.of("Ca", "Afferent Coupling", afferentCoupling))
-                .add(Metric.of("Ce", "Efferent Coupling", efferentCoupling));
+                .add(Metric.of(MetricName.Ca, "Afferent Coupling", afferentCoupling))
+                .add(Metric.of(MetricName.Ce, "Efferent Coupling", efferentCoupling));
 
         Optional<NumericValue> instabilityOpt = Optional.ofNullable(
                 afferentCoupling.plus(efferentCoupling).isGreaterThan(NumericValue.ZERO)
                         ? efferentCoupling.divide(afferentCoupling.plus(efferentCoupling))
                         : null);
 
-        instabilityOpt.ifPresent(i -> metrics.add(Metric.of("I", "Instability", i)));
+        instabilityOpt.ifPresent(i -> metrics.add(Metric.of(MetricName.I, "Instability", i)));
 
         NumericValue numberOfAbstractClassesAndInterfacesInPackage =
                 NumericValue.of(aPackage.getTypes().parallelStream()
@@ -108,7 +109,9 @@ public class RobertMartinCouplingCalculator implements Calculator<Package> {
                         .count());
 
         metrics.add(Metric.of(
-                "NOI", "Number of Interfaces and Abstract Classes", numberOfAbstractClassesAndInterfacesInPackage));
+                MetricName.NOI,
+                "Number of Interfaces and Abstract Classes",
+                numberOfAbstractClassesAndInterfacesInPackage));
 
         Optional<NumericValue> abstractnessOpt = Optional.ofNullable(
                 !aPackage.getTypes().isEmpty()
@@ -116,11 +119,11 @@ public class RobertMartinCouplingCalculator implements Calculator<Package> {
                                 NumericValue.of(aPackage.getTypes().size()))
                         : null);
 
-        abstractnessOpt.ifPresent(a -> metrics.add(Metric.of("A", "Abstractness", a)));
+        abstractnessOpt.ifPresent(a -> metrics.add(Metric.of(MetricName.A, "Abstractness", a)));
 
         if (instabilityOpt.isPresent() && abstractnessOpt.isPresent()) {
             metrics.add(Metric.of(
-                    "DMS",
+                    MetricName.DMS,
                     "Normalized Distance from Main Sequence",
                     abstractnessOpt
                             .get()

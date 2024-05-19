@@ -5,6 +5,7 @@ import static org.codemetrics4j.util.TestUtil.projectFromSnippet
 import static spock.util.matcher.HamcrestSupport.expect
 
 import org.codemetrics4j.input.Type
+import org.codemetrics4j.metrics.MetricName
 import org.codemetrics4j.metrics.value.NumericValue
 import spock.lang.Specification
 
@@ -62,10 +63,10 @@ class CouplingFactorCalculatorTest extends Specification {
 		def mainClassResult = new CouplingFactorCalculator().calculate(mainClass)
 
 		then:
-		expect classAResult, containsMetric("CF", NumericValue.ofRational(2,6))  //Uses ClassB, is used by MainClass
-		expect classBResult, containsMetric("CF", NumericValue.ofRational(3,6))  //Uses ClassC, used by MainClass and A
-		expect classCResult, containsMetric("CF", NumericValue.ofRational(2,6))  //Uses nothing, used by MainClass and b
-		expect mainClassResult, containsMetric("CF", NumericValue.ofRational(3,6)) //Uses all, used by nothing
+		expect classAResult, containsMetric(MetricName.CF, NumericValue.ofRational(2,6))  //Uses ClassB, is used by MainClass
+		expect classBResult, containsMetric(MetricName.CF, NumericValue.ofRational(3,6))  //Uses ClassC, used by MainClass and A
+		expect classCResult, containsMetric(MetricName.CF, NumericValue.ofRational(2,6))  //Uses nothing, used by MainClass and b
+		expect mainClassResult, containsMetric(MetricName.CF, NumericValue.ofRational(3,6)) //Uses all, used by nothing
 	}
 
 	def "properly accounts for parameters"() {
@@ -113,9 +114,9 @@ class CouplingFactorCalculatorTest extends Specification {
 		def mainClassResult = new CouplingFactorCalculator().calculate(mainClass)
 
 		then:
-		expect classAResult, containsMetric("CF", NumericValue.ofRational(2,4))
-		expect classBResult, containsMetric("CF", NumericValue.ofRational(2,4))
-		expect mainClassResult, containsMetric("CF", NumericValue.ofRational(2,4))
+		expect classAResult, containsMetric(MetricName.CF, NumericValue.ofRational(2,4))
+		expect classBResult, containsMetric(MetricName.CF, NumericValue.ofRational(2,4))
+		expect mainClassResult, containsMetric(MetricName.CF, NumericValue.ofRational(2,4))
 	}
 
 	def "correctly calculates coupling coefficient with inheritance"() {
@@ -165,11 +166,11 @@ class CouplingFactorCalculatorTest extends Specification {
 		def resultY = new CouplingFactorCalculator().calculate(classY)
 
 		then:
-		expect resultA, containsMetric("CF", NumericValue.ofRational(2,10)) //Uses none, used by X and Y
-		expect resultI, containsMetric("CF", NumericValue.ofRational(1,10)) //Uses none, used by J
-		expect resultJ, containsMetric("CF", NumericValue.ofRational(2,10)) //Uses I, used by K
-		expect resultK, containsMetric("CF", NumericValue.ofRational(2,10)) //Uses J, used by X
-		expect resultX, containsMetric("CF", NumericValue.ofRational(2,10)) //Uses A and K, used by none
-		expect resultY, containsMetric("CF", NumericValue.ofRational(1,10)) //Uses A, used by none
+		expect resultA, containsMetric(MetricName.CF, NumericValue.ofRational(2,10)) //Uses none, used by X and Y
+		expect resultI, containsMetric(MetricName.CF, NumericValue.ofRational(1,10)) //Uses none, used by J
+		expect resultJ, containsMetric(MetricName.CF, NumericValue.ofRational(2,10)) //Uses I, used by K
+		expect resultK, containsMetric(MetricName.CF, NumericValue.ofRational(2,10)) //Uses J, used by X
+		expect resultX, containsMetric(MetricName.CF, NumericValue.ofRational(2,10)) //Uses A and K, used by none
+		expect resultY, containsMetric(MetricName.CF, NumericValue.ofRational(1,10)) //Uses A, used by none
 	}
 }

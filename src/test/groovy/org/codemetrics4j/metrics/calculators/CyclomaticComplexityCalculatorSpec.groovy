@@ -4,6 +4,7 @@ import static org.codemetrics4j.util.Matchers.containsMetric
 import static org.codemetrics4j.util.TestUtil.methodFromSnippet
 import static spock.util.matcher.HamcrestSupport.expect
 
+import org.codemetrics4j.metrics.MetricName
 import spock.lang.Specification
 
 class CyclomaticComplexityCalculatorSpec extends Specification {
@@ -37,7 +38,7 @@ class CyclomaticComplexityCalculatorSpec extends Specification {
 		def result = new CyclomaticComplexityCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("VG", 6)
+		expect result, containsMetric(MetricName.VG, 6)
 	}
 
 	def "calculate includes for statments"() {
@@ -57,7 +58,7 @@ class CyclomaticComplexityCalculatorSpec extends Specification {
 		def result = new CyclomaticComplexityCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("VG", 3)
+		expect result, containsMetric(MetricName.VG, 3)
 	}
 
 	def "calculate uses case statements but doesn't count switch or default"() {
@@ -98,7 +99,7 @@ class CyclomaticComplexityCalculatorSpec extends Specification {
 		def result = new CyclomaticComplexityCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("VG", 12)
+		expect result, containsMetric(MetricName.VG, 12)
 	}
 
 
@@ -121,7 +122,7 @@ class CyclomaticComplexityCalculatorSpec extends Specification {
 		def result = new CyclomaticComplexityCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("VG", 6)
+		expect result, containsMetric(MetricName.VG, 6)
 	}
 
 	def "calculate looks at ternary"() {
@@ -137,7 +138,7 @@ class CyclomaticComplexityCalculatorSpec extends Specification {
 		def result = new CyclomaticComplexityCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("VG", 4)
+		expect result, containsMetric(MetricName.VG, 4)
 	}
 
 	def "calculate for loops"() {
@@ -162,6 +163,6 @@ class CyclomaticComplexityCalculatorSpec extends Specification {
 		def result = new CyclomaticComplexityCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("VG", 3)
+		expect result, containsMetric(MetricName.VG, 3)
 	}
 }

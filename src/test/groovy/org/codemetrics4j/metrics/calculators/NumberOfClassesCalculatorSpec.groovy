@@ -4,6 +4,7 @@ import static org.codemetrics4j.util.Matchers.containsMetric
 import static org.codemetrics4j.util.TestUtil.packageFromSnippet
 import static spock.util.matcher.HamcrestSupport.expect
 
+import org.codemetrics4j.metrics.MetricName
 import spock.lang.Specification
 
 class NumberOfClassesCalculatorSpec extends Specification {
@@ -30,7 +31,7 @@ class NumberOfClassesCalculatorSpec extends Specification {
 		def result = new NumberOfClassesCalculator().calculate(aPackage)
 
 		then:
-		expect result, containsMetric("NOC", 2)
+		expect result, containsMetric(MetricName.NOC, 2)
 	}
 
 	def "calculate number of classes for empty package"() {
@@ -44,7 +45,7 @@ class NumberOfClassesCalculatorSpec extends Specification {
 		def result = new NumberOfClassesCalculator().calculate(aPackage)
 
 		then:
-		expect result, containsMetric("NOC", 0)
+		expect result, containsMetric(MetricName.NOC, 0)
 	}
 
 	def "counts interfaces when counting classes"() {
@@ -76,7 +77,7 @@ class NumberOfClassesCalculatorSpec extends Specification {
 		def result = new NumberOfClassesCalculator().calculate(aPackage)
 
 		then:
-		expect result, containsMetric("NOC", 3)
+		expect result, containsMetric(MetricName.NOC, 3)
 	}
 
 	//TODO: does not count inner or anonymous classes

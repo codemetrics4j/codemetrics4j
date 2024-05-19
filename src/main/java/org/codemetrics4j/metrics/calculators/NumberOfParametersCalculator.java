@@ -5,6 +5,7 @@ import java.util.Set;
 import org.codemetrics4j.input.Method;
 import org.codemetrics4j.metrics.Calculator;
 import org.codemetrics4j.metrics.Metric;
+import org.codemetrics4j.metrics.MetricName;
 
 /**
  * Simply counts the number of parameters on a method
@@ -16,7 +17,7 @@ public class NumberOfParametersCalculator implements Calculator<Method> {
     @Override
     public Set<Metric> calculate(Method method) {
         return ImmutableSet.of(Metric.of(
-                "NOP",
+                MetricName.NOP,
                 "Number of Parameters",
                 method.getSource().getParameters().size()));
     }

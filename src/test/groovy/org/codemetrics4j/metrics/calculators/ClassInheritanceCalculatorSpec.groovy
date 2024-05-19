@@ -5,6 +5,7 @@ import static org.codemetrics4j.util.TestUtil.projectFromSnippet
 import static spock.util.matcher.HamcrestSupport.expect
 
 import org.codemetrics4j.input.Type
+import org.codemetrics4j.metrics.MetricName
 import spock.lang.Specification
 
 class ClassInheritanceCalculatorSpec extends Specification {
@@ -54,10 +55,10 @@ class ClassInheritanceCalculatorSpec extends Specification {
 		def resultK = new ClassInheritanceCalculator().calculate(classK)
 
 		then:
-		expect resultX, containsMetric("NOPa", 2)
-		expect resultY, containsMetric("NOPa", 1)
-		expect resultA, containsMetric("NOCh", 2)
-		expect resultK, containsMetric("NOCh", 1)
+		expect resultX, containsMetric(MetricName.NOPa, 2)
+		expect resultY, containsMetric(MetricName.NOPa, 1)
+		expect resultA, containsMetric(MetricName.NOCh, 2)
+		expect resultK, containsMetric(MetricName.NOCh, 1)
 	}
 
 	def "correctly calculates number of descendants"() {
@@ -103,10 +104,10 @@ class ClassInheritanceCalculatorSpec extends Specification {
 		def resultI = new ClassInheritanceCalculator().calculate(classI)
 
 		then:
-		expect resultA, containsMetric("NOD", 2)
-		expect resultK, containsMetric("NOD", 1)
+		expect resultA, containsMetric(MetricName.NOD, 2)
+		expect resultK, containsMetric(MetricName.NOD, 1)
 
-		expect resultI, containsMetric("NOD", 3)
+		expect resultI, containsMetric(MetricName.NOD, 3)
 	}
 
 	def "correctly calculates number of ancestors"() {
@@ -151,8 +152,8 @@ class ClassInheritanceCalculatorSpec extends Specification {
 
 		then:
 
-		expect resultX, containsMetric("NOA", 4)
-		expect resultY, containsMetric("NOA", 1)
+		expect resultX, containsMetric(MetricName.NOA, 4)
+		expect resultY, containsMetric(MetricName.NOA, 1)
 	}
 
 	def "properly resolves class name conflicts"() {
@@ -194,8 +195,8 @@ class ClassInheritanceCalculatorSpec extends Specification {
 
 		then:
 
-		expect resultY, containsMetric("NOA", 1)
-		expect resultY, containsMetric("NOPa", 1)
+		expect resultY, containsMetric(MetricName.NOA, 1)
+		expect resultY, containsMetric(MetricName.NOPa, 1)
 	}
 
 	def "completely ignores classes it doesn't know about"() {
@@ -218,8 +219,8 @@ class ClassInheritanceCalculatorSpec extends Specification {
 
 		then:
 
-		expect resultY, containsMetric("NOA", 0)
-		expect resultY, containsMetric("NOPa", 0)
+		expect resultY, containsMetric(MetricName.NOA, 0)
+		expect resultY, containsMetric(MetricName.NOPa, 0)
 	}
 
 
@@ -256,8 +257,8 @@ class ClassInheritanceCalculatorSpec extends Specification {
 
 		then:
 
-		expect resultY, containsMetric("NOA", 1)
-		expect resultY, containsMetric("NOPa", 1)
+		expect resultY, containsMetric(MetricName.NOA, 1)
+		expect resultY, containsMetric(MetricName.NOPa, 1)
 	}
 
 	def "properly handles inner classes even when statically imported"() {
@@ -295,7 +296,7 @@ class ClassInheritanceCalculatorSpec extends Specification {
 
 		then:
 
-		expect resultY, containsMetric("NOA", 1)
-		expect resultY, containsMetric("NOPa", 1)
+		expect resultY, containsMetric(MetricName.NOA, 1)
+		expect resultY, containsMetric(MetricName.NOPa, 1)
 	}
 }

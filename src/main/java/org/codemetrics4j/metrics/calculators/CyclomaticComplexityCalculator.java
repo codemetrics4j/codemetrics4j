@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import org.codemetrics4j.input.Method;
 import org.codemetrics4j.metrics.Calculator;
 import org.codemetrics4j.metrics.Metric;
+import org.codemetrics4j.metrics.MetricName;
 import org.codemetrics4j.metrics.value.NumericValue;
 
 public class CyclomaticComplexityCalculator implements Calculator<Method> {
@@ -44,6 +45,6 @@ public class CyclomaticComplexityCalculator implements Calculator<Method> {
                 + orExprs.size()
                 + 1); // There's always at least 1 path through the method
 
-        return ImmutableSet.of(Metric.of("VG", "McCabe Cyclomatic Complexity", total));
+        return ImmutableSet.of(Metric.of(MetricName.VG, "McCabe Cyclomatic Complexity", total));
     }
 }
