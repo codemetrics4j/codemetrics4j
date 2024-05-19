@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added `--no-<metric name>` CLI options to disable selected metrics.
+
 ## [1.2.0] - 2024-04-15
 
 ### Added
