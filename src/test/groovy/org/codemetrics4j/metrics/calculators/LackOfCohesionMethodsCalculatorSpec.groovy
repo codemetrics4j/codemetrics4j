@@ -5,6 +5,7 @@ import static org.codemetrics4j.util.Matchers.doesNotContainMetric
 import static org.codemetrics4j.util.TestUtil.typeFromSnippet
 import static spock.util.matcher.HamcrestSupport.expect
 
+import org.codemetrics4j.metrics.MetricName
 import org.codemetrics4j.metrics.value.NumericValue
 import spock.lang.Specification
 
@@ -38,7 +39,7 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
 		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("LCOM*", 0)
+		expect result, containsMetric(MetricName.LCOM, 0)
 	}
 
 	def "calculate simple LCOM for non-perfect example"() {
@@ -73,7 +74,7 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
 		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("LCOM*", NumericValue.of(1).divide(NumericValue.of(3)))
+		expect result, containsMetric(MetricName.LCOM, NumericValue.of(1).divide(NumericValue.of(3)))
 	}
 
 	def "calculate simple LCOM sees variable use in for loops"() {
@@ -102,7 +103,7 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
 		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("LCOM*", 0)
+		expect result, containsMetric(MetricName.LCOM, 0)
 	}
 
 	def "LCOM is undefined when only one method and one field"() {
@@ -124,7 +125,7 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
 		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
 		then:
-		expect result, doesNotContainMetric("LCOM*")
+		expect result, doesNotContainMetric(MetricName.LCOM)
 	}
 
 	def "detects when usages have been shadowed by identically-named variables"() {
@@ -151,7 +152,7 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
 		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("LCOM*", 2)
+		expect result, containsMetric(MetricName.LCOM, 2)
 	}
 
 	def "detects when usages have been shadowed by identically-named variables outside of the scope in which they are used"() {
@@ -182,7 +183,7 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
 		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("LCOM*", 2)
+		expect result, containsMetric(MetricName.LCOM, 2)
 	}
 
 	def "simple baseline metric for straight variable access"() {
@@ -208,7 +209,7 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
 		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("LCOM*", 1.5)
+		expect result, containsMetric(MetricName.LCOM, 1.5)
 	}
 
 
@@ -235,7 +236,7 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
 		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("LCOM*", 1)
+		expect result, containsMetric(MetricName.LCOM, 1)
 	}
 
 	def "detects shadowing in for loop initializer"() {
@@ -263,7 +264,7 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
 		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("LCOM*", 1.5)
+		expect result, containsMetric(MetricName.LCOM, 1.5)
 	}
 
 
@@ -292,7 +293,7 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
 		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("LCOM*", 1)
+		expect result, containsMetric(MetricName.LCOM, 1)
 	}
 
 
@@ -321,7 +322,7 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
 		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("LCOM*", 1)
+		expect result, containsMetric(MetricName.LCOM, 1)
 	}
 
 	def "detects when usages have been shadowed by identically-named variables but still counts the method if it has a genuine access even if shadowed declaration is in different scope from use"() {
@@ -351,7 +352,7 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
 		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("LCOM*", 1)
+		expect result, containsMetric(MetricName.LCOM, 1)
 	}
 
 	def "detects when usages have been shadowed in else statement"() {
@@ -383,7 +384,7 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
 		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("LCOM*", 1)
+		expect result, containsMetric(MetricName.LCOM, 1)
 	}
 
 	def "calculate LCOM counts assignments as usages"() {
@@ -410,7 +411,7 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
 		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("LCOM*", 0)
+		expect result, containsMetric(MetricName.LCOM, 0)
 	}
 
 	def "detects variable shadowing via method parameters"() {
@@ -436,7 +437,7 @@ class LackOfCohesionMethodsCalculatorSpec extends Specification {
 		def result = new LackOfCohesionMethodsCalculator().calculate(type)
 
 		then:
-		expect result, containsMetric("LCOM*", 2)
+		expect result, containsMetric(MetricName.LCOM, 2)
 	}
 
 	//TODO: don't factor in interface or abstract methods? should they not even count in the total?

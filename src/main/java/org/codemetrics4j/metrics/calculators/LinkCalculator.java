@@ -6,6 +6,7 @@ import java.util.Set;
 import org.codemetrics4j.input.Type;
 import org.codemetrics4j.metrics.Calculator;
 import org.codemetrics4j.metrics.Metric;
+import org.codemetrics4j.metrics.MetricName;
 
 public class LinkCalculator implements Calculator<Type> {
 
@@ -17,6 +18,6 @@ public class LinkCalculator implements Calculator<Type> {
 
         Set<Type> links = uses.successors(type);
 
-        return ImmutableSet.of(Metric.of("NOL", "Number of Links", links.size()));
+        return ImmutableSet.of(Metric.of(MetricName.NOL, "Number of Links", links.size()));
     }
 }

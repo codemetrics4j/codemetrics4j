@@ -90,7 +90,7 @@ public class XMLOutputter implements Outputter<Document> {
         for (Metric metric : sortedMetrics) {
             Element metricsElement = doc.createElement("Metric");
 
-            metricsElement.setAttribute("name", metric.getName());
+            metricsElement.setAttribute("name", metric.getName().toString());
             metricsElement.setAttribute("description", metric.getDescription());
             metricsElement.setAttribute("value", metric.getFormattedValue());
 

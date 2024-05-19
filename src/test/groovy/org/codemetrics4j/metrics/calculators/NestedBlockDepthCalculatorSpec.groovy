@@ -6,6 +6,7 @@ import static org.codemetrics4j.util.TestUtil.packageFromSnippet
 import static spock.util.matcher.HamcrestSupport.expect
 
 import org.codemetrics4j.input.Type
+import org.codemetrics4j.metrics.MetricName
 import spock.lang.Specification
 
 class NestedBlockDepthCalculatorSpec extends Specification {
@@ -23,7 +24,7 @@ class NestedBlockDepthCalculatorSpec extends Specification {
 		def result = new NestedBlockDepthCalculator().calculate(method)
 
 		then:
-		expect result, containsMetric("NBD", 1)
+		expect result, containsMetric(MetricName.NBD, 1)
 	}
 
 
@@ -63,7 +64,7 @@ class NestedBlockDepthCalculatorSpec extends Specification {
 		def result = new NestedBlockDepthCalculator().calculate(method)
 
 		then:
-		expect result, containsMetric("NBD", 6)
+		expect result, containsMetric(MetricName.NBD, 6)
 	}
 
 	def "calculate simple if metric"() {
@@ -82,7 +83,7 @@ class NestedBlockDepthCalculatorSpec extends Specification {
 		def result = new NestedBlockDepthCalculator().calculate(method)
 
 		then:
-		expect result, containsMetric("NBD", 2)
+		expect result, containsMetric(MetricName.NBD, 2)
 	}
 
 	def "calculate simple try metric"() {
@@ -105,7 +106,7 @@ class NestedBlockDepthCalculatorSpec extends Specification {
 		def result = new NestedBlockDepthCalculator().calculate(method)
 
 		then:
-		expect result, containsMetric("NBD", 3)
+		expect result, containsMetric(MetricName.NBD, 3)
 	}
 
 	def "calculate complex try"() {
@@ -130,7 +131,7 @@ class NestedBlockDepthCalculatorSpec extends Specification {
 		def result = new NestedBlockDepthCalculator().calculate(method)
 
 		then:
-		expect result, containsMetric("NBD", 4)
+		expect result, containsMetric(MetricName.NBD, 4)
 	}
 
 	def "calculate complex metric again"() {
@@ -159,7 +160,7 @@ class NestedBlockDepthCalculatorSpec extends Specification {
 		def result = new NestedBlockDepthCalculator().calculate(method)
 
 		then:
-		expect result, containsMetric("NBD", 5)
+		expect result, containsMetric(MetricName.NBD, 5)
 	}
 
 	def "calculate blocks in lambdas"() {
@@ -179,7 +180,7 @@ class NestedBlockDepthCalculatorSpec extends Specification {
 		def result = new NestedBlockDepthCalculator().calculate(method)
 
 		then:
-		expect result, containsMetric("NBD", 2)
+		expect result, containsMetric(MetricName.NBD, 2)
 	}
 
 	def "calculate blocks in lambdas with no braces (so no nesting)"() {
@@ -197,7 +198,7 @@ class NestedBlockDepthCalculatorSpec extends Specification {
 		def result = new NestedBlockDepthCalculator().calculate(method)
 
 		then:
-		expect result, containsMetric("NBD", 1)
+		expect result, containsMetric(MetricName.NBD, 1)
 	}
 
 	def "calculate blocks in deeply nested lambdas"() {
@@ -225,7 +226,7 @@ class NestedBlockDepthCalculatorSpec extends Specification {
 		def result = new NestedBlockDepthCalculator().calculate(method)
 
 		then:
-		expect result, containsMetric("NBD", 4)
+		expect result, containsMetric(MetricName.NBD, 4)
 	}
 
 	def "calculate handles differently formatted if else statements identically"() {
@@ -251,7 +252,7 @@ class NestedBlockDepthCalculatorSpec extends Specification {
 		def result = new NestedBlockDepthCalculator().calculate(method)
 
 		then:
-		expect result, containsMetric("NBD", 4)
+		expect result, containsMetric(MetricName.NBD, 4)
 	}
 
 	def "calculate anoynmous classes properly"() {
@@ -312,6 +313,6 @@ class NestedBlockDepthCalculatorSpec extends Specification {
 		def result = new NestedBlockDepthCalculator().calculate(method)
 
 		then:
-		expect result, containsMetric("NBD", 3)
+		expect result, containsMetric(MetricName.NBD, 3)
 	}
 }

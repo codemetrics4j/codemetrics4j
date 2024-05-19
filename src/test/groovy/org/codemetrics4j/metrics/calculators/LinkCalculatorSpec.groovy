@@ -6,6 +6,7 @@ import static spock.util.matcher.HamcrestSupport.expect
 
 import org.codemetrics4j.input.Method
 import org.codemetrics4j.input.Type
+import org.codemetrics4j.metrics.MetricName
 import spock.lang.Specification
 
 class LinkCalculatorSpec extends Specification {
@@ -66,10 +67,10 @@ class LinkCalculatorSpec extends Specification {
 		def classCResult = new LinkCalculator().calculate(classC)
 
 		then:
-		expect classAResult, containsMetric("NOL", 1)
-		expect classBResult, containsMetric("NOL", 2)
-		expect classCResult, containsMetric("NOL", 0)
-		expect mainClassResult, containsMetric("NOL", 3)
+		expect classAResult, containsMetric(MetricName.NOL, 1)
+		expect classBResult, containsMetric(MetricName.NOL, 2)
+		expect classCResult, containsMetric(MetricName.NOL, 0)
+		expect mainClassResult, containsMetric(MetricName.NOL, 3)
 	}
 
 
@@ -127,10 +128,10 @@ class LinkCalculatorSpec extends Specification {
 		def classCResult = new LinkCalculator().calculate(classC)
 
 		then:
-		expect classAResult, containsMetric("NOL", 1)
-		expect classBResult, containsMetric("NOL", 2)
-		expect classCResult, containsMetric("NOL", 0)
-		expect mainClassResult, containsMetric("NOL", 3)
+		expect classAResult, containsMetric(MetricName.NOL, 1)
+		expect classBResult, containsMetric(MetricName.NOL, 2)
+		expect classCResult, containsMetric(MetricName.NOL, 0)
+		expect mainClassResult, containsMetric(MetricName.NOL, 3)
 	}
 
 	//TODO: ensure empty package names still work

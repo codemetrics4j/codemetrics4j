@@ -7,6 +7,7 @@ import java.util.Set;
 import org.codemetrics4j.input.Type;
 import org.codemetrics4j.metrics.Calculator;
 import org.codemetrics4j.metrics.Metric;
+import org.codemetrics4j.metrics.MetricName;
 import org.codemetrics4j.util.CalculationUtils;
 
 /**
@@ -46,12 +47,12 @@ public class NumberOfFieldsCalculator implements Calculator<Type> {
                 .count();
 
         return ImmutableSet.<Metric>builder()
-                .add(Metric.of("NF", "Number of Attributes", numAttributes))
-                .add(Metric.of("NSF", "Number of Static Attributes", numStaticAttributes))
-                .add(Metric.of("NPF", "Number of Public Attributes", numPublicAttributes))
-                .add(Metric.of("NM", "Number of Methods", numMethods))
-                .add(Metric.of("NSM", "Number of Static Methods", numStaticMethods))
-                .add(Metric.of("NPM", "Number of Public Methods", numPublicMethods))
+                .add(Metric.of(MetricName.NF, "Number of Attributes", numAttributes))
+                .add(Metric.of(MetricName.NSF, "Number of Static Attributes", numStaticAttributes))
+                .add(Metric.of(MetricName.NPF, "Number of Public Attributes", numPublicAttributes))
+                .add(Metric.of(MetricName.NM, "Number of Methods", numMethods))
+                .add(Metric.of(MetricName.NSM, "Number of Static Methods", numStaticMethods))
+                .add(Metric.of(MetricName.NPM, "Number of Public Methods", numPublicMethods))
                 .build();
     }
 }

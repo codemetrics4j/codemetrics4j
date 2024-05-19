@@ -8,6 +8,7 @@ import java.util.Set;
 import org.codemetrics4j.input.Method;
 import org.codemetrics4j.metrics.Calculator;
 import org.codemetrics4j.metrics.Metric;
+import org.codemetrics4j.metrics.MetricName;
 import org.codemetrics4j.metrics.value.NumericValue;
 import org.codemetrics4j.util.Distinct;
 
@@ -49,11 +50,11 @@ public class FanCalculator implements Calculator<Method> {
         NumericValue systemComplexity = dataComplexity.plus(structuralComplexity.divide(NumericValue.ONE));
 
         return ImmutableSet.of(
-                Metric.of("Fout", "Fan-out", fanOut),
-                Metric.of("Fin", "Fan-in", fanIn),
-                Metric.of("Si", "Structural Complexity", structuralComplexity),
-                Metric.of("IOVars", "Input/Output Variables", iovars),
-                Metric.of("Di", "Data Complexity", dataComplexity),
-                Metric.of("Ci", "System Complexity", systemComplexity));
+                Metric.of(MetricName.Fout, "Fan-out", fanOut),
+                Metric.of(MetricName.Fin, "Fan-in", fanIn),
+                Metric.of(MetricName.Si, "Structural Complexity", structuralComplexity),
+                Metric.of(MetricName.IOVars, "Input/Output Variables", iovars),
+                Metric.of(MetricName.Di, "Data Complexity", dataComplexity),
+                Metric.of(MetricName.Ci, "System Complexity", systemComplexity));
     }
 }

@@ -4,6 +4,7 @@ import static org.codemetrics4j.util.Matchers.containsMetric
 import static org.codemetrics4j.util.TestUtil.typeFromSnippet
 import static spock.util.matcher.HamcrestSupport.expect
 
+import org.codemetrics4j.metrics.MetricName
 import spock.lang.Specification
 
 class RawTotalLinesOfCodeCalculatorSpec extends Specification {
@@ -27,7 +28,7 @@ class RawTotalLinesOfCodeCalculatorSpec extends Specification {
 		def result = unit.calculate(type)
 
 		then:
-		expect result, containsMetric("RTLOC", 3)
+		expect result, containsMetric(MetricName.RTLOC, 3)
 	}
 
 	def "calculate counts raw lines of code in a class including comments"() {
@@ -66,7 +67,7 @@ class RawTotalLinesOfCodeCalculatorSpec extends Specification {
 		def result = unit.calculate(type)
 
 		then:
-		expect result, containsMetric("RTLOC", 22)
+		expect result, containsMetric(MetricName.RTLOC, 22)
 	}
 
 	def "calculate class length when only one line"() {
@@ -80,6 +81,6 @@ class RawTotalLinesOfCodeCalculatorSpec extends Specification {
 		def result = unit.calculate(type)
 
 		then:
-		expect result, containsMetric("RTLOC", 1)
+		expect result, containsMetric(MetricName.RTLOC, 1)
 	}
 }

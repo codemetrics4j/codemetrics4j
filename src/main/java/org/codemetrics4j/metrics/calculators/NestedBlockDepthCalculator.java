@@ -13,6 +13,7 @@ import java.util.Set;
 import org.codemetrics4j.input.Method;
 import org.codemetrics4j.metrics.Calculator;
 import org.codemetrics4j.metrics.Metric;
+import org.codemetrics4j.metrics.MetricName;
 
 public class NestedBlockDepthCalculator implements Calculator<Method> {
     @Override
@@ -63,6 +64,6 @@ public class NestedBlockDepthCalculator implements Calculator<Method> {
                 })
                 .max();
 
-        return ImmutableSet.of(Metric.of("NBD", "Nested Block Depth", maxDepth.orElse(1)));
+        return ImmutableSet.of(Metric.of(MetricName.NBD, "Nested Block Depth", maxDepth.orElse(1)));
     }
 }

@@ -5,6 +5,7 @@ import static org.codemetrics4j.util.Matchers.doesNotContainMetric
 import static org.codemetrics4j.util.TestUtil.projectFromSnippet
 import static spock.util.matcher.HamcrestSupport.expect
 
+import org.codemetrics4j.metrics.MetricName
 import org.codemetrics4j.metrics.value.NumericValue
 import spock.lang.Specification
 
@@ -102,16 +103,16 @@ class RobertMartinCouplingCalculatorSpec extends Specification {
 		def secondResult = new RobertMartinCouplingCalculator().calculate(secondPackage)
 
 		then:
-		expect firstResult, containsMetric("Ce", 2)
-		expect firstResult, containsMetric("Ca", 2)
+		expect firstResult, containsMetric(MetricName.Ce, 2)
+		expect firstResult, containsMetric(MetricName.Ca, 2)
 
-		expect secondResult, containsMetric("Ce", 2)
-		expect secondResult, containsMetric("Ca", 2)
+		expect secondResult, containsMetric(MetricName.Ce, 2)
+		expect secondResult, containsMetric(MetricName.Ca, 2)
 
-		expect firstResult, containsMetric("I", 0.5)
-		expect firstResult, containsMetric("A", 0.25)
-		expect firstResult, containsMetric("DMS", 0.25)
-		expect firstResult, containsMetric("NOI", NumericValue.ONE)
+		expect firstResult, containsMetric(MetricName.I, 0.5)
+		expect firstResult, containsMetric(MetricName.A, 0.25)
+		expect firstResult, containsMetric(MetricName.DMS, 0.25)
+		expect firstResult, containsMetric(MetricName.NOI, NumericValue.ONE)
 	}
 
 
@@ -160,16 +161,16 @@ class RobertMartinCouplingCalculatorSpec extends Specification {
 		def secondResult = new RobertMartinCouplingCalculator().calculate(secondPackage)
 
 		then:
-		expect firstResult, containsMetric("Ce", NumericValue.ZERO)
-		expect firstResult, containsMetric("Ca", NumericValue.ZERO)
+		expect firstResult, containsMetric(MetricName.Ce, NumericValue.ZERO)
+		expect firstResult, containsMetric(MetricName.Ca, NumericValue.ZERO)
 
-		expect secondResult, containsMetric("Ce", NumericValue.ZERO)
-		expect secondResult, containsMetric("Ca", NumericValue.ZERO)
+		expect secondResult, containsMetric(MetricName.Ce, NumericValue.ZERO)
+		expect secondResult, containsMetric(MetricName.Ca, NumericValue.ZERO)
 
-		expect firstResult, doesNotContainMetric("I")
-		expect secondResult, containsMetric("Ca", NumericValue.ZERO)
-		expect firstResult, doesNotContainMetric("DMS")
-		expect firstResult, containsMetric("NOI", NumericValue.ZERO)
+		expect firstResult, doesNotContainMetric(MetricName.I)
+		expect secondResult, containsMetric(MetricName.Ca, NumericValue.ZERO)
+		expect firstResult, doesNotContainMetric(MetricName.DMS)
+		expect firstResult, containsMetric(MetricName.NOI, NumericValue.ZERO)
 	}
 
 	def "doesn't count non-public classes"() {
@@ -212,16 +213,16 @@ class RobertMartinCouplingCalculatorSpec extends Specification {
 		def secondResult = new RobertMartinCouplingCalculator().calculate(secondPackage)
 
 		then:
-		expect firstResult, containsMetric("Ce", NumericValue.ZERO)
-		expect firstResult, containsMetric("Ca", NumericValue.ZERO)
+		expect firstResult, containsMetric(MetricName.Ce, NumericValue.ZERO)
+		expect firstResult, containsMetric(MetricName.Ca, NumericValue.ZERO)
 
-		expect secondResult, containsMetric("Ce", NumericValue.ZERO)
-		expect secondResult, containsMetric("Ca", NumericValue.ZERO)
+		expect secondResult, containsMetric(MetricName.Ce, NumericValue.ZERO)
+		expect secondResult, containsMetric(MetricName.Ca, NumericValue.ZERO)
 
-		expect firstResult, doesNotContainMetric("I")
-		expect secondResult, containsMetric("Ca", NumericValue.ZERO)
-		expect firstResult, doesNotContainMetric("DMS")
-		expect firstResult, containsMetric("NOI", NumericValue.ZERO)
+		expect firstResult, doesNotContainMetric(MetricName.I)
+		expect secondResult, containsMetric(MetricName.Ca, NumericValue.ZERO)
+		expect firstResult, doesNotContainMetric(MetricName.DMS)
+		expect firstResult, containsMetric(MetricName.NOI, NumericValue.ZERO)
 	}
 
 	def "able to see public static classes"() {
@@ -264,10 +265,10 @@ class RobertMartinCouplingCalculatorSpec extends Specification {
 		def secondResult = new RobertMartinCouplingCalculator().calculate(secondPackage)
 
 		then:
-		expect firstResult, containsMetric("Ce", NumericValue.ZERO)
-		expect firstResult, containsMetric("Ca", NumericValue.ONE)
+		expect firstResult, containsMetric(MetricName.Ce, NumericValue.ZERO)
+		expect firstResult, containsMetric(MetricName.Ca, NumericValue.ONE)
 
-		expect secondResult, containsMetric("Ce", NumericValue.ONE)
-		expect secondResult, containsMetric("Ca", NumericValue.ZERO)
+		expect secondResult, containsMetric(MetricName.Ce, NumericValue.ONE)
+		expect secondResult, containsMetric(MetricName.Ca, NumericValue.ZERO)
 	}
 }

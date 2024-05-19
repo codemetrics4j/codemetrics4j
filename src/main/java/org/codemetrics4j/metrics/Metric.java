@@ -4,29 +4,29 @@ import com.google.common.base.Objects;
 import org.codemetrics4j.metrics.value.NumericValue;
 
 public class Metric {
-    private final String name;
+    private final MetricName name;
     private final String description;
     private final NumericValue value;
 
-    protected Metric(String name, String description, NumericValue value) {
+    protected Metric(MetricName name, String description, NumericValue value) {
         this.name = name;
         this.description = description;
         this.value = value;
     }
 
-    public static Metric of(String name, String description, NumericValue value) {
+    public static Metric of(MetricName name, String description, NumericValue value) {
         return new Metric(name, description, value);
     }
 
-    public static Metric of(String name, String description, long value) {
+    public static Metric of(MetricName name, String description, long value) {
         return new Metric(name, description, NumericValue.of(value));
     }
 
-    public static Metric of(String name, String description, double value) {
+    public static Metric of(MetricName name, String description, double value) {
         return new Metric(name, description, NumericValue.of(value));
     }
 
-    public String getName() {
+    public MetricName getName() {
         return name;
     }
 
@@ -40,7 +40,7 @@ public class Metric {
 
     @Override
     public String toString() {
-        return name + ": " + value;
+        return name.toString() + ": " + value;
     }
 
     @Override

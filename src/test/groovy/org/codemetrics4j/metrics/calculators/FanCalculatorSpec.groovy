@@ -6,6 +6,7 @@ import static spock.util.matcher.HamcrestSupport.expect
 
 import org.codemetrics4j.input.Method
 import org.codemetrics4j.input.Type
+import org.codemetrics4j.metrics.MetricName
 import org.codemetrics4j.metrics.value.NumericValue
 import spock.lang.Ignore
 import spock.lang.Specification
@@ -54,8 +55,8 @@ class FanCalculatorSpec extends Specification {
 
 		then:
 
-		expect result, containsMetric("FOut", 2)
-		expect result, containsMetric("Si", 4)
+		expect result, containsMetric(MetricName.Fout, 2)
+		expect result, containsMetric(MetricName.Si, 4)
 	}
 
 	@Ignore("Not yet working")
@@ -95,9 +96,9 @@ class FanCalculatorSpec extends Specification {
 		def printNumberResult = new FanCalculator().calculate(printNumber)
 
 		then:
-		expect doStuffResult, containsMetric("FOut", 1)
-		expect doStuffResult, containsMetric("Si", 2)
-		expect printNumberResult, containsMetric("Fin", 1)
+		expect doStuffResult, containsMetric(MetricName.Fout, 1)
+		expect doStuffResult, containsMetric(MetricName.Si, 2)
+		expect printNumberResult, containsMetric(MetricName.Fin, 1)
 	}
 
 
@@ -136,9 +137,9 @@ class FanCalculatorSpec extends Specification {
 		def printNumberResult = new FanCalculator().calculate(printNumber)
 
 		then:
-		expect doStuffResult, containsMetric("FOut", 1)
-		expect doStuffResult, containsMetric("Si", 2)
-		expect printNumberResult, containsMetric("Fin", 1)
+		expect doStuffResult, containsMetric(MetricName.Fout, 1)
+		expect doStuffResult, containsMetric(MetricName.Si, 2)
+		expect printNumberResult, containsMetric(MetricName.Fin, 1)
 	}
 
 	def "properly counts fan-in within a class"() {
@@ -183,9 +184,9 @@ class FanCalculatorSpec extends Specification {
 
 		then:
 
-		expect result, containsMetric("Fin", 0)
-		expect result, containsMetric("Fout", 2)
-		expect result, containsMetric("Si", 4)
+		expect result, containsMetric(MetricName.Fin, 0)
+		expect result, containsMetric(MetricName.Fout, 2)
+		expect result, containsMetric(MetricName.Si, 4)
 	}
 
 	def "properly counts fan-in outside of class"() {
@@ -229,7 +230,7 @@ class FanCalculatorSpec extends Specification {
 		def result = new FanCalculator().calculate(getNumber)
 
 		then:
-		expect result, containsMetric("Fin", 4)
+		expect result, containsMetric(MetricName.Fin, 4)
 	}
 
 	def "properly figures out correct types"() {
@@ -277,7 +278,7 @@ class FanCalculatorSpec extends Specification {
 		def result = new FanCalculator().calculate(getNumber)
 
 		then:
-		expect result, containsMetric("Fout", 2)
+		expect result, containsMetric(MetricName.Fout, 2)
 	}
 
 	def "properly calculates chained method calls"() {
@@ -335,10 +336,10 @@ class FanCalculatorSpec extends Specification {
 		def classCPrintResult = new FanCalculator().calculate(classCPrint.get())
 
 		then:
-		expect doPrintResult, containsMetric("Fout", 3)
-		expect classAgetBResult, containsMetric("Fin", 1)
-		expect classBgetCResult, containsMetric("Fin", 1)
-		expect classCPrintResult, containsMetric("Fin", 1)
+		expect doPrintResult, containsMetric(MetricName.Fout, 3)
+		expect classAgetBResult, containsMetric(MetricName.Fin, 1)
+		expect classBgetCResult, containsMetric(MetricName.Fin, 1)
+		expect classCPrintResult, containsMetric(MetricName.Fin, 1)
 	}
 
 	def "properly calculates data complexity"() {
@@ -389,12 +390,12 @@ class FanCalculatorSpec extends Specification {
 
 		then:
 
-		expect resultVoid, containsMetric("Fout", 2) //(2 / 3)
-		expect resultInt, containsMetric("Fout", 2) //(2 / 3)
-		expect resultVoid, containsMetric("Di", NumericValue.of(2).divide(NumericValue.of(3)))
-		expect resultInt, containsMetric("Di", 1) //((2 + 1)/ 3)
+		expect resultVoid, containsMetric(MetricName.Fout, 2) //(2 / 3)
+		expect resultInt, containsMetric(MetricName.Fout, 2) //(2 / 3)
+		expect resultVoid, containsMetric(MetricName.Di, NumericValue.of(2).divide(NumericValue.of(3)))
+		expect resultInt, containsMetric(MetricName.Di, 1) //((2 + 1)/ 3)
 
-		expect resultVoid, containsMetric("Si", 4)
-		expect resultVoid, containsMetric("Ci", NumericValue.of(4).plus(NumericValue.of(2).divide(NumericValue.of(3))))
+		expect resultVoid, containsMetric(MetricName.Si, 4)
+		expect resultVoid, containsMetric(MetricName.Ci, NumericValue.of(4).plus(NumericValue.of(2).divide(NumericValue.of(3))))
 	}
 }

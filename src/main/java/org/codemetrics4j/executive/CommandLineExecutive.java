@@ -2,11 +2,22 @@ package org.codemetrics4j.executive;
 
 import com.google.common.collect.ImmutableSet;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
-import javax.xml.transform.*;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.apache.commons.cli.*;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.NotFileFilter;
@@ -14,6 +25,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.codemetrics4j.input.FileScanner;
 import org.codemetrics4j.input.Project;
 import org.codemetrics4j.input.RegexpFilter;
+import org.codemetrics4j.metrics.MetricName;
 import org.codemetrics4j.output.XMLOutputter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +72,15 @@ public class CommandLineExecutive {
 
             Project scannerOutput = scanner.scan();
 
-            ProcessorFactory.getProcessor().process(scannerOutput);
+            List<MetricName> disabledMetrics = new ArrayList<>();
+            for (MetricName metric : MetricName.values()) {
+                if (line.hasOption("no-" + metric.toString().toLowerCase())) {
+                    disabledMetrics.add(metric);
+                }
+            }
+
+            ProcessorConfiguration processorConfiguration = new ProcessorConfiguration(disabledMetrics);
+            ProcessorFactory.getProcessor(processorConfiguration).process(scannerOutput);
 
             long endTime = System.currentTimeMillis();
 
@@ -113,6 +133,11 @@ public class CommandLineExecutive {
         options.addOption(excludetests);
         options.addOption(output);
         options.addOption(regexp);
+
+        for (MetricName metric : MetricName.values()) {
+            options.addOption(new Option(
+                    null, "no-" + metric.toString().toLowerCase(), false, "disable " + metric.toString() + " metric"));
+        }
 
         return options;
     }

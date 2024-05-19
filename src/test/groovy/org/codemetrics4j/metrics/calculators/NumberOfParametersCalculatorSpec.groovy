@@ -4,6 +4,7 @@ import static org.codemetrics4j.util.Matchers.containsMetric
 import static org.codemetrics4j.util.TestUtil.methodFromSnippet
 import static spock.util.matcher.HamcrestSupport.expect
 
+import org.codemetrics4j.metrics.MetricName
 import spock.lang.Specification
 
 class NumberOfParametersCalculatorSpec extends Specification {
@@ -26,7 +27,7 @@ class NumberOfParametersCalculatorSpec extends Specification {
 		def result = unit.calculate(type)
 
 		then:
-		expect result, containsMetric("NOP", 0)
+		expect result, containsMetric(MetricName.NOP, 0)
 	}
 
 	def "calculate simple metric with parameters"() {
@@ -42,6 +43,6 @@ class NumberOfParametersCalculatorSpec extends Specification {
 		def result = unit.calculate(type)
 
 		then:
-		expect result, containsMetric("NOP", 3)
+		expect result, containsMetric(MetricName.NOP, 3)
 	}
 }

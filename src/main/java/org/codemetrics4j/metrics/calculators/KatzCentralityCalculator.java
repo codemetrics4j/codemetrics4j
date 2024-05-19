@@ -9,6 +9,7 @@ import java.util.function.Function;
 import org.codemetrics4j.input.Method;
 import org.codemetrics4j.metrics.Calculator;
 import org.codemetrics4j.metrics.Metric;
+import org.codemetrics4j.metrics.MetricName;
 import org.codemetrics4j.util.Distinct;
 import org.jgrapht.Graph;
 import org.jgrapht.alg.scoring.KatzCentrality;
@@ -48,6 +49,6 @@ public class KatzCentralityCalculator implements Calculator<Method> {
                         .getCallNetwork());
 
         double centralityScore = katzCentrality.getVertexScore(method);
-        return ImmutableSet.of(Metric.of("KATZ", "Katz Centrality", centralityScore));
+        return ImmutableSet.of(Metric.of(MetricName.KATZ, "Katz Centrality", centralityScore));
     }
 }

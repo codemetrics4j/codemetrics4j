@@ -5,12 +5,13 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import java.util.*;
 import org.codemetrics4j.metrics.Metric;
+import org.codemetrics4j.metrics.MetricName;
 
 public abstract class Code {
     private final String name;
     protected final Set<Code> children;
     private Code parent = null;
-    private final Map<String, Metric> metrics;
+    private final Map<MetricName, Metric> metrics;
     private final Map<String, String> attributes;
 
     protected Code(String name) {
@@ -28,7 +29,7 @@ public abstract class Code {
         return ImmutableSet.copyOf(metrics.values());
     }
 
-    public Optional<Metric> getMetric(String name) {
+    public Optional<Metric> getMetric(MetricName name) {
         return Optional.ofNullable(this.metrics.get(name));
     }
 

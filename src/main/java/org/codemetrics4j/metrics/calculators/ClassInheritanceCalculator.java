@@ -8,6 +8,7 @@ import java.util.Stack;
 import org.codemetrics4j.input.Type;
 import org.codemetrics4j.metrics.Calculator;
 import org.codemetrics4j.metrics.Metric;
+import org.codemetrics4j.metrics.MetricName;
 
 public class ClassInheritanceCalculator implements Calculator<Type> {
     @Override
@@ -40,9 +41,9 @@ public class ClassInheritanceCalculator implements Calculator<Type> {
         }
 
         return ImmutableSet.of(
-                Metric.of("NOPa", "Number of Parents", parents.size()),
-                Metric.of("NOCh", "Number of Children", children.size()),
-                Metric.of("NOD", "Number of Descendants", descendants.size()),
-                Metric.of("NOA", "Number of Ancestors", ancestors.size()));
+                Metric.of(MetricName.NOPa, "Number of Parents", parents.size()),
+                Metric.of(MetricName.NOCh, "Number of Children", children.size()),
+                Metric.of(MetricName.NOD, "Number of Descendants", descendants.size()),
+                Metric.of(MetricName.NOA, "Number of Ancestors", ancestors.size()));
     }
 }

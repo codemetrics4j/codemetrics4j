@@ -15,6 +15,7 @@ import org.codemetrics4j.input.Method;
 import org.codemetrics4j.input.Type;
 import org.codemetrics4j.metrics.Calculator;
 import org.codemetrics4j.metrics.Metric;
+import org.codemetrics4j.metrics.MetricName;
 import org.codemetrics4j.metrics.value.NumericValue;
 import org.codemetrics4j.util.CalculationUtils;
 
@@ -122,28 +123,28 @@ public class MethodAndAttributeInheritanceCalculator implements Calculator<Type>
         Set<Method> hiddenDefined = Sets.difference(definedMethods, publicDefinedMethods);
 
         ImmutableSet.Builder<Metric> metricBuilder = ImmutableSet.<Metric>builder()
-                .add(Metric.of("Mit", "Number of Methods Inherited (Total)", inheritableMethods.size()))
+                .add(Metric.of(MetricName.Mit, "Number of Methods Inherited (Total)", inheritableMethods.size()))
                 .add(Metric.of(
-                        "Mi",
+                        MetricName.Mi,
                         "Number of Methods Inherited and Not Overridden",
                         inheritedAndNotOverriddenMethods.size()))
-                .add(Metric.of("Md", "Number of Methods Defined", definedMethods.size()))
-                .add(Metric.of("Mo", "Number of Methods Overridden", overriddenMethods.size()))
-                .add(Metric.of("Ma", "Number of Methods (All)", allMethods.size()))
+                .add(Metric.of(MetricName.Md, "Number of Methods Defined", definedMethods.size()))
+                .add(Metric.of(MetricName.Mo, "Number of Methods Overridden", overriddenMethods.size()))
+                .add(Metric.of(MetricName.Ma, "Number of Methods (All)", allMethods.size()))
                 .add(Metric.of(
-                        "PMi",
+                        MetricName.PMi,
                         "Number of Public Methods Inherited and Not Overridden",
                         publicInheritedNotOverriddenMethods.size()))
-                .add(Metric.of("PMd", "Number of Public Methods Defined", publicDefinedMethods.size()))
+                .add(Metric.of(MetricName.PMd, "Number of Public Methods Defined", publicDefinedMethods.size()))
                 .add(Metric.of(
-                        "HMi",
+                        MetricName.HMi,
                         "Number of Hidden Methods Inherited and Not Overridden",
                         hiddenInheritedNotOverridden.size()))
-                .add(Metric.of("HMd", "Number of Hidden Methods Defined", hiddenDefined.size()));
+                .add(Metric.of(MetricName.HMd, "Number of Hidden Methods Defined", hiddenDefined.size()));
 
         if (!inheritableMethods.isEmpty()) {
             metricBuilder.add(Metric.of(
-                    "NMIR",
+                    MetricName.NMIR,
                     "Number of Methods Inherited Ratio",
                     NumericValue.ofRational(inheritedAndNotOverriddenMethods.size(), inheritableMethods.size())
                             .times(NumericValue.of(100))));
@@ -151,19 +152,19 @@ public class MethodAndAttributeInheritanceCalculator implements Calculator<Type>
 
         if (!allMethods.isEmpty()) {
             metricBuilder.add(Metric.of(
-                    "MIF",
+                    MetricName.MIF,
                     "Method Inheritance Factor",
                     NumericValue.of(inheritedAndNotOverriddenMethods.size())
                             .divide(NumericValue.of(allMethods.size()))));
             NumericValue publicMethods = NumericValue.of(publicInheritedNotOverriddenMethods.size())
                     .plus(NumericValue.of(publicDefinedMethods.size()));
-            metricBuilder.add(
-                    Metric.of("PMR", "Public Methods Ratio", publicMethods.divide(NumericValue.of(allMethods.size()))));
+            metricBuilder.add(Metric.of(
+                    MetricName.PMR, "Public Methods Ratio", publicMethods.divide(NumericValue.of(allMethods.size()))));
         }
 
         if (!definedMethods.isEmpty()) {
             metricBuilder.add(Metric.of(
-                    "MHF",
+                    MetricName.MHF,
                     "Method Hiding Factor",
                     NumericValue.of(publicDefinedMethods.size()).divide(NumericValue.of(definedMethods.size()))));
         }
@@ -183,19 +184,19 @@ public class MethodAndAttributeInheritanceCalculator implements Calculator<Type>
                 definedAttributes.stream().filter(Attribute::isPublicish).collect(Collectors.toSet());
 
         metricBuilder
-                .add(Metric.of("Ait", "Number of Attributes Inherited (Total)", inheritableAttributes.size()))
+                .add(Metric.of(MetricName.Ait, "Number of Attributes Inherited (Total)", inheritableAttributes.size()))
                 .add(Metric.of(
-                        "Ai",
+                        MetricName.Ai,
                         "Number of Attributes Inherited and Not Overridden",
                         inheritedNotOverriddenAttributes.size()))
-                .add(Metric.of("Ad", "Number of Attributes Defined", definedAttributes.size()))
-                .add(Metric.of("Ao", "Number of Attributes Overridden", overriddenAttributes.size()))
-                .add(Metric.of("Aa", "Number of Attributes (All)", allAttributes.size()))
-                .add(Metric.of("Av", "Number of Public Attributes Defined", publicDefinedAttributes.size()));
+                .add(Metric.of(MetricName.Ad, "Number of Attributes Defined", definedAttributes.size()))
+                .add(Metric.of(MetricName.Ao, "Number of Attributes Overridden", overriddenAttributes.size()))
+                .add(Metric.of(MetricName.Aa, "Number of Attributes (All)", allAttributes.size()))
+                .add(Metric.of(MetricName.Av, "Number of Public Attributes Defined", publicDefinedAttributes.size()));
 
         if (!allAttributes.isEmpty()) {
             metricBuilder.add(Metric.of(
-                    "AIF",
+                    MetricName.AIF,
                     "Attribute Inheritance Factor",
                     NumericValue.of(inheritedNotOverriddenAttributes.size())
                             .divide(NumericValue.of(allAttributes.size()))));
@@ -203,7 +204,7 @@ public class MethodAndAttributeInheritanceCalculator implements Calculator<Type>
 
         if (!definedAttributes.isEmpty()) {
             metricBuilder.add(Metric.of(
-                    "AHF",
+                    MetricName.AHF,
                     "Attribute Hiding Factor",
                     NumericValue.of(publicDefinedAttributes.size()).divide(NumericValue.of(definedAttributes.size()))));
         }
